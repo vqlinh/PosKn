@@ -16,7 +16,8 @@ public class Player : MonoBehaviour
     public HealthBar healthBar;
     [SerializeField] private bool isAttack=false;
     [SerializeField] private float timeCoolDownAttack = 2f;
-
+    [SerializeField] private float distanceAttack = 2f;
+    private bool hasAttacked = false;
 
     private PlayerState currentState;
     public enum PlayerState
@@ -40,7 +41,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         GameManager.instance.txtCurrentHeal.text = currentHealth.ToString();
-
+         CheckDistanceForNormalAttack();
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -60,6 +61,28 @@ public class Player : MonoBehaviour
                 break;
         }
     }
+    private void CheckDistanceForNormalAttack()
+    {
+        Vector2 playerPosition = new Vector2(transform.position.x, transform.position.y);
+        GameObject enemyObject = GameObject.FindGameObjectWithTag(Const.enemy);
+       if (enemyObject != null)
+        {
+            Vector2 enemyPosition = new Vector2(enemyObject.transform.position.x, enemyObject.transform.position.y);
+            float distance = Vector2.Distance(playerPosition, enemyPosition);
+
+            if (distance <= distanceAttack && !hasAttacked)
+            {
+                Debug.Log("khoang cach nho hon 2f");
+                HandleNormalAttackState();
+                hasAttacked = true; // Đánh chỉ một lần khi khoảng cách thỏa mãn
+            }
+            else if (distance > distanceAttack)
+            {
+                hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
+            }
+        }
+
+    }
     // Các hàm xử lý cho từng trạng thái
     void HandleIdleState()
     {
@@ -73,8 +96,10 @@ public class Player : MonoBehaviour
         if (canMove) Move();
         canMoveBack = true;
     }
+
     void HandleNormalAttackState()
     {
+        Debug.Log("NormalAttack");
         animator.SetTrigger(Const.animNormalAttack);
         currentState = PlayerState.Moving;
     }
@@ -85,7 +110,8 @@ public class Player : MonoBehaviour
         if (!isAttack)
         {
             Attack();
-            StartCoroutine(AttackCoolDown());
+            StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
+
             currentState = PlayerState.Moving;
         }
 
@@ -94,7 +120,6 @@ public class Player : MonoBehaviour
     {
         isAttack = true;
         animator.SetTrigger(Const.animSkillAttack);
-
         yield return new WaitForSeconds(timeCoolDownAttack);
         isAttack = false;
     }
@@ -110,8 +135,6 @@ public class Player : MonoBehaviour
     private IEnumerator MoveBack(Vector2 targetPosition)
     {
         canMove = false;
-        //animator.SetBool(Const.animMove, false);
-        //animator.SetBool(Const.animDamaged, true);
         float elapsedTime = 0f;
         float duration = 0.5f; // thoi gian di chuyen nguoc lai
         Vector2 initialPosition = transform.position;
@@ -123,35 +146,27 @@ public class Player : MonoBehaviour
         }
         transform.position = targetPosition;
         canMove = true;
-        //animator.SetBool(Const.animDamaged, false );
-        //animator.SetBool(Const.animMove, true);
     }
-    // Hàm để chuyển đổi trạng thái
 
     public void Move()
     {
-        //animator.SetBool(Const.animMove, true);
         transform.Translate(Vector3.right * speed * Time.deltaTime); 
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(Const.enemy)) HandleDamagedState();
-        // chay ham giam health
         TakeDamage(10);
-        Debug.Log("TakeDamage");
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag(Const.enemy))
-        {
-            HandleNormalAttackState();
-            Debug.Log("Chem chet");
-
-        }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag(Const.enemy))
+    //    {
+    //        HandleNormalAttackState();
+    //    }
                 
-    }
+    //}
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -169,7 +184,6 @@ public class Player : MonoBehaviour
         float elapsedTime = 0f;
         Vector2 attackStartPos = transform.position;
         Vector2 attackEndPos = transform.position + transform.right * 3f;
-
         while (elapsedTime < attackDuration)
         {
             transform.position = Vector2.Lerp(attackStartPos, attackEndPos, elapsedTime / attackDuration);
