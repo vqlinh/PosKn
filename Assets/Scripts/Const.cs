@@ -8,6 +8,8 @@ public class Const : MonoBehaviour
     public const string animDie = "isDie";
     public const string animDamaged = "isDamaged";
     public const string animIdle = "isIdle";
+    public const string animNormalAttack = "isNormalAttack";
+    public const string animSkillAttack = "isSkillAttack";
     public const string enemy = "Enemy";
     public const string player = "Player";
 }

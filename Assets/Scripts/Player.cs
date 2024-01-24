@@ -23,8 +23,9 @@ public class Player : MonoBehaviour
     {
         Idle,
         Moving,
-        Attacking,
-        Damaged
+        SkillAttack,
+        Damaged,
+        NormalAttack
     }
 
     private void Start()
@@ -33,10 +34,13 @@ public class Player : MonoBehaviour
         currentState = PlayerState.Idle;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        GameManager.instance.txtMaxHeal.text = maxHealth.ToString();
     }
 
     private void Update()
     {
+        GameManager.instance.txtCurrentHeal.text = currentHealth.ToString();
+
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -45,28 +49,39 @@ public class Player : MonoBehaviour
             case PlayerState.Moving:
                 HandleMovingState();
                 break;
-            case PlayerState.Attacking:
-                HandleAttackingState();
+            case PlayerState.SkillAttack:
+                HandleSkillAttackState();
                 break;
             case PlayerState.Damaged:
                 HandleDamagedState();
+                break;
+            case PlayerState.NormalAttack:
+                HandleNormalAttackState();
                 break;
         }
     }
     // Các hàm xử lý cho từng trạng thái
     void HandleIdleState()
     {
+        animator.SetTrigger(Const.animIdle);
         currentState= PlayerState.Moving;
     }
 
     void HandleMovingState()
     {
+        animator.SetTrigger(Const.animMove);
         if (canMove) Move();
         canMoveBack = true;
     }
-
-    public void HandleAttackingState()
+    void HandleNormalAttackState()
     {
+        animator.SetTrigger(Const.animNormalAttack);
+        currentState = PlayerState.Moving;
+    }
+
+    public void HandleSkillAttackState()
+    {
+
         if (!isAttack)
         {
             Attack();
@@ -78,13 +93,16 @@ public class Player : MonoBehaviour
     private IEnumerator AttackCoolDown()
     {
         isAttack = true;
+        animator.SetTrigger(Const.animSkillAttack);
+
         yield return new WaitForSeconds(timeCoolDownAttack);
         isAttack = false;
     }
 
     void HandleDamagedState()
     {
-        Vector2 reverseDirection = transform.right;
+        animator.SetTrigger(Const.animDamaged);
+        Vector2 reverseDirection = -transform.right;
         Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; // di chuyen ve sau voi khoang cach disBack
         if (canMoveBack) StartCoroutine(MoveBack(newPosition));
     }
@@ -92,8 +110,8 @@ public class Player : MonoBehaviour
     private IEnumerator MoveBack(Vector2 targetPosition)
     {
         canMove = false;
-        animator.SetBool(Const.animMove, false);
-        animator.SetBool(Const.animDamaged, true);
+        //animator.SetBool(Const.animMove, false);
+        //animator.SetBool(Const.animDamaged, true);
         float elapsedTime = 0f;
         float duration = 0.5f; // thoi gian di chuyen nguoc lai
         Vector2 initialPosition = transform.position;
@@ -105,30 +123,32 @@ public class Player : MonoBehaviour
         }
         transform.position = targetPosition;
         canMove = true;
-        animator.SetBool(Const.animDamaged, false );
-        animator.SetBool(Const.animMove, true);
+        //animator.SetBool(Const.animDamaged, false );
+        //animator.SetBool(Const.animMove, true);
     }
     // Hàm để chuyển đổi trạng thái
 
     public void Move()
     {
-        animator.SetBool(Const.animMove, true);
-        transform.Translate(Vector3.left * speed * Time.deltaTime); // di chuyen ve ben trai nhung Sprites quay 180 do nen di chuyen sang ben phai
+        //animator.SetBool(Const.animMove, true);
+        transform.Translate(Vector3.right * speed * Time.deltaTime); 
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(Const.enemy)) HandleDamagedState();
+        // chay ham giam health
+        TakeDamage(10);
+        Debug.Log("TakeDamage");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag(Const.enemy))
         {
-            // animation chem = true;
-            // chay ham giam health
-            TakeDamage(10);
-            Debug.Log("TakeDamage");
+            HandleNormalAttackState();
+            Debug.Log("Chem chet");
+
         }
                 
     }
@@ -148,7 +168,7 @@ public class Player : MonoBehaviour
         float attackDuration = 0.4f;
         float elapsedTime = 0f;
         Vector2 attackStartPos = transform.position;
-        Vector2 attackEndPos = transform.position - transform.right * 3f;
+        Vector2 attackEndPos = transform.position + transform.right * 3f;
 
         while (elapsedTime < attackDuration)
         {
