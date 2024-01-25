@@ -3,21 +3,39 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float disBack = 1f;
+    // CoolDown
+    public Image imgCoolDown1;
+    public float coolDown1 = 2f;
+    private bool isCoolDown1;
+    [SerializeField] private float timeCoolDownAttack = 2f;
+    //  
+    // CoolDown
+    public Image imgCoolDown3;
+    public float coolDown3 = 8f;
+    private bool isCoolDown3;
+    [SerializeField] private float timeCoolDownHealing = 8f;
+    //
     [SerializeField] private float speed = 1f;
+    [SerializeField] private int currentHealth;
+    [SerializeField] private float disBack = 1f;
+    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private bool isAttack=false;
+    [SerializeField] private bool isHealing=false;
+    [SerializeField] private float distanceAttack = 2f;
+
+    Animator animator;
+    public HealthBar healthBar;
     private bool canMove = true;
     private bool canMoveBack= true;
-    Animator animator;
-    [SerializeField] private int maxHealth = 100;
-    [SerializeField] private int currentHealth;
-    public HealthBar healthBar;
-    [SerializeField] private bool isAttack=false;
-    [SerializeField] private float timeCoolDownAttack = 2f;
-    [SerializeField] private float distanceAttack = 2f;
     private bool hasAttacked = false;
+    private bool isClick1=false;
+    private bool isClick3=false;
+    private GameManager gameManager;
 
     private PlayerState currentState;
     public enum PlayerState
@@ -31,16 +49,19 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        isClick1 = true;
+        isClick3 = true;
+        gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
         currentState = PlayerState.Idle;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-        GameManager.instance.txtMaxHeal.text = maxHealth.ToString();
+        gameManager.txtMaxHeal.text = maxHealth.ToString();
     }
 
     private void Update()
     {
-        GameManager.instance.txtCurrentHeal.text = currentHealth.ToString();
+        gameManager.txtCurrentHeal.text = currentHealth.ToString();
          CheckDistanceForNormalAttack();
         switch (currentState)
         {
@@ -60,6 +81,45 @@ public class Player : MonoBehaviour
                 HandleNormalAttackState();
                 break;
         }
+        CoolDownSkill1();
+        CoolDownSkill3();
+    }
+    public void CoolDownSkill1()
+    {
+
+        if (isClick1 && isCoolDown1 == false) {
+            isCoolDown1 = true;
+        }
+        
+        if (isCoolDown1)
+        {
+            imgCoolDown1.fillAmount += 1 / coolDown1 * Time.deltaTime;
+            if (imgCoolDown1.fillAmount >= 1)
+            {
+                imgCoolDown1.fillAmount = 0;
+                isCoolDown1 = false;
+                isClick1 = false;
+            }
+        }
+    }
+    public void CoolDownSkill3()
+    {
+
+        if (isClick3 && isCoolDown3 == false)
+        {
+            isCoolDown3 = true;
+        }
+
+        if (isCoolDown3)
+        {
+            imgCoolDown3.fillAmount += 1 / coolDown3 * Time.deltaTime;
+            if (imgCoolDown3.fillAmount >= 1)
+            {
+                imgCoolDown3.fillAmount = 0;
+                isCoolDown3 = false;
+                isClick3 = false;
+            }
+        }
     }
     private void CheckDistanceForNormalAttack()
     {
@@ -70,16 +130,28 @@ public class Player : MonoBehaviour
             Vector2 enemyPosition = new Vector2(enemyObject.transform.position.x, enemyObject.transform.position.y);
             float distance = Vector2.Distance(playerPosition, enemyPosition);
 
-            if (distance <= distanceAttack && !hasAttacked)
+            if (distance <= distanceAttack && !hasAttacked  )
             {
-                Debug.Log("khoang cach nho hon 2f");
-                HandleNormalAttackState();
-                hasAttacked = true; // Đánh chỉ một lần khi khoảng cách thỏa mãn
+                currentState = PlayerState.NormalAttack;
+                if (currentState == PlayerState.NormalAttack)
+                {
+                    Debug.Log("distanceAttack");
+                    HandleNormalAttackState();
+                    hasAttacked = true; // Đánh chỉ một lần khi khoảng cách thỏa mãn
+                    currentState = PlayerState.Moving;
+                }
+                if (currentState == PlayerState.Moving)
+                {
+                    HandleDamagedState();
+                    TakeDamage(10);
+                }
+                if (currentState == PlayerState.SkillAttack)
+                {
+                    HandleSkillAttackState();
+                    currentState = PlayerState.Moving;
+                }
             }
-            else if (distance > distanceAttack)
-            {
-                hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
-            }
+            else if (distance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
         }
 
     }
@@ -103,25 +175,53 @@ public class Player : MonoBehaviour
         animator.SetTrigger(Const.animNormalAttack);
         currentState = PlayerState.Moving;
     }
-
+    #region skill_1
     public void HandleSkillAttackState()
     {
-
+        isClick1 = true;
         if (!isAttack)
         {
             Attack();
             StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
-
             currentState = PlayerState.Moving;
         }
-
     }
+    
     private IEnumerator AttackCoolDown()
     {
         isAttack = true;
         animator.SetTrigger(Const.animSkillAttack);
         yield return new WaitForSeconds(timeCoolDownAttack);
         isAttack = false;
+    }
+    #endregion
+
+    #region Skill_3
+    public void Skillhealing() // click button
+    {
+        isClick3 = true;
+        if (!isHealing)
+        {
+            Healing();
+            StartCoroutine(HealingCoolDown());
+        }
+
+    }
+    public void Healing()
+    {
+        bool isHealPlus = true;
+        if (currentHealth < maxHealth)
+        {
+            if (isHealPlus) currentHealth += 30;
+        }
+        else isHealPlus = false;
+    }
+    #endregion
+    private IEnumerator HealingCoolDown()
+    {
+        isHealing = true;
+        yield return new WaitForSeconds(timeCoolDownHealing);
+        isHealing = false;
     }
 
     void HandleDamagedState()
@@ -153,24 +253,10 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.right * speed * Time.deltaTime); 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag(Const.enemy)) HandleDamagedState();
-        TakeDamage(10);
-    }
-
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag(Const.enemy))
-    //    {
-    //        HandleNormalAttackState();
-    //    }
-                
-    //}
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        healthBar.SetHealth(currentHealth); 
+        healthBar.SetHealth(currentHealth);
     }
 
     public void Attack()
@@ -190,6 +276,7 @@ public class Player : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
         transform.position = attackEndPos;
     }
 }

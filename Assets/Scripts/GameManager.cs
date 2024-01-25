@@ -4,9 +4,11 @@ using TMPro;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+
     public TextMeshProUGUI txtMaxHeal;
     public TextMeshProUGUI txtCurrentHeal;
 
@@ -20,9 +22,13 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
     }
-
+    private void Update()
+    {
+        //CoolDown();
+    }
     public void LoadSceneWait()
     {
         SceneManager.LoadScene("SceneWait");
     }
+
 }
