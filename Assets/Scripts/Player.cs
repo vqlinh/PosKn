@@ -24,17 +24,17 @@ public class Player : MonoBehaviour
     [SerializeField] private int currentHealth;
     [SerializeField] private float disBack = 1f;
     [SerializeField] private int maxHealth = 100;
-    [SerializeField] private bool isAttack=false;
-    [SerializeField] private bool isHealing=false;
+    [SerializeField] private bool isAttack = false;
+    [SerializeField] private bool isHealing = false;
     [SerializeField] private float distanceAttack = 2f;
 
     Animator animator;
     public HealthBar healthBar;
     private bool canMove = true;
-    private bool canMoveBack= true;
+    private bool canMoveBack = true;
     private bool hasAttacked = false;
-    private bool isClick1=false;
-    private bool isClick3=false;
+    private bool isClick1 = false;
+    private bool isClick3 = false;
     private GameManager gameManager;
 
     private PlayerState currentState;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         gameManager.txtCurrentHeal.text = currentHealth.ToString();
-         CheckDistanceForNormalAttack();
+        CheckDistanceForNormalAttack();
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -87,10 +87,11 @@ public class Player : MonoBehaviour
     public void CoolDownSkill1()
     {
 
-        if (isClick1 && isCoolDown1 == false) {
+        if (isClick1 && isCoolDown1 == false)
+        {
             isCoolDown1 = true;
         }
-        
+
         if (isCoolDown1)
         {
             imgCoolDown1.fillAmount += 1 / coolDown1 * Time.deltaTime;
@@ -125,12 +126,12 @@ public class Player : MonoBehaviour
     {
         Vector2 playerPosition = new Vector2(transform.position.x, transform.position.y);
         GameObject enemyObject = GameObject.FindGameObjectWithTag(Const.enemy);
-       if (enemyObject != null)
+        if (enemyObject != null)
         {
             Vector2 enemyPosition = new Vector2(enemyObject.transform.position.x, enemyObject.transform.position.y);
             float distance = Vector2.Distance(playerPosition, enemyPosition);
 
-            if (distance <= distanceAttack && !hasAttacked  )
+            if (distance <= distanceAttack && !hasAttacked)
             {
                 currentState = PlayerState.NormalAttack;
                 if (currentState == PlayerState.NormalAttack)
@@ -159,7 +160,7 @@ public class Player : MonoBehaviour
     void HandleIdleState()
     {
         animator.SetTrigger(Const.animIdle);
-        currentState= PlayerState.Moving;
+        currentState = PlayerState.Moving;
     }
 
     void HandleMovingState()
@@ -186,7 +187,7 @@ public class Player : MonoBehaviour
             currentState = PlayerState.Moving;
         }
     }
-    
+
     private IEnumerator AttackCoolDown()
     {
         isAttack = true;
@@ -212,7 +213,15 @@ public class Player : MonoBehaviour
         bool isHealPlus = true;
         if (currentHealth < maxHealth)
         {
-            if (isHealPlus) currentHealth += 30;
+            if (isHealPlus)
+            {
+                currentHealth += 30;
+                if (currentHealth>=maxHealth)
+                {
+                    currentHealth = maxHealth;
+                    isClick3 = false; // mai lam not khi mau day se k chay hoi chieu mau nua
+                }
+            }
         }
         else isHealPlus = false;
     }
@@ -250,7 +259,7 @@ public class Player : MonoBehaviour
 
     public void Move()
     {
-        transform.Translate(Vector3.right * speed * Time.deltaTime); 
+        transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
     public void TakeDamage(int damage)
