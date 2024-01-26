@@ -8,7 +8,9 @@ public class Enemy : MonoBehaviour
     private bool hasAttacked = false;
     public float distanceAttack = 1f;
 
+    private EnemyType enemyType;
     private EnemyState currentState;
+    private Transform playerTransform;
     [SerializeField] private float disBack = 2f;
     public enum EnemyState
     {
@@ -16,30 +18,21 @@ public class Enemy : MonoBehaviour
         NormalAttack
     }
 
-    private TypeEnemy typeEnemy;
-    public enum TypeEnemy
+    public enum EnemyType
     {
-        HandHit,
-        Farhit
+        Melee,
+        Ranged
     }
-    void Start()
+
+    private void Start()
     {
-        currentState = EnemyState.Idle;
+        playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
     }
 
     void Update()
     {
         CheckDistanceForNormalAttack();
-        switch (currentState)
-        {
-            case EnemyState.Idle:
-                HandleIdleState();
-                break;
-            
-            case EnemyState.NormalAttack:
-                HandleNormalAttackState();
-                break;
-        }
+  
     }
     private void CheckDistanceForNormalAttack()
     {
@@ -56,7 +49,6 @@ public class Enemy : MonoBehaviour
                 Vector2 reverseDirection = transform.right;
                 Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; // di chuyen ve sau voi khoang cach disBack
                 StartCoroutine(MoveBack(newPosition));
-                HandleNormalAttackState();
                 hasAttacked = true; // Đánh chỉ một lần khi khoảng cách thỏa mãn
   
             }
@@ -65,26 +57,8 @@ public class Enemy : MonoBehaviour
                 hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
             }
         }
-
-    }
-    void HandleIdleState()
-    {
-        if (typeEnemy == TypeEnemy.HandHit) currentState = EnemyState.Idle;
-        else if (typeEnemy==TypeEnemy.Farhit) currentState = EnemyState.Idle;
-    }
-    void HandleNormalAttackState()
-    {
-        Attack();
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Player"))
-    //    {
- 
-
-    //    }
-    //}
 
     private IEnumerator MoveBack(Vector2 targetPosition)
     {
@@ -99,8 +73,5 @@ public class Enemy : MonoBehaviour
         }
         transform.position = targetPosition;
     }
-    void Attack()
-    {
 
-    }
 }
