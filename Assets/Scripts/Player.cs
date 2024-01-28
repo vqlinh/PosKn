@@ -4,6 +4,19 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+
+public class EnemySpawn: MonoBehaviour
+{
+    public List<GameObject> enemySpawn=new List<GameObject>();
+    public GameObject enemySpawnPrefab;
+    private void Start()
+    {
+        GameObject spanwedEnemy =Instantiate(enemySpawnPrefab,transform.position, Quaternion.identity);
+        enemySpawn.Add(spanwedEnemy);
+    }
+}
+    
+
 public class Player : MonoBehaviour
 {
     [Header("CoolDown")]
@@ -50,12 +63,10 @@ public class Player : MonoBehaviour
     private void Start()
     {
         enemyTransform = GameObject.FindGameObjectWithTag(Const.enemy).transform;
-        Debug.Log("co Enemy");
 
         imgCoolDown3.fillAmount = 0;
         imgCoolDown1.fillAmount = 0;
-        //isClick1 = true;
-        // isClick3 = true;
+     
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
         currentState = PlayerState.Idle;
@@ -72,19 +83,19 @@ public class Player : MonoBehaviour
         switch (currentState)
         {
             case PlayerState.Idle:
-                HandleIdleState();
+                IdleState();
                 break;
             case PlayerState.Moving:
-                HandleMovingState();
+                MovingState();
                 break;
             case PlayerState.SkillAttack:
-                HandleSkillAttackState();
+                SkillAttackState();
                 break;
             case PlayerState.Damaged:
-                HandleDamagedState();
+                DamagedState();
                 break;
             case PlayerState.NormalAttack:
-                HandleNormalAttackState();
+                NormalAttackState();
                 break;
         }
         CoolDownSkill1();
@@ -138,51 +149,46 @@ public class Player : MonoBehaviour
         float distance = Vector2.Distance(transform.position, enemyTransform.position);
         if (distance <= distanceAttack && !hasAttacked)
         {
-            Debug.Log("enemy trong vung attack");
-            currentState = PlayerState.NormalAttack;
-            //if (currentState == PlayerState.NormalAttack)
-            //{
-            //    Debug.Log("distanceAttack"+ distance);
-            //    HandleNormalAttackState();
-            //    hasAttacked = true; // Đánh chỉ một lần khi khoảng cách thỏa mãn
-            //    currentState = PlayerState.Moving;
-            //}
+            hasAttacked = true;
+            NormalAttackState();
+            currentState = PlayerState.Moving;
             if (currentState == PlayerState.Moving)
             {
-                HandleDamagedState();
+                Debug.Log("currentState == PlayerState.Moving");
+                DamagedState();
                 TakeDamage(10);
             }
             if (currentState == PlayerState.SkillAttack)
             {
-                HandleSkillAttackState();
+                SkillAttackState();
                 currentState = PlayerState.Moving;
             }
         }
         else if (distance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
 
     }
-    // Các hàm xử lý cho từng trạng thái
-    void HandleIdleState()
+ 
+    void IdleState()
     {
         animator.SetTrigger(Const.animIdle);
         currentState = PlayerState.Moving;
     }
 
-    void HandleMovingState()
+    void MovingState()
     {
         animator.SetTrigger(Const.animMove);
         if (canMove) Move();
         canMoveBack = true;
     }
 
-    void HandleNormalAttackState()
+    void NormalAttackState()
     {
         Debug.Log("NormalAttack");
         animator.SetTrigger(Const.animNormalAttack);
-        currentState = PlayerState.Moving;
+
     }
     #region skill_1
-    public void HandleSkillAttackState()
+    public void SkillAttackState()
     {
         isClick1 = true;
         if (!isAttack)
@@ -257,7 +263,7 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    void HandleDamagedState()
+    void DamagedState()
     {
         Debug.Log("dinh dame va bi lui lai");
         animator.SetTrigger(Const.animDamaged);

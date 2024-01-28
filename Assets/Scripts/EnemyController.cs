@@ -24,7 +24,6 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
-        Debug.Log("co player");
     }
 
     private void Update()
@@ -38,7 +37,6 @@ public class EnemyController : MonoBehaviour
         {
             if (distanceToPlayer <= meleeAttackDistance && !canAttack)
             {
-            Debug.Log("Player dang trong khoang danh gan");
                 canAttack = true;
                 Attack();
             }
@@ -51,7 +49,6 @@ public class EnemyController : MonoBehaviour
         {
             if (distanceToPlayer <= rangedAttackDistance && !canAttack)
             {
-            Debug.Log("Player dang trong khoang danh xa");
                 //Attack();
             }
             else if (distanceToPlayer > rangedAttackDistance)
@@ -63,7 +60,6 @@ public class EnemyController : MonoBehaviour
 
     private void Attack()
     {
-        Debug.Log("Enemy Attack");
         // Logic xử lý tấn công ở đây
         Vector2 reverseDirection = transform.right;
         Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; 
@@ -72,7 +68,6 @@ public class EnemyController : MonoBehaviour
     }
     private IEnumerator MoveBack(Vector2 targetPosition)
     {
-        Debug.Log("enemy bi lui lai ve sau");
         float elapsedTime = 0f;
         float duration = 0.5f;
         Vector2 initialPosition = transform.position;
