@@ -1273,7 +1273,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.1690035, y: -0.27947903}
+  m_Offset: {x: -0.28271294, y: -0.27947903}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1284,7 +1284,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7.755928, y: 12.863283}
+  m_Size: {x: 10.659361, y: 12.863283}
   m_EdgeRadius: 0
 --- !u!212 &521337386
 SpriteRenderer:
@@ -1905,7 +1905,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.1394703, y: -0.10654688}
+  m_Offset: {x: -0.5088198, y: -0.10654688}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1916,7 +1916,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.6024365, y: 7.923998}
+  m_Size: {x: 5.8637376, y: 7.923998}
   m_EdgeRadius: 0
 --- !u!50 &1084584763
 Rigidbody2D:
@@ -4509,7 +4509,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1084584758}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
-        m_MethodName: HandleSkillAttackState
+        m_MethodName: SkillAttackState
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
