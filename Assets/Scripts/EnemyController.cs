@@ -15,7 +15,6 @@ public class EnemyController : MonoBehaviour
     public float rangedAttackDistance = 5f;
     [SerializeField] private float disBack = 2f;
 
-    public List<Enemy> enemies;
 
 
     private bool canAttack = false;
@@ -38,7 +37,7 @@ public class EnemyController : MonoBehaviour
             if (distanceToPlayer <= meleeAttackDistance && !canAttack)
             {
                 canAttack = true;
-                Attack();
+                MeleeAttack();
             }
             else if (distanceToPlayer> meleeAttackDistance)
             {
@@ -49,7 +48,9 @@ public class EnemyController : MonoBehaviour
         {
             if (distanceToPlayer <= rangedAttackDistance && !canAttack)
             {
-                //Attack();
+                canAttack = true;
+                Debug.Log("Ranged attack");
+                //RangedAttack();
             }
             else if (distanceToPlayer > rangedAttackDistance)
             {
@@ -57,8 +58,14 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
+    private void RangedAttack()
+    {
+        Vector2 reverseDirection = transform.right;
+        Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack;
+        StartCoroutine(MoveBack(newPosition));
+    }
 
-    private void Attack()
+    private void MeleeAttack()
     {
         // Logic xử lý tấn công ở đây
         Vector2 reverseDirection = transform.right;

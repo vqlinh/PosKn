@@ -4,19 +4,6 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class EnemySpawn: MonoBehaviour
-{
-    public List<GameObject> enemySpawn=new List<GameObject>();
-    public GameObject enemySpawnPrefab;
-    private void Start()
-    {
-        GameObject spanwedEnemy =Instantiate(enemySpawnPrefab,transform.position, Quaternion.identity);
-        enemySpawn.Add(spanwedEnemy);
-    }
-}
-    
-
 public class Player : MonoBehaviour
 {
     [Header("CoolDown")]
@@ -40,7 +27,6 @@ public class Player : MonoBehaviour
     [SerializeField] private bool isAttack = false;
     [SerializeField] private bool isHealing = false;
     [SerializeField] private float distanceAttack = 2f;
-
     Animator animator;
     private bool canMove = true;
     private bool canMoveBack = true;
@@ -49,6 +35,7 @@ public class Player : MonoBehaviour
     private bool isClick3 = false;
     private GameManager gameManager;
     private Transform enemyTransform;
+    public EnemySpawn enemySpawn;
 
     private PlayerState currentState;
     public enum PlayerState
@@ -62,42 +49,25 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        enemyTransform = GameObject.FindGameObjectWithTag(Const.enemy).transform;
-
         imgCoolDown3.fillAmount = 0;
         imgCoolDown1.fillAmount = 0;
-     
+
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
+
         currentState = PlayerState.Idle;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+
         gameManager.txtMaxHeal.text = maxHealth.ToString();
     }
 
     private void Update()
     {
+        healthBar.slider.value= currentHealth;
         gameManager.txtCurrentHeal.text = currentHealth.ToString();
         CheckDistanceForNormalAttack();
-
-        switch (currentState)
-        {
-            case PlayerState.Idle:
-                IdleState();
-                break;
-            case PlayerState.Moving:
-                MovingState();
-                break;
-            case PlayerState.SkillAttack:
-                SkillAttackState();
-                break;
-            case PlayerState.Damaged:
-                DamagedState();
-                break;
-            case PlayerState.NormalAttack:
-                NormalAttackState();
-                break;
-        }
+        CheckState();
         CoolDownSkill1();
         CoolDownSkill3();
     }
@@ -143,11 +113,42 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
+    private void CheckState()
+    {
+        switch (currentState)
+        {
+            case PlayerState.Idle:
+                IdleState();
+                break;
+            case PlayerState.Moving:
+                MovingState();
+                break;
+            case PlayerState.SkillAttack:
+                SkillAttackState();
+                break;
+            case PlayerState.Damaged:
+                DamagedState();
+                break;
+            case PlayerState.NormalAttack:
+                NormalAttackState();
+                break;
+        }
+    }
 
     private void CheckDistanceForNormalAttack()
     {
-        float distance = Vector2.Distance(transform.position, enemyTransform.position);
-        if (distance <= distanceAttack && !hasAttacked)
+        float minDistance = float.MaxValue;
+        for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
+        {
+            float distance = Vector2.Distance(transform.position, enemySpawn.listEnemySpawn[i].transform.position);
+
+            Debug.Log("Distance:" + distance + "Enemy :" + enemySpawn.listEnemySpawn[i]);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+            }
+        }
+        if (minDistance <= distanceAttack && !hasAttacked)
         {
             hasAttacked = true;
             NormalAttackState();
@@ -164,10 +165,11 @@ public class Player : MonoBehaviour
                 currentState = PlayerState.Moving;
             }
         }
-        else if (distance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
+        else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
+
 
     }
- 
+
     void IdleState()
     {
         animator.SetTrigger(Const.animIdle);
