@@ -854,14 +854,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6037736, g: 0.5320043, b: 0.5320043, a: 1}
+  m_Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: c69c319f52d83cc4d952dab1e9eaec5a, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1522,8 +1522,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listEnemySpawn: []
-  melee: {fileID: 5464905595290644883, guid: 26ba8dbff3be7ef4aa6e8c4ceaf0fcca, type: 3}
-  ranged: {fileID: 5464905595290644883, guid: c99c55ee3b02c2b489c5539c898c21a2, type: 3}
+  melee: {fileID: 3356303922655332560, guid: 364b20d101c0daa44b85c2b81fdb36d5, type: 3}
+  ranged: {fileID: 62309191026090210, guid: 45ece5a4499dbe24aad88c2512cde717, type: 3}
+  player: {fileID: 1084584760}
 --- !u!4 &803431638
 Transform:
   m_ObjectHideFlags: 0
@@ -3187,14 +3188,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6037736, g: 0.5320043, b: 0.5320043, a: 1}
+  m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: c69c319f52d83cc4d952dab1e9eaec5a, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
