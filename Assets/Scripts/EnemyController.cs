@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class EnemyController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class EnemyController : MonoBehaviour
     public float meleeAttackDistance = 1f;
     public float rangedAttackDistance = 5f;
     [SerializeField] private float disBack = 2f;
-
+    int count = 0;
 
 
     private bool canAttack = false;
@@ -38,6 +39,11 @@ public class EnemyController : MonoBehaviour
             {
                 canAttack = true;
                 MeleeAttack();
+                count++;
+                if (count==2)
+                {
+                    this.gameObject.SetActive(false);
+                }
             }
             else if (distanceToPlayer> meleeAttackDistance)
             {

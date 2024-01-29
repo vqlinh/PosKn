@@ -8,11 +8,12 @@ public class EnemySpawn : MonoBehaviour
     public List<GameObject> listEnemySpawn = new List<GameObject>();
     public GameObject melee;
     public GameObject ranged;
+    public Transform player;
     void Start()
     {
-        GameObject melee1 = Instantiate(melee, transform.position, Quaternion.identity);
+        GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x+5f,player.transform.position.y), Quaternion.identity);
         Debug.Log("sinh ra melee" + melee1.transform.position);
-        GameObject ranged1 = Instantiate(ranged,new Vector2(transform.position.x+3f,transform.position.y), Quaternion.identity);
+        GameObject ranged1 = Instantiate(ranged,new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
         Debug.Log("sinh ra ranged" + ranged1.transform.position);
 
         listEnemySpawn.Add(melee1);
@@ -21,6 +22,6 @@ public class EnemySpawn : MonoBehaviour
 
     void Update()
     {
-
+        listEnemySpawn.RemoveAll(enemy => enemy == null || !enemy.activeSelf);
     }
 }
