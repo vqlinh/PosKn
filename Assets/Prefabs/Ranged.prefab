@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 325162610983974715}
   - component: {fileID: 3262185178543949007}
   - component: {fileID: 5412031406267353684}
+  - component: {fileID: -817849967266670583}
   m_Layer: 0
   m_Name: Ranged
   m_TagString: Enemy
@@ -149,4 +150,24 @@ MonoBehaviour:
   enemyType: 1
   meleeAttackDistance: 1.2
   rangedAttackDistance: 5
-  disBack: 2
+  moveSpeed: 1
+--- !u!95 &-817849967266670583
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62309191026090210}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
