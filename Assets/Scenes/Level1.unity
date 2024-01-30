@@ -1503,7 +1503,7 @@ GameObject:
   - component: {fileID: 803431638}
   - component: {fileID: 803431637}
   m_Layer: 0
-  m_Name: EnemySpawn
+  m_Name: SpawnEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1675,6 +1675,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 842560784}
   m_CullTransparentMesh: 1
+--- !u!1 &853438787
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 853438788}
+  - component: {fileID: 853438789}
+  m_Layer: 0
+  m_Name: fps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &853438788
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853438787}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7054075, y: -1.8379692, z: -0.027874548}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &853438789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853438787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b3843d2e72af8b45813cc658a219bb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorRGB: 
+  sizeText: 0
+  xShow: 0
+  yShow: 0.5
 --- !u!1 &1084584756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,8 +1760,8 @@ MonoBehaviour:
   coolDown1: 2
   timeCoolDownAttack: 2
   imgCoolDown3: {fileID: 399512317}
-  coolDown3: 1
-  timeCoolDownHealing: 1
+  coolDown3: 8
+  timeCoolDownHealing: 8
   healthBar: {fileID: 640624712}
   currentHealth: 0
   maxHealth: 100
@@ -1721,7 +1769,8 @@ MonoBehaviour:
   disBack: 1
   isAttack: 0
   isHealing: 0
-  distanceAttack: 1.2
+  distanceMoveBack: 1.2
+  distanceAttack: 1.6
   enemySpawn: {fileID: 803431637}
 --- !u!212 &1084584759
 SpriteRenderer:
@@ -1797,7 +1846,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084584756}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
