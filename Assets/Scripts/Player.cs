@@ -26,7 +26,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float disBack = 1f;
     [SerializeField] private bool isAttack = false;
     [SerializeField] private bool isHealing = false;
-    [SerializeField] private float distanceAttack = 2f;
+    [SerializeField] private float distanceMoveBack = 2f;
+    [SerializeField] private float distanceAttack;
     Animator animator;
     private bool canMove = true;
     private bool canMoveBack = true;
@@ -34,7 +35,6 @@ public class Player : MonoBehaviour
     private bool isClick1 = false;
     private bool isClick3 = false;
     private GameManager gameManager;
-    private Transform enemyTransform;
     public EnemySpawn enemySpawn;
 
     private PlayerState currentState;
@@ -141,21 +141,18 @@ public class Player : MonoBehaviour
         for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
         {
             float distance = Vector2.Distance(transform.position, enemySpawn.listEnemySpawn[i].transform.position);
-
-            Debug.Log("Distance:" + distance + "Enemy :" + enemySpawn.listEnemySpawn[i]);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-            }
+            if (distance < minDistance) minDistance = distance;
         }
-        if (minDistance <= distanceAttack && !hasAttacked)
+        if (minDistance<= distanceAttack && !hasAttacked) // danh tay truoc
         {
             hasAttacked = true;
             NormalAttackState();
+        }
+        if (minDistance <= distanceMoveBack ) // danh tay xong roi moi lui lai
+        {
             currentState = PlayerState.Moving;
             if (currentState == PlayerState.Moving)
             {
-                Debug.Log("currentState == PlayerState.Moving");
                 DamagedState();
                 TakeDamage(10);
             }
@@ -166,8 +163,6 @@ public class Player : MonoBehaviour
             }
         }
         else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
-
-
     }
 
     void IdleState()
@@ -185,9 +180,7 @@ public class Player : MonoBehaviour
 
     void NormalAttackState()
     {
-        Debug.Log("NormalAttack");
         animator.SetTrigger(Const.animNormalAttack);
-
     }
     #region skill_1
     public void SkillAttackState()
@@ -225,7 +218,6 @@ public class Player : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         transform.position = attackEndPos;
     }
     #endregion
@@ -267,7 +259,6 @@ public class Player : MonoBehaviour
 
     void DamagedState()
     {
-        Debug.Log("dinh dame va bi lui lai");
         animator.SetTrigger(Const.animDamaged);
         Vector2 reverseDirection = -transform.right;
         Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; // di chuyen ve sau voi khoang cach disBack
@@ -300,5 +291,5 @@ public class Player : MonoBehaviour
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
     }
-
 }
+

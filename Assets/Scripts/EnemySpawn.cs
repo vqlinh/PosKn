@@ -12,10 +12,7 @@ public class EnemySpawn : MonoBehaviour
     void Start()
     {
         GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x+5f,player.transform.position.y), Quaternion.identity);
-        Debug.Log("sinh ra melee" + melee1.transform.position);
         GameObject ranged1 = Instantiate(ranged,new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
-        Debug.Log("sinh ra ranged" + ranged1.transform.position);
-
         listEnemySpawn.Add(melee1);
         listEnemySpawn.Add(ranged1);
     }
