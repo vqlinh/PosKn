@@ -11,8 +11,8 @@ public class EnemySpawn : MonoBehaviour
     public Transform player;
     void Start()
     {
-        GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x+5f,player.transform.position.y), Quaternion.identity);
-        GameObject ranged1 = Instantiate(ranged,new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
+        GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x+10f,player.transform.position.y), Quaternion.identity);
+        GameObject ranged1 = Instantiate(ranged,new Vector2(player.transform.position.x + 20f, player.transform.position.y), Quaternion.identity);
         listEnemySpawn.Add(melee1);
         listEnemySpawn.Add(ranged1);
     }

@@ -12,6 +12,23 @@ public class EnemyController : Enemy
         Ranged
     }
 
+    public MeleeState meleeState;
+    public enum MeleeState
+    {
+        Idle,
+        Moving,
+        Attack,
+        Damaged
+    }
+
+    public RangedState rangedState;
+    public enum RangedState
+    {
+        Idle,
+        Attack,
+        Damaged
+    }
+
     float disBack = 2f;
     private Animator animator;
     private bool canAttack = false;
@@ -22,6 +39,8 @@ public class EnemyController : Enemy
 
     private void Start()
     {
+        meleeState = MeleeState.Idle;
+        rangedState = RangedState.Idle; // de day ti lam tiep
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
     }
@@ -29,7 +48,51 @@ public class EnemyController : Enemy
     private void Update()
     {
         CheckDistanceToPlayer();
+        CheckMeleeState();
     }
+    public void CheckMeleeState()
+    {
+        switch (meleeState)
+        {
+            case MeleeState.Idle:
+                MeleeIdle();
+                break;
+            case MeleeState.Moving:
+                MeleeMoving();
+                break;
+            case MeleeState.Damaged:
+                MeleeDamaged();
+                break;
+            case MeleeState.Attack:
+                MeleeAttack();
+                break;
+        }
+    }
+    void MeleeIdle()
+    {
+        animator.SetTrigger(Const.meleeIdle);
+        Debug.Log("melee idle");
+    }
+    void MeleeMoving()
+    {
+        animator.SetTrigger(Const.meleeMove);
+        Debug.Log("melee move");
+
+    }
+    void MeleeDamaged()
+    {
+        animator.SetTrigger(Const.meleeDamaged);
+        Debug.Log("melee damaged");
+
+    }
+    void MeleeAttack()
+    {
+        Debug.Log("melee attack");
+        animator.SetTrigger(Const.meleeAttack);
+        Debug.Log("melee attack");
+
+    }
+
 
     public void CheckDistanceToPlayer()
     {
@@ -65,6 +128,11 @@ public class EnemyController : Enemy
         Vector2 reverseDirection = transform.right;
         Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack;
         StartCoroutine(MoveBack(newPosition));
+        if (enemyType == EnemyType.Melee) MeleeDamaged();
+        else if (enemyType == EnemyType.Ranged)
+        {
+            // animation ranged Damaged
+        }
     }
 
     private IEnumerator MoveBack(Vector2 targetPosition)
@@ -86,7 +154,7 @@ public class EnemyController : Enemy
         Vector2 direction = playerTransform.position - transform.position;
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
         Debug.Log("enemy chay toi player");
-        animator.SetTrigger(Const.meleeMove);
+        MeleeMoving();
     }
 
     private void RangedAttack()
@@ -94,11 +162,6 @@ public class EnemyController : Enemy
         Debug.Log("ranged attack");
     }
 
-    private void MeleeAttack()
-    {
-        Debug.Log("melee attack");
-        animator.SetTrigger(Const.meleeAttack);
-    }
 
     public override void Attack()
     {

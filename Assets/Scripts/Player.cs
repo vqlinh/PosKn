@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 public class Player : MonoBehaviour
 {
     [Header("CoolDown")]
@@ -37,7 +38,7 @@ public class Player : MonoBehaviour
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
 
-    private PlayerState currentState;
+    private PlayerState playerState;
     public enum PlayerState
     {
         Idle,
@@ -55,7 +56,7 @@ public class Player : MonoBehaviour
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
 
-        currentState = PlayerState.Idle;
+        playerState = PlayerState.Idle;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
 
@@ -64,7 +65,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        healthBar.slider.value= currentHealth;
+        healthBar.slider.value = currentHealth;
         gameManager.txtCurrentHeal.text = currentHealth.ToString();
         CheckDistanceForNormalAttack();
         CheckState();
@@ -96,26 +97,32 @@ public class Player : MonoBehaviour
     #region CoolDown_3
     public void CoolDownSkill3()
     {
-        if (isClick3 && isCoolDown3 == false)
+        if (currentHealth >= maxHealth)
         {
-            isCoolDown3 = true;
-            imgCoolDown3.fillAmount = 1;
         }
-        if (isCoolDown3)
+        else
         {
-            imgCoolDown3.fillAmount -= 1 / coolDown3 * Time.deltaTime;
-            if (imgCoolDown3.fillAmount <= 0)
+            if (isClick3 && isCoolDown3 == false)
             {
-                imgCoolDown3.fillAmount = 0;
-                isCoolDown3 = false;
-                isClick3 = false;
+                isCoolDown3 = true;
+                imgCoolDown3.fillAmount = 1;
+            }
+            if (isCoolDown3)
+            {
+                imgCoolDown3.fillAmount -= 1 / coolDown3 * Time.deltaTime;
+                if (imgCoolDown3.fillAmount <= 0)
+                {
+                    imgCoolDown3.fillAmount = 0;
+                    isCoolDown3 = false;
+                    isClick3 = false;
+                }
             }
         }
     }
     #endregion
     private void CheckState()
     {
-        switch (currentState)
+        switch (playerState)
         {
             case PlayerState.Idle:
                 IdleState();
@@ -143,23 +150,23 @@ public class Player : MonoBehaviour
             float distance = Vector2.Distance(transform.position, enemySpawn.listEnemySpawn[i].transform.position);
             if (distance < minDistance) minDistance = distance;
         }
-        if (minDistance<= distanceAttack && !hasAttacked) // danh tay truoc
+        if (minDistance <= distanceAttack && !hasAttacked) // danh tay truoc
         {
             hasAttacked = true;
             NormalAttackState();
         }
-        if (minDistance <= distanceMoveBack ) // danh tay xong roi moi lui lai
+        if (minDistance <= distanceMoveBack) // danh tay xong roi moi lui lai
         {
-            currentState = PlayerState.Moving;
-            if (currentState == PlayerState.Moving)
+            playerState = PlayerState.Moving;
+            if (playerState == PlayerState.Moving)
             {
                 DamagedState();
                 TakeDamage(10);
             }
-            if (currentState == PlayerState.SkillAttack)
+            if (playerState == PlayerState.SkillAttack)
             {
                 SkillAttackState();
-                currentState = PlayerState.Moving;
+                playerState = PlayerState.Moving;
             }
         }
         else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
@@ -168,7 +175,7 @@ public class Player : MonoBehaviour
     void IdleState()
     {
         animator.SetTrigger(Const.animIdle);
-        currentState = PlayerState.Moving;
+        playerState = PlayerState.Moving;
     }
 
     void MovingState()
@@ -181,6 +188,7 @@ public class Player : MonoBehaviour
     void NormalAttackState()
     {
         animator.SetTrigger(Const.animNormalAttack);
+        playerState = PlayerState.Moving;
     }
     #region skill_1
     public void SkillAttackState()
@@ -190,7 +198,7 @@ public class Player : MonoBehaviour
         {
             Attack();
             StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
-            currentState = PlayerState.Moving;
+            playerState = PlayerState.Moving;
         }
     }
 
@@ -203,23 +211,31 @@ public class Player : MonoBehaviour
     }
     public void Attack()
     {
-        StartCoroutine(PerformAttack());
+        //StartCoroutine(PerformAttack());
+        PerformAttack();
+    }
+    void PerformAttack()
+    {
+        float attackDurration = 0.4f;
+        Vector2 attackEndPos = transform.position + transform.right * 3f;
+        transform.DOMove(attackEndPos, attackDurration).SetEase(Ease.Linear);
+
     }
 
-    private IEnumerator PerformAttack()
-    {
-        float attackDuration = 0.4f;
-        float elapsedTime = 0f;
-        Vector2 attackStartPos = transform.position;
-        Vector2 attackEndPos = transform.position + transform.right * 3f;
-        while (elapsedTime < attackDuration)
-        {
-            transform.position = Vector2.Lerp(attackStartPos, attackEndPos, elapsedTime / attackDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = attackEndPos;
-    }
+    //private IEnumerator PerformAttack()
+    //{
+    //    float attackDuration = 0.4f;
+    //    float elapsedTime = 0f;
+    //    Vector2 attackStartPos = transform.position;
+    //    Vector2 attackEndPos = transform.position + transform.right * 3f;
+    //    while (elapsedTime < attackDuration)
+    //    {
+    //        transform.position = Vector2.Lerp(attackStartPos, attackEndPos, elapsedTime / attackDuration);
+    //        elapsedTime += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    transform.position = attackEndPos;
+    //}
     #endregion
     #region Skill_3
     public void Skillhealing() // click button
