@@ -148,9 +148,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  meleeAttackDistance: 1.2
-  rangedAttackDistance: 5
+  meleeState: 0
+  rangedState: 0
   moveSpeed: 0.5
+  meleeAttackDistance: 1.8
+  rangedAttackDistance: 5
 --- !u!95 &-1225116220606154250
 Animator:
   serializedVersion: 4

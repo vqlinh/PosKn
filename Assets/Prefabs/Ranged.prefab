@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 62309191026090210}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.25, y: -2.51, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -148,9 +148,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  meleeState: 0
+  rangedState: 0
+  moveSpeed: 1
   meleeAttackDistance: 1.2
   rangedAttackDistance: 5
-  moveSpeed: 1
 --- !u!95 &-817849967266670583
 Animator:
   serializedVersion: 4
