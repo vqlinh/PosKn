@@ -16,8 +16,9 @@ public class Player : MonoBehaviour
     public float coolDown3 = 8f;
     private bool isCoolDown3;
     [SerializeField] private float timeCoolDownHealing = 8f;
+    //public Button btnSkill3;
 
-    [Header("Health")]
+    [Header("HEALTH")]
     public HealthBar healthBar;
     [SerializeField] private int currentHealth;
     [SerializeField] private int maxHealth = 100;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
     private bool isClick3 = false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
+    public EnemyController enemyController;
 
     private PlayerState playerState;
     public enum PlayerState
@@ -65,7 +67,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        healthBar.slider.value = currentHealth;
+        //healthBar.slider.value = currentHealth;
+        healthBar.SetHealth(currentHealth);
         gameManager.txtCurrentHeal.text = currentHealth.ToString();
         CheckDistanceForNormalAttack();
         CheckState();
@@ -120,76 +123,6 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
-    private void CheckState()
-    {
-        switch (playerState)
-        {
-            case PlayerState.Idle:
-                IdleState();
-                break;
-            case PlayerState.Moving:
-                MovingState();
-                break;
-            case PlayerState.SkillAttack:
-                SkillAttackState();
-                break;
-            case PlayerState.Damaged:
-                DamagedState();
-                break;
-            case PlayerState.NormalAttack:
-                NormalAttackState();
-                break;
-        }
-    }
-
-    private void CheckDistanceForNormalAttack()
-    {
-        float minDistance = float.MaxValue;
-        for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
-        {
-            float distance = Vector2.Distance(transform.position, enemySpawn.listEnemySpawn[i].transform.position);
-            if (distance < minDistance) minDistance = distance;
-        }
-        if (minDistance <= distanceAttack && !hasAttacked) // danh tay truoc
-        {
-            hasAttacked = true;
-            NormalAttackState();
-        }
-        if (minDistance <= distanceMoveBack) // danh tay xong roi moi lui lai
-        {
-            playerState = PlayerState.Moving;
-            if (playerState == PlayerState.Moving)
-            {
-                DamagedState();
-                TakeDamage(10);
-            }
-            if (playerState == PlayerState.SkillAttack)
-            {
-                SkillAttackState();
-                playerState = PlayerState.Moving;
-            }
-        }
-        else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
-    }
-
-    void IdleState()
-    {
-        animator.SetTrigger(Const.animIdle);
-        playerState = PlayerState.Moving;
-    }
-
-    void MovingState()
-    {
-        animator.SetTrigger(Const.animMove);
-        if (canMove) Move();
-        canMoveBack = true;
-    }
-
-    void NormalAttackState()
-    {
-        animator.SetTrigger(Const.animNormalAttack);
-        playerState = PlayerState.Moving;
-    }
     #region skill_1
     public void SkillAttackState()
     {
@@ -272,6 +205,77 @@ public class Player : MonoBehaviour
         isHealing = false;
     }
     #endregion
+    private void CheckState()
+    {
+        switch (playerState)
+        {
+            case PlayerState.Idle:
+                IdleState();
+                break;
+            case PlayerState.Moving:
+                MovingState();
+                break;
+            case PlayerState.SkillAttack:
+                SkillAttackState();
+                break;
+            case PlayerState.Damaged:
+                DamagedState();
+                break;
+            case PlayerState.NormalAttack:
+                NormalAttackState();
+                break;
+        }
+    }
+
+    private void CheckDistanceForNormalAttack()
+    {
+        float minDistance = float.MaxValue;
+        for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
+        {
+            float distance = Vector2.Distance(transform.position, enemySpawn.listEnemySpawn[i].transform.position);
+            if (distance < minDistance) minDistance = distance;
+        }
+        if (minDistance <= distanceAttack && !hasAttacked) // danh tay truoc
+        {
+            hasAttacked = true;
+            NormalAttackState();
+        }
+        if (minDistance <= distanceMoveBack) // danh tay xong roi moi lui lai
+        {
+            playerState = PlayerState.Moving;
+            if (playerState == PlayerState.Moving)
+            {
+                DamagedState();
+                TakeDamage(10);
+                enemyController.TakeDamage(8);
+            }
+            if (playerState == PlayerState.SkillAttack)
+            {
+                SkillAttackState();
+                playerState = PlayerState.Moving;
+            }
+        }
+        else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
+    }
+
+    void IdleState()
+    {
+        animator.SetTrigger(Const.animIdle);
+        playerState = PlayerState.Moving;
+    }
+
+    void MovingState()
+    {
+        animator.SetTrigger(Const.animMove);
+        if (canMove) Move();
+        canMoveBack = true;
+    }
+
+    void NormalAttackState()
+    {
+        animator.SetTrigger(Const.animNormalAttack);
+        playerState = PlayerState.Moving;
+    }
 
     void DamagedState()
     {

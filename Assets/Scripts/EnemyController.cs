@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class EnemyController : Enemy
 {
+    public HealthBar healthBar;
     public EnemyType enemyType;
     public enum EnemyType
     {
@@ -37,16 +39,42 @@ public class EnemyController : Enemy
     public float meleeAttackDistance = 1f;
     public float rangedAttackDistance = 5f;
 
+    public int startHealth = 50;
+    private int currentHealth;
+
+
     private void Start()
     {
+        currentHealth = startHealth;
+        healthBar.SetMaxHealth(startHealth);
+
         meleeState = MeleeState.Idle;
         rangedState = RangedState.Idle; // de day ti lam tiep
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
     }
+    public void TakeDamage(int amount)
+    {
+        Debug.Log("TakeDame");
+        currentHealth -= amount;
+        healthBar.SetHealth(currentHealth);
+        Debug.Log("currentHealth : " + currentHealth);
+
+        if (currentHealth<=0)
+        {
+            Die();
+        }
+
+    }
+    void Die()
+    {
+        Debug.Log("Die");
+    }
+
 
     private void Update()
     {
+        healthBar.SetHealth(currentHealth);
         CheckDistanceToPlayer();
         CheckMeleeState();
     }
@@ -68,30 +96,24 @@ public class EnemyController : Enemy
                 break;
         }
     }
+    #region State
     void MeleeIdle()
     {
         animator.SetTrigger(Const.meleeIdle);
-        Debug.Log("melee idle");
     }
     void MeleeMoving()
     {
         animator.SetTrigger(Const.meleeMove);
-        Debug.Log("melee move");
-
     }
     void MeleeDamaged()
     {
         animator.SetTrigger(Const.meleeDamaged);
-        Debug.Log("melee damaged");
-
     }
     void MeleeAttack()
     {
-        Debug.Log("melee attack");
         animator.SetTrigger(Const.meleeAttack);
-        Debug.Log("melee attack");
-
     }
+    #endregion
 
 
     public void CheckDistanceToPlayer()
