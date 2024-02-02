@@ -38,7 +38,6 @@ public class Player : MonoBehaviour
     private bool isClick3 = false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
-    public EnemyController enemyController;
 
     private PlayerState playerState;
     public enum PlayerState
@@ -246,8 +245,8 @@ public class Player : MonoBehaviour
             if (playerState == PlayerState.Moving)
             {
                 DamagedState();
-                TakeDamage(10);
-                enemyController.TakeDamage(8);
+                //TakeDamage(10);
+                //enemyController.TakeDamage(8);
             }
             if (playerState == PlayerState.SkillAttack)
             {
@@ -306,10 +305,11 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamageFromEnemy(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+        Debug.Log("TakeDamageFromEnemy");
     }
 }
 

@@ -23,6 +23,7 @@ public class EnemyController : Enemy
         Damaged
     }
 
+
     public RangedState rangedState;
     public enum RangedState
     {
@@ -35,32 +36,32 @@ public class EnemyController : Enemy
     private Animator animator;
     private bool canAttack = false;
     private Transform playerTransform;
+    private Player player;
     public float moveSpeed = 1f;
     public float meleeAttackDistance = 1f;
     public float rangedAttackDistance = 5f;
 
-    public int startHealth = 50;
     private int currentHealth;
+    public EnemyData enemyData;
+    private int attack;
+    public GameObject bullet;
 
 
-    private void Start()
+    private void Awake()
     {
-        currentHealth = startHealth;
-        healthBar.SetMaxHealth(startHealth);
-
+        currentHealth = enemyData.health;
+        attack = enemyData.attack;
+        healthBar.SetMaxHealth(currentHealth);
         meleeState = MeleeState.Idle;
         rangedState = RangedState.Idle; // de day ti lam tiep
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
+        player = GameObject.FindObjectOfType<Player>();
     }
     public void TakeDamage(int amount)
     {
-        Debug.Log("TakeDame");
         currentHealth -= amount;
-        healthBar.SetHealth(currentHealth);
-        Debug.Log("currentHealth : " + currentHealth);
-
-        if (currentHealth<=0)
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -69,14 +70,17 @@ public class EnemyController : Enemy
     void Die()
     {
         Debug.Log("Die");
+        this.gameObject.SetActive(false); 
     }
 
 
     private void Update()
     {
         healthBar.SetHealth(currentHealth);
+        Debug.Log("Current health: "+currentHealth);
         CheckDistanceToPlayer();
         CheckMeleeState();
+        CheckRangedState();
     }
     public void CheckMeleeState()
     {
@@ -96,7 +100,36 @@ public class EnemyController : Enemy
                 break;
         }
     }
-    #region State
+    public void CheckRangedState()
+    {
+        switch (rangedState)
+        {
+            case RangedState.Idle:
+                RangedIdle();
+                break;
+            case RangedState.Damaged:
+                RangedDamaged();
+                break;
+            case RangedState.Attack:
+                Rangedttack();
+                break;
+        }
+    }
+    #region RangedState
+    void RangedIdle()
+    {
+        animator.SetTrigger(Const.rangedIdle);
+    }
+    void RangedDamaged()
+    {
+        animator.SetTrigger(Const.rangedDamaged);
+    }
+    void Rangedttack()
+    {
+        animator.SetTrigger(Const.rangedAttack);
+    }
+    #endregion
+    #region MeleeState
     void MeleeIdle()
     {
         animator.SetTrigger(Const.meleeIdle);
@@ -108,9 +141,11 @@ public class EnemyController : Enemy
     void MeleeDamaged()
     {
         animator.SetTrigger(Const.meleeDamaged);
+
     }
     void MeleeAttack()
     {
+        TakeDamegeFromPlayer();
         animator.SetTrigger(Const.meleeAttack);
     }
     #endregion
@@ -119,7 +154,11 @@ public class EnemyController : Enemy
     public void CheckDistanceToPlayer()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-        if (distanceToPlayer <= 1.2f) Damaged();
+        if (distanceToPlayer <= 1.2f)
+        {
+            Damaged();
+
+        }
         if (enemyType == EnemyType.Melee)
         {
             if (distanceToPlayer <= 5f)
@@ -135,25 +174,30 @@ public class EnemyController : Enemy
         }
         else if (enemyType == EnemyType.Ranged)
         {
-            if (distanceToPlayer <= rangedAttackDistance && !canAttack)
+            if (distanceToPlayer <= rangedAttackDistance )
             {
-                canAttack = true;
-                Debug.Log("Ranged attack");
+                //canAttack = true;
                 RangedAttack();
             }
-            else if (distanceToPlayer > rangedAttackDistance) canAttack = false;
+            //else if (distanceToPlayer > rangedAttackDistance) canAttack = false;
         }
+    }
+    void TakeDamegeFromPlayer()
+    {
+        player.TakeDamageFromEnemy(enemyData.attack);
+        Debug.Log("TakeDamegeFromPlayer");
     }
 
     void Damaged()
     {
+        TakeDamage(10);
         Vector2 reverseDirection = transform.right;
         Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack;
         StartCoroutine(MoveBack(newPosition));
         if (enemyType == EnemyType.Melee) MeleeDamaged();
         else if (enemyType == EnemyType.Ranged)
         {
-            // animation ranged Damaged
+            RangedDamaged();
         }
     }
 
@@ -181,19 +225,31 @@ public class EnemyController : Enemy
 
     private void RangedAttack()
     {
-        Debug.Log("ranged attack");
+        Debug.Log("RangedAttack");
+        StartCoroutine(ShootRoutine());
     }
 
-
-    public override void Attack()
+    IEnumerator ShootRoutine()
     {
-        base.Attack(); // Gọi Attack của lớp cha
-
+        while (true)
+        {
+            yield return new WaitForSeconds(3f);
+            Shoot();
+        }
     }
+
+    void Shoot()
+    {
+        Debug.Log("SHoot");
+        GameObject fireBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+        Rigidbody2D rb = fireBullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(-transform.right, ForceMode2D.Impulse);
+    }
+
 
     public override void Move(Vector2 targetPosition)
     {
-        base.Move(targetPosition); 
+        base.Move(targetPosition);
     }
 }
 
