@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class Const : MonoBehaviour
 {
+    public const string enemy = "Enemy";
+    public const string player = "Player";
+
     public const string animMove = "isMove";
     public const string animDie = "isDie";
     public const string animDamaged = "isDamaged";
     public const string animIdle = "isIdle";
     public const string animNormalAttack = "isNormalAttack";
     public const string animSkillAttack = "isSkillAttack";
-    public const string enemy = "Enemy";
-    public const string player = "Player";
+
+    public const string meleeMove = "isMove";
+    public const string meleeAttack = "isAttack";
+    public const string meleeIdle = "isIdle";
+    public const string meleeDamaged = "isDamaged";
+
 }

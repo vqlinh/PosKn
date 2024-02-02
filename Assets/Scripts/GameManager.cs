@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        //CoolDown();
     }
     public void LoadSceneWait()
     {
