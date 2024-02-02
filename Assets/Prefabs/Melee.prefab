@@ -589,7 +589,8 @@ MonoBehaviour:
   moveSpeed: 0.5
   meleeAttackDistance: 1.8
   rangedAttackDistance: 5
-  startHealth: 50
+  enemyData: {fileID: 11400000, guid: 88a123f8891e5bd4a8778ab377ada075, type: 2}
+  bullet: {fileID: 2202982687252298903, guid: d679ff4c6079a5344861e0c22509bd00, type: 3}
 --- !u!95 &-1225116220606154250
 Animator:
   serializedVersion: 4
