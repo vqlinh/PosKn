@@ -191,7 +191,7 @@ public class Player : MonoBehaviour
                 if (currentHealth >= maxHealth)
                 {
                     currentHealth = maxHealth;
-                    isClick3 = false; // mai lam not khi mau day se k chay hoi chieu mau nua
+                    isClick3 = false; 
                 }
             }
         }

@@ -44,7 +44,11 @@ public class EnemyController : Enemy
     private int currentHealth;
     public EnemyData enemyData;
     private int attack;
+
     public GameObject bullet;
+    public float TimeBtwFire = 3f;
+    public float bulletForce;
+    private float timeBtwFire;
 
 
     private void Awake()
@@ -69,7 +73,6 @@ public class EnemyController : Enemy
     }
     void Die()
     {
-        Debug.Log("Die");
         this.gameObject.SetActive(false); 
     }
 
@@ -77,7 +80,6 @@ public class EnemyController : Enemy
     private void Update()
     {
         healthBar.SetHealth(currentHealth);
-        Debug.Log("Current health: "+currentHealth);
         CheckDistanceToPlayer();
         CheckMeleeState();
         CheckRangedState();
@@ -111,7 +113,7 @@ public class EnemyController : Enemy
                 RangedDamaged();
                 break;
             case RangedState.Attack:
-                Rangedttack();
+                RangedAttack();
                 break;
         }
     }
@@ -124,9 +126,34 @@ public class EnemyController : Enemy
     {
         animator.SetTrigger(Const.rangedDamaged);
     }
-    void Rangedttack()
+    void RangedAttack()
     {
         animator.SetTrigger(Const.rangedAttack);
+        StartCoroutine(ShootRoutine());
+    }
+
+    IEnumerator ShootRoutine()
+    {
+        while (true)
+        {
+            if (gameObject != null ) // Kiểm tra xem đối tượng có tồn tại không
+            {
+                Shoot();
+                yield return new WaitForSeconds(3f);
+            }
+            else
+            {
+                // Đối tượng không tồn tại, thoát khỏi coroutine
+                yield break;
+            }
+        }
+    }
+
+    void Shoot()
+    {
+        GameObject fireBullet = Instantiate(bullet, transform.position, transform.rotation);
+        Rigidbody2D rb = fireBullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(Vector2.left * bulletForce, ForceMode2D.Impulse);
     }
     #endregion
     #region MeleeState
@@ -145,7 +172,7 @@ public class EnemyController : Enemy
     }
     void MeleeAttack()
     {
-        TakeDamegeFromPlayer();
+        TakeDamegeFromPlayer(); 
         animator.SetTrigger(Const.meleeAttack);
     }
     #endregion
@@ -176,16 +203,16 @@ public class EnemyController : Enemy
         {
             if (distanceToPlayer <= rangedAttackDistance )
             {
+                Debug.Log("distanceToPlayer <= rangedAttackDistance");
                 //canAttack = true;
                 RangedAttack();
             }
             //else if (distanceToPlayer > rangedAttackDistance) canAttack = false;
         }
     }
-    void TakeDamegeFromPlayer()
+    void TakeDamegeFromPlayer() // khi chay ham nay thi Player se mat mau
     {
         player.TakeDamageFromEnemy(enemyData.attack);
-        Debug.Log("TakeDamegeFromPlayer");
     }
 
     void Damaged()
@@ -219,32 +246,16 @@ public class EnemyController : Enemy
     {
         Vector2 direction = playerTransform.position - transform.position;
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
-        Debug.Log("enemy chay toi player");
         MeleeMoving();
     }
 
-    private void RangedAttack()
-    {
-        Debug.Log("RangedAttack");
-        StartCoroutine(ShootRoutine());
-    }
+    //private void RangedAttack()
+    //{
+    //    Debug.Log("RangedAttack");
+    //    StartCoroutine(ShootRoutine());
+    //}
 
-    IEnumerator ShootRoutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(3f);
-            Shoot();
-        }
-    }
 
-    void Shoot()
-    {
-        Debug.Log("SHoot");
-        GameObject fireBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-        Rigidbody2D rb = fireBullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(-transform.right, ForceMode2D.Impulse);
-    }
 
 
     public override void Move(Vector2 targetPosition)
