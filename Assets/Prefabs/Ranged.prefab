@@ -190,8 +190,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -794.6, y: 335.5}
-  m_SizeDelta: {x: 62.8, y: 11.8}
+  m_AnchoredPosition: {x: -801.3, y: 339.5}
+  m_SizeDelta: {x: 93.1, y: 14.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1235455387
 MonoBehaviour:
@@ -294,7 +294,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 23.91, y: -4.05}
+  m_AnchoredPosition: {x: 23.3, y: 0.96}
   m_SizeDelta: {x: 349.4769, y: 37.1071}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1357916792
@@ -561,9 +561,10 @@ MonoBehaviour:
   rangedState: 0
   moveSpeed: 1
   meleeAttackDistance: 1.2
-  rangedAttackDistance: 5
+  rangedAttackDistance: 15
   enemyData: {fileID: 11400000, guid: 9ec53234b0918f54b8c5749656885364, type: 2}
   bullet: {fileID: 2202982687252298903, guid: d679ff4c6079a5344861e0c22509bd00, type: 3}
+  shootForce: 5
 --- !u!95 &-817849967266670583
 Animator:
   serializedVersion: 4
