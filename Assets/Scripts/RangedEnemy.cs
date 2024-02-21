@@ -25,13 +25,16 @@ public class RangedEnemy : EnemyController
         Attack,
         Damaged
     }
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        currentHealth = enemyData.health;
+        attack = enemyData.attack;
+        healthBar.SetMaxHealth(currentHealth);
+        rangedState = RangedState.Idle; // de day ti lam tiep
+        animator = GetComponent<Animator>();
+        playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
+        player = GameObject.FindObjectOfType<Player>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         healthBar.SetHealth(currentHealth);
@@ -44,11 +47,7 @@ public class RangedEnemy : EnemyController
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         if (distanceToPlayer <= 1.2f) Damaged();
-            if (distanceToPlayer <= rangedAttackDistance)
-            {
-                Debug.Log("distanceToPlayer <= rangedAttackDistance");
-                RangedAttack();
-            }
+        if (distanceToPlayer <= rangedAttackDistance) RangedAttack();
     }
     public void CheckRangedState()
     {
@@ -71,30 +70,28 @@ public class RangedEnemy : EnemyController
         currentHealth -= amount;
         if (currentHealth <= 0) Die();
     }
-    void Die()
+    public override void Die()
     {
-        this.gameObject.SetActive(false);
+        base.Die();
     }
     #region RangedState
     void RangedIdle()
     {
         animator.SetTrigger(Const.rangedIdle);
+        Debug.Log("RangedIdle");
     }
     void RangedDamaged()
     {
         animator.SetTrigger(Const.rangedDamaged);
+        Debug.Log("RangedDamaged");
+
     }
     void RangedAttack()
     {
         animator.SetTrigger(Const.rangedAttack);
         timeBtwFire -= Time.deltaTime;
-        if (timeBtwFire < 0)
-        {
-            Shoot();
-        }
+        if (timeBtwFire < 0) Shoot();
     }
-
-
 
     void Shoot()
     {
@@ -109,15 +106,17 @@ public class RangedEnemy : EnemyController
     {
         player.TakeDamageFromEnemy(enemyData.attack);
     }
+
     void Damaged()
     {
         TakeDamage(10);
         RangedDamaged();
         Move();
     }
+
     public override void Move()
     {
         base.Move();
-        Debug.Log("Move");
+        Debug.Log("MoveBack");
     }
 }

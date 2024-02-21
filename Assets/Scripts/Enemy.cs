@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class Enemy : MonoBehaviour
 {
@@ -30,6 +31,13 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
         transform.position = targetPosition;
+    }
+    public virtual void Die()
+    {
+        // Sử dụng DOTween để di chuyển Enemy từ dưới lên theo hướng bên phải
+        float duration = 1.5f;
+        Vector2 targetPosition = new Vector2(transform.position.x + 10f, transform.position.y + 5f); // Điểm cuối cùng mà bạn muốn Enemy di chuyển đến
+        transform.DOMove(targetPosition, duration).SetEase(Ease.Linear); // Có thể thay đổi Ease để có hiệu ứng di chuyển mượt mà hơn
     }
 
 }

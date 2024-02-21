@@ -143,31 +143,11 @@ public class Player : MonoBehaviour
     }
     public void Attack()
     {
-        //StartCoroutine(PerformAttack());
-        PerformAttack();
-    }
-    void PerformAttack()
-    {
         float attackDurration = 0.4f;
         Vector2 attackEndPos = transform.position + transform.right * 3f;
         transform.DOMove(attackEndPos, attackDurration).SetEase(Ease.Linear);
-
     }
 
-    //private IEnumerator PerformAttack()
-    //{
-    //    float attackDuration = 0.4f;
-    //    float elapsedTime = 0f;
-    //    Vector2 attackStartPos = transform.position;
-    //    Vector2 attackEndPos = transform.position + transform.right * 3f;
-    //    while (elapsedTime < attackDuration)
-    //    {
-    //        transform.position = Vector2.Lerp(attackStartPos, attackEndPos, elapsedTime / attackDuration);
-    //        elapsedTime += Time.deltaTime;
-    //        yield return null;
-    //    }
-    //    transform.position = attackEndPos;
-    //}
     #endregion
     #region Skill_3
     public void Skillhealing() // click button
@@ -228,6 +208,7 @@ public class Player : MonoBehaviour
 
     private void CheckDistanceForNormalAttack()
     {
+
         float minDistance = float.MaxValue;
         for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
         {
@@ -276,8 +257,9 @@ public class Player : MonoBehaviour
         playerState = PlayerState.Moving;
     }
 
-    void DamagedState()
+    public void DamagedState()
     {
+        Debug.Log("DamagedState");
         animator.SetTrigger(Const.animDamaged);
         Vector2 reverseDirection = -transform.right;
         Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; // di chuyen ve sau voi khoang cach disBack

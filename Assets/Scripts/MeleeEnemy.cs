@@ -28,7 +28,9 @@ public class MeleeEnemy : EnemyController
 
     private void Awake()
     {
+        currentHealth = enemyData.health;
         attack = enemyData.attack;
+        healthBar.SetMaxHealth(currentHealth);
         meleeState = MeleeState.Idle;
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
@@ -47,6 +49,7 @@ public class MeleeEnemy : EnemyController
     }
     public void CheckMeleeState()
     {
+        if (meleeState == MeleeState.Damaged) return;
         switch (meleeState)
         {
             case MeleeState.Idle:
@@ -66,11 +69,15 @@ public class MeleeEnemy : EnemyController
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+        {
+            Die(); // Nếu hết máu thì chạy hàm Die ngay tại đây
+            return; // Kết thúc hàm TakeDamage ngay lập tức
+        }
     }
-    void Die()
+    public override void Die()
     {
-        this.gameObject.SetActive(false);
+       base.Die();
     }
     #region MeleeState
     void MeleeIdle()
@@ -107,14 +114,13 @@ public class MeleeEnemy : EnemyController
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         if (distanceToPlayer <= 1.2f) Damaged();
-
-            if (distanceToPlayer <= 5f) MoveToPlayer();
-            if (distanceToPlayer <= meleeAttackDistance && !canAttack)
-            {
-                canAttack = true;
-                MeleeAttack();
-            }
-            else if (distanceToPlayer > meleeAttackDistance) canAttack = false;
+        if (distanceToPlayer <= 5f) MoveToPlayer();
+        if (distanceToPlayer <= meleeAttackDistance && !canAttack)
+        {
+            canAttack = true;
+            MeleeAttack();
+        }
+        else if (distanceToPlayer > meleeAttackDistance) canAttack = false;
     }
     void Damaged()
     {
