@@ -564,7 +564,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62309191026090210}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 07734278d4c21b54db4df253fd242a49, type: 2}
   m_CullingMode: 0
@@ -593,5 +593,5 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: 9ec53234b0918f54b8c5749656885364, type: 2}
   bullet: {fileID: 2202982687252298903, guid: d679ff4c6079a5344861e0c22509bd00, type: 3}
   TimeBtwFire: 3
-  bulletForce: 5
+  bulletForce: 3
   rangedState: 0
