@@ -131,6 +131,5 @@ public class MeleeEnemy : EnemyController
     public override void Move()
     {
         base.Move();
-        Debug.Log("Move");
     }
 }

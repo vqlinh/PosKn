@@ -17,6 +17,8 @@ public class RangedEnemy : EnemyController
     public float bulletForce;
     private float timeBtwFire;
     private int attack;
+    float rangedAttackTimer = 0f;
+    float rangedAttackInterval = 3f;
 
     public RangedState rangedState;
     public enum RangedState
@@ -47,7 +49,15 @@ public class RangedEnemy : EnemyController
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         if (distanceToPlayer <= 1.2f) Damaged();
-        if (distanceToPlayer <= rangedAttackDistance) RangedAttack();
+        if (distanceToPlayer <= rangedAttackDistance)
+        {
+            rangedAttackTimer += Time.deltaTime;
+            if (rangedAttackTimer >= rangedAttackInterval)
+            {
+                RangedAttack(); // 3s run func once
+                rangedAttackTimer = 0f;
+            }
+        }
     }
     public void CheckRangedState()
     {
@@ -89,14 +99,11 @@ public class RangedEnemy : EnemyController
     void RangedAttack()
     {
         animator.SetTrigger(Const.rangedAttack);
-        timeBtwFire -= Time.deltaTime;
-        if (timeBtwFire < 0) Shoot();
     }
 
     void Shoot()
     {
-        timeBtwFire = TimeBtwFire;
-        GameObject fireBullet = Instantiate(bullet, transform.position, transform.rotation);
+        GameObject fireBullet = Instantiate(bullet, new Vector2(transform.position.x - 0.5f, transform.position.y), transform.rotation);
         Rigidbody2D rb = fireBullet.GetComponent<Rigidbody2D>();
         rb.AddForce(Vector2.left * bulletForce, ForceMode2D.Impulse);
     }
