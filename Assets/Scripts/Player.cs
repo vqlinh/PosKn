@@ -8,10 +8,20 @@ using DG.Tweening;
 public class Player : MonoBehaviour
 {
     [Header("CoolDown")]
+    private bool isAttack = false;
+    private bool isClick1 = false;
     public Image imgCoolDown1;
     public float coolDown1 = 2f;
     private bool isCoolDown1;
     [SerializeField] private float timeCoolDownAttack = 2f;
+    private bool isShield = false;
+    private bool isClick2 = false;
+    public Image imgCoolDown2;
+    public float coolDown2 = 3f;
+    private bool isCoolDown2;
+    [SerializeField] private float timeCoolDownShield = 3f;
+    private bool isHealing = false;
+    private bool isClick3 = false;
     public Image imgCoolDown3;
     public float coolDown3 = 8f;
     private bool isCoolDown3;
@@ -20,22 +30,18 @@ public class Player : MonoBehaviour
 
     [Header("HEALTH")]
     public HealthBar healthBar;
-    [SerializeField] private int currentHealth;
+    private int currentHealth;
     [SerializeField] private int maxHealth = 100;
 
     [Header("/")]
     [SerializeField] private float speed = 1f;
     [SerializeField] private float disBack = 1f;
-    [SerializeField] private bool isAttack = false;
-    [SerializeField] private bool isHealing = false;
     [SerializeField] private float distanceMoveBack = 2f;
     [SerializeField] private float distanceAttack;
     Animator animator;
     private bool canMove = true;
     private bool canMoveBack = true;
     private bool hasAttacked = false;
-    private bool isClick1 = false;
-    private bool isClick3 = false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
 
@@ -51,8 +57,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        imgCoolDown3.fillAmount = 0;
         imgCoolDown1.fillAmount = 0;
+        imgCoolDown2.fillAmount = 0;
+        imgCoolDown3.fillAmount = 0;
 
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
@@ -72,7 +79,10 @@ public class Player : MonoBehaviour
         CheckDistanceForNormalAttack();
         CheckState();
         CoolDownSkill1();
+        CoolDownSkill2();
         CoolDownSkill3();
+        Debug.Log("isClick3" + isClick3);
+        Debug.Log("isCoolDown3" + isCoolDown3);
     }
     #region CoolDown_1
     public void CoolDownSkill1()
@@ -95,29 +105,45 @@ public class Player : MonoBehaviour
             }
         }
     }
+    #endregion    
+    #region CoolDown_2
+    public void CoolDownSkill2()
+    {
+
+        if (isClick2 && isCoolDown2 == false)
+        {
+            isCoolDown2 = true;
+            imgCoolDown2.fillAmount = 1;
+        }
+
+        if (isCoolDown2)
+        {
+            imgCoolDown2.fillAmount -= 1 / coolDown2 * Time.deltaTime;
+            if (imgCoolDown2.fillAmount <= 0)
+            {
+                imgCoolDown2.fillAmount = 0;
+                isCoolDown2 = false;
+                isClick2 = false;
+            }
+        }
+    }
     #endregion
     #region CoolDown_3
     public void CoolDownSkill3()
     {
-        if (currentHealth >= maxHealth)
+        if (isClick3 && isCoolDown3 == false)
         {
+            isCoolDown3 = true;
+            imgCoolDown3.fillAmount = 1;
         }
-        else
+        if (isCoolDown3)
         {
-            if (isClick3 && isCoolDown3 == false)
+            imgCoolDown3.fillAmount -= 1 / coolDown3 * Time.deltaTime;
+            if (imgCoolDown3.fillAmount <= 0)
             {
-                isCoolDown3 = true;
-                imgCoolDown3.fillAmount = 1;
-            }
-            if (isCoolDown3)
-            {
-                imgCoolDown3.fillAmount -= 1 / coolDown3 * Time.deltaTime;
-                if (imgCoolDown3.fillAmount <= 0)
-                {
-                    imgCoolDown3.fillAmount = 0;
-                    isCoolDown3 = false;
-                    isClick3 = false;
-                }
+                imgCoolDown3.fillAmount = 0;
+                isCoolDown3 = false;
+                isClick3 = false;
             }
         }
     }
@@ -143,39 +169,59 @@ public class Player : MonoBehaviour
     }
     public void Attack()
     {
-        float attackDurration = 0.4f;
-        Vector2 attackEndPos = transform.position + transform.right * 3f;
-        transform.DOMove(attackEndPos, attackDurration).SetEase(Ease.Linear);
+        transform.DOMove(transform.position + transform.right * 3f, 0.4f).SetEase(Ease.Linear);
     }
 
     #endregion
+    #region Skill_2
+    public void SkillShield()
+    {
+        isClick2 = true;
+        if (!isShield)
+        {
+            Shield();
+            StartCoroutine(ShieldCoolDown());
+        }
+
+
+    }
+    private IEnumerator ShieldCoolDown()
+    {
+        isShield = true;
+        //animator.SetTrigger(Const.animSkillAttack);
+        yield return new WaitForSeconds(timeCoolDownShield);
+        isShield = false;
+    }
+    void Shield()
+    {
+        // hàm khiên ở đây
+        Debug.Log("bat Shield");
+    }
+    #endregion
+    // -------------------------------------- máu hồi mà lớn hơn max thì k chạy hàm cooldown,(fix sau)-----------------------------------------------
     #region Skill_3
     public void Skillhealing() // click button
     {
-        isClick3 = true;
-        if (!isHealing)
+        if (currentHealth < maxHealth)  // Kiểm tra điều kiện khi có thể click button
         {
-            Healing();
-            StartCoroutine(HealingCoolDown());
+            Debug.Log("Skillhealing");
+            isClick3 = true;
+            if (!isHealing)
+            {
+                Healing();
+                StartCoroutine(HealingCoolDown());
+            }
         }
 
     }
     public void Healing()
     {
-        bool isHealPlus = true;
-        if (currentHealth < maxHealth)
+        currentHealth += 10;
+        if (currentHealth >= maxHealth)
         {
-            if (isHealPlus)
-            {
-                currentHealth += 30;
-                if (currentHealth >= maxHealth)
-                {
-                    currentHealth = maxHealth;
-                    isClick3 = false; 
-                }
-            }
+            currentHealth = maxHealth;
+            isClick3 = false;
         }
-        else isHealPlus = false;
     }
     private IEnumerator HealingCoolDown()
     {
@@ -259,7 +305,6 @@ public class Player : MonoBehaviour
 
     public void DamagedState()
     {
-        Debug.Log("DamagedState");
         animator.SetTrigger(Const.animDamaged);
         Vector2 reverseDirection = -transform.right;
         Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; // di chuyen ve sau voi khoang cach disBack
