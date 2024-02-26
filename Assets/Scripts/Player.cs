@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class Player : MonoBehaviour
 {
+    #region COOLDOWN
     [Header("CoolDown")]
     private bool isAttack = false;
     private bool isClick1 = false;
@@ -27,24 +28,28 @@ public class Player : MonoBehaviour
     private bool isCoolDown3;
     [SerializeField] private float timeCoolDownHealing = 8f;
     //public Button btnSkill3;
-
+    #endregion
+    #region HEALTH
     [Header("HEALTH")]
     public HealthBar healthBar;
     private int currentHealth;
     [SerializeField] private int maxHealth = 100;
-
+    #endregion
     [Header("/")]
     [SerializeField] private float speed = 1f;
     [SerializeField] private float disBack = 1f;
     [SerializeField] private float distanceMoveBack = 2f;
     [SerializeField] private float distanceAttack;
+    private bool canTriggerDamagedState = true;
     Animator animator;
     private bool canMove = true;
     private bool canMoveBack = true;
     private bool hasAttacked = false;
+    private bool isMoveBack = false;
+    private bool hasMoveBack = false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
-
+    #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
     {
@@ -54,7 +59,7 @@ public class Player : MonoBehaviour
         Damaged,
         NormalAttack
     }
-
+    #endregion
     private void Start()
     {
         imgCoolDown1.fillAmount = 0;
@@ -73,7 +78,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //healthBar.slider.value = currentHealth;
         healthBar.SetHealth(currentHealth);
         gameManager.txtCurrentHeal.text = currentHealth.ToString();
         CheckDistanceForNormalAttack();
@@ -81,8 +85,6 @@ public class Player : MonoBehaviour
         CoolDownSkill1();
         CoolDownSkill2();
         CoolDownSkill3();
-        Debug.Log("isClick3" + isClick3);
-        Debug.Log("isCoolDown3" + isCoolDown3);
     }
     #region CoolDown_1
     public void CoolDownSkill1()
@@ -151,12 +153,14 @@ public class Player : MonoBehaviour
     #region skill_1
     public void SkillAttackState()
     {
+        canTriggerDamagedState = false;
         isClick1 = true;
         if (!isAttack)
         {
             Attack();
             StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
             playerState = PlayerState.Moving;
+            
         }
     }
 
@@ -167,11 +171,11 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(timeCoolDownAttack);
         isAttack = false;
     }
+
     public void Attack()
     {
-        transform.DOMove(transform.position + transform.right * 3f, 0.4f).SetEase(Ease.Linear);
+        transform.DOMove(transform.position + transform.right * 3f, 0.4f).SetEase(Ease.Linear).OnComplete( () => canTriggerDamagedState = true );
     }
-
     #endregion
     #region Skill_2
     public void SkillShield()
@@ -254,7 +258,6 @@ public class Player : MonoBehaviour
 
     private void CheckDistanceForNormalAttack()
     {
-
         float minDistance = float.MaxValue;
         for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
         {
@@ -266,24 +269,15 @@ public class Player : MonoBehaviour
             hasAttacked = true;
             NormalAttackState();
         }
-        if (minDistance <= distanceMoveBack) // danh tay xong roi moi lui lai
-        {
-            playerState = PlayerState.Moving;
-            if (playerState == PlayerState.Moving)
-            {
-                DamagedState();
-                //TakeDamage(10);
-                //enemyController.TakeDamage(8);
-            }
-            if (playerState == PlayerState.SkillAttack)
-            {
-                SkillAttackState();
-                playerState = PlayerState.Moving;
-            }
-        }
         else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
+        if (minDistance <= distanceMoveBack && !hasMoveBack) // danh tay xong roi moi lui lai
+        {
+            hasMoveBack = true;
+            DamagedState();
+        }
+        else if (minDistance > distanceMoveBack) hasMoveBack = false;
     }
-
+    #region FUNC-STATE
     void IdleState()
     {
         animator.SetTrigger(Const.animIdle);
@@ -305,26 +299,24 @@ public class Player : MonoBehaviour
 
     public void DamagedState()
     {
-        animator.SetTrigger(Const.animDamaged);
-        Vector2 reverseDirection = -transform.right;
-        Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; // di chuyen ve sau voi khoang cach disBack
-        if (canMoveBack) StartCoroutine(MoveBack(newPosition));
+        Debug.Log("DamagedState");
+        if (canTriggerDamagedState && canMoveBack && !isMoveBack) MoveBack();
     }
-
-    private IEnumerator MoveBack(Vector2 targetPosition)
+    #endregion
+    private void MoveBack()
     {
+        animator.SetTrigger(Const.animDamaged);
+        //Vector2 reverseDirection = -transform.right;
+        Vector2 newPosition = (Vector2)transform.position - (Vector2)transform.right * disBack;
+        isMoveBack = true;
         canMove = false;
-        float elapsedTime = 0f;
-        float duration = 0.5f; // thoi gian di chuyen nguoc lai
-        Vector2 initialPosition = transform.position;
-        while (elapsedTime < duration)
+
+        // Sử dụng tweener và callback của DOTween
+        transform.DOMove(newPosition, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            transform.position = Vector2.Lerp(initialPosition, targetPosition, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = targetPosition;
-        canMove = true;
+            canMove = true;
+            isMoveBack = false;
+        });
     }
 
     public void Move()
@@ -336,7 +328,6 @@ public class Player : MonoBehaviour
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
-        Debug.Log("TakeDamageFromEnemy");
     }
 }
 

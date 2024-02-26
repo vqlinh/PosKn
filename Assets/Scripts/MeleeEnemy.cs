@@ -41,11 +41,8 @@ public class MeleeEnemy : EnemyController
     void Update()
     {
         healthBar.SetHealth(currentHealth);
-
         CheckMeleeState();
         CheckDistanceToPlayer();
-
-
     }
     public void CheckMeleeState()
     {
@@ -92,6 +89,7 @@ public class MeleeEnemy : EnemyController
     {
         animator.SetTrigger(Const.meleeDamaged);
 
+
     }
     void MeleeAttack()
     {
@@ -113,10 +111,11 @@ public class MeleeEnemy : EnemyController
     public void CheckDistanceToPlayer()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-        if (distanceToPlayer <= 1.2f) Damaged();
+        //if (distanceToPlayer <= 1.2f) Damaged();
         if (distanceToPlayer <= 5f) MoveToPlayer();
         if (distanceToPlayer <= meleeAttackDistance && !canAttack)
         {
+            Damaged();
             canAttack = true;
             MeleeAttack();
         }

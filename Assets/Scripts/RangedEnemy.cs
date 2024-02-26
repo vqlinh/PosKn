@@ -19,6 +19,7 @@ public class RangedEnemy : EnemyController
     private int attack;
     float rangedAttackTimer = 0f;
     float rangedAttackInterval = 3f;
+    bool canDamaged=false;
 
     public RangedState rangedState;
     public enum RangedState
@@ -48,7 +49,12 @@ public class RangedEnemy : EnemyController
     public void CheckDistanceToPlayer()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-        if (distanceToPlayer <= 1.2f) Damaged();
+        if (distanceToPlayer <= 1.2f && !canDamaged)
+        {
+            canDamaged = true;
+            Damaged();
+        }
+        else if (distanceToPlayer > 1.2f) canDamaged = false;
         if (distanceToPlayer <= rangedAttackDistance)
         {
             rangedAttackTimer += Time.deltaTime;
@@ -88,7 +94,6 @@ public class RangedEnemy : EnemyController
     void RangedIdle()
     {
         animator.SetTrigger(Const.rangedIdle);
-        Debug.Log("RangedIdle");
     }
     void RangedDamaged()
     {
@@ -116,6 +121,7 @@ public class RangedEnemy : EnemyController
 
     void Damaged()
     {
+        Debug.Log("Damaged");
         TakeDamage(10);
         RangedDamaged();
         Move();
