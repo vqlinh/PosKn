@@ -592,6 +592,6 @@ MonoBehaviour:
   rangedAttackDistance: 15
   enemyData: {fileID: 11400000, guid: 9ec53234b0918f54b8c5749656885364, type: 2}
   bullet: {fileID: 2202982687252298903, guid: d679ff4c6079a5344861e0c22509bd00, type: 3}
-  TimeBtwFire: 3
+  TimeBtwFire: 5
   bulletForce: 3
   rangedState: 0
