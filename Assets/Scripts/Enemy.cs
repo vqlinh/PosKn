@@ -11,33 +11,40 @@ public class Enemy : MonoBehaviour
         // Logic tấn công chung cho tất cả Enemy ở đây
         Debug.Log("Generic Attack");
     }
+    public void DisBack()
+    {
+        disBack += 2f;
+
+    }
 
     public virtual void Move()
     {
-        Vector2 reverseDirection = transform.right;
-        Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack;
-        StartCoroutine(MoveBack(newPosition));
+        StartCoroutine(MoveBack());
 
     }
-    private IEnumerator MoveBack(Vector2 targetPosition)
+    private IEnumerator MoveBack( )
     {
         float elapsedTime = 0f;
         float duration = 0.5f;
         Vector2 initialPosition = transform.position;
+        Vector2 newPosition = (Vector2)transform.position + (Vector2)transform.right * disBack;
         while (elapsedTime < duration)
         {
-            transform.position = Vector2.Lerp(initialPosition, targetPosition, elapsedTime / duration);
+            transform.position = Vector2.Lerp(initialPosition, newPosition, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        transform.position = targetPosition;
+        transform.position = newPosition;
     }
     public virtual void Die()
     {
-        // Sử dụng DOTween để di chuyển Enemy từ dưới lên theo hướng bên phải
         float duration = 1.5f;
-        Vector2 targetPosition = new Vector2(transform.position.x + 10f, transform.position.y + 5f); // Điểm cuối cùng mà bạn muốn Enemy di chuyển đến
-        transform.DOMove(targetPosition, duration).SetEase(Ease.Linear); // Có thể thay đổi Ease để có hiệu ứng di chuyển mượt mà hơn
+        Vector2 targetPosition = new Vector2(transform.position.x + 10f, transform.position.y + 5f); 
+        transform.DOMove(targetPosition, duration).SetEase(Ease.Linear); 
+    }
+    private void Update()
+    {
+        Debug.Log(disBack);
     }
 
 }

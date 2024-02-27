@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     private int currentHealth;
     [SerializeField] private int maxHealth = 100;
     #endregion
-    [Header("/")]
+    [Header("MOVEMENT")]
     [SerializeField] private float speed = 1f;
     [SerializeField] private float disBack = 1f;
     [SerializeField] private float distanceMoveBack = 2f;
@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
     private bool hasMoveBack = false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
+    public GameObject skillAttack;
     #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
@@ -66,6 +67,7 @@ public class Player : MonoBehaviour
         imgCoolDown2.fillAmount = 0;
         imgCoolDown3.fillAmount = 0;
 
+        skillAttack.SetActive(false);
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
 
@@ -157,6 +159,8 @@ public class Player : MonoBehaviour
         isClick1 = true;
         if (!isAttack)
         {
+            skillAttack.SetActive(true);
+
             Attack();
             StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
             playerState = PlayerState.Moving;
@@ -174,7 +178,11 @@ public class Player : MonoBehaviour
 
     public void Attack()
     {
-        transform.DOMove(transform.position + transform.right * 3f, 0.4f).SetEase(Ease.Linear).OnComplete( () => canTriggerDamagedState = true );
+        transform.DOMove(transform.position + transform.right * 3f, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            skillAttack.SetActive(false);
+            canTriggerDamagedState = true;
+        });
     }
     #endregion
     #region Skill_2
@@ -293,6 +301,7 @@ public class Player : MonoBehaviour
 
     void NormalAttackState()
     {
+        Debug.Log("NormalAttackState");
         animator.SetTrigger(Const.animNormalAttack);
         playerState = PlayerState.Moving;
     }
@@ -306,12 +315,9 @@ public class Player : MonoBehaviour
     private void MoveBack()
     {
         animator.SetTrigger(Const.animDamaged);
-        //Vector2 reverseDirection = -transform.right;
         Vector2 newPosition = (Vector2)transform.position - (Vector2)transform.right * disBack;
         isMoveBack = true;
         canMove = false;
-
-        // Sử dụng tweener và callback của DOTween
         transform.DOMove(newPosition, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
         {
             canMove = true;

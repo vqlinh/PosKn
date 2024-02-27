@@ -13,12 +13,10 @@ public class RangedEnemy : EnemyController
     private int currentHealth;
     public EnemyData enemyData;
     public GameObject bullet;
-    public float TimeBtwFire = 3f;
     public float bulletForce;
-    private float timeBtwFire;
     private int attack;
     float rangedAttackTimer = 0f;
-    float rangedAttackInterval = 3f;
+    public float rangedAttackInterval = 3f;
     bool canDamaged=false;
 
     public RangedState rangedState;
