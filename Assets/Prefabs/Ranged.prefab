@@ -445,9 +445,9 @@ GameObject:
   - component: {fileID: 3558162912056048867}
   - component: {fileID: 6938246119093238734}
   - component: {fileID: 3262185178543949007}
-  - component: {fileID: 5412031406267353684}
   - component: {fileID: -817849967266670583}
   - component: {fileID: 4181139142821017753}
+  - component: {fileID: 3936011999362495541}
   m_Layer: 0
   m_Name: Ranged
   m_TagString: Enemy
@@ -544,18 +544,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5412031406267353684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 62309191026090210}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 476a3d11869513448beca7e12d882dd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &-817849967266670583
 Animator:
   serializedVersion: 4
@@ -592,6 +580,32 @@ MonoBehaviour:
   rangedAttackDistance: 15
   enemyData: {fileID: 11400000, guid: 9ec53234b0918f54b8c5749656885364, type: 2}
   bullet: {fileID: 2202982687252298903, guid: d679ff4c6079a5344861e0c22509bd00, type: 3}
-  TimeBtwFire: 5
   bulletForce: 3
+  rangedAttackInterval: 10
   rangedState: 0
+--- !u!61 &3936011999362495541
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62309191026090210}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5038705, y: -0.49359035}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 20, y: 20}
+    newSize: {x: 12, y: 12}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 13.61132, y: 17.882795}
+  m_EdgeRadius: 0
