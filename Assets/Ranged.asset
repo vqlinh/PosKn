@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b8c2c0408cd884a94e5098bf0f7c9e, type: 3}
   m_Name: Ranged
   m_EditorClassIdentifier: 
-  health: 30
+  health: 10
   attack: 8
