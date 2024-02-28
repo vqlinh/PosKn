@@ -82,7 +82,11 @@ public class RangedEnemy : EnemyController
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+        {
+            healthBar.gameObject.SetActive(false);
+            Die();
+        } 
     }
     public override void Die()
     {
@@ -96,7 +100,6 @@ public class RangedEnemy : EnemyController
     void RangedDamaged()
     {
         animator.SetTrigger(Const.rangedDamaged);
-        Debug.Log("RangedDamaged");
 
     }
     void RangedAttack()
@@ -112,22 +115,24 @@ public class RangedEnemy : EnemyController
     }
     #endregion
 
-    void TakeDamegeFromPlayer() // khi chay ham nay thi Player se mat mau
+    void TakeDamageFromPlayer() // khi chay ham nay thi Player se mat mau
     {
         player.TakeDamageFromEnemy(enemyData.attack);
     }
 
     void Damaged()
     {
-        Debug.Log("Damaged");
         TakeDamage(10);
-        RangedDamaged();
-        Move();
+        if (currentHealth > 0)
+        {
+            RangedDamaged();
+            Move();
+
+        }
     }
 
     public override void Move()
     {
         base.Move();
-        Debug.Log("MoveBack");
     }
 }

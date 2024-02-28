@@ -4,18 +4,18 @@ using DG.Tweening;
 
 public class Enemy : MonoBehaviour
 {
+    public static Enemy Instance;
     float disBack = 2f;
-
-    public virtual void Attack()
+    private void Awake()
     {
-        // Logic tấn công chung cho tất cả Enemy ở đây
-        Debug.Log("Generic Attack");
+        Instance = this;
     }
-    public void DisBack()
-    {
-        disBack += 2f;
 
+    public void MoveToNewPosition(Vector2 newPosition)
+    {
+        transform.DOMove(newPosition, 0.5f).SetEase(Ease.Linear);
     }
+
 
     public virtual void Move()
     {
@@ -38,13 +38,10 @@ public class Enemy : MonoBehaviour
     }
     public virtual void Die()
     {
-        float duration = 1.5f;
-        Vector2 targetPosition = new Vector2(transform.position.x + 10f, transform.position.y + 5f); 
-        transform.DOMove(targetPosition, duration).SetEase(Ease.Linear); 
-    }
-    private void Update()
-    {
-        Debug.Log(disBack);
+        float duration = 0.8f;
+        Vector2 targetPosition = new Vector2(transform.position.x + 20f, transform.position.y + 10f); 
+        transform.DOMove(targetPosition, duration).SetEase(Ease.Linear);
+        transform.DORotate(new Vector3(0, 0, 360), 0.1f, RotateMode.FastBeyond360).SetEase(Ease.Linear);
     }
 
 }

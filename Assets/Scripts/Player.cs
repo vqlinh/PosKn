@@ -216,7 +216,6 @@ public class Player : MonoBehaviour
     {
         if (currentHealth < maxHealth)  // Kiểm tra điều kiện khi có thể click button
         {
-            Debug.Log("Skillhealing");
             isClick3 = true;
             if (!isHealing)
             {
@@ -301,14 +300,12 @@ public class Player : MonoBehaviour
 
     void NormalAttackState()
     {
-        Debug.Log("NormalAttackState");
         animator.SetTrigger(Const.animNormalAttack);
         playerState = PlayerState.Moving;
     }
 
     public void DamagedState()
     {
-        Debug.Log("DamagedState");
         if (canTriggerDamagedState && canMoveBack && !isMoveBack) MoveBack();
     }
     #endregion

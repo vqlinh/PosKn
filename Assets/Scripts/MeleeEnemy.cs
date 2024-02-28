@@ -68,8 +68,8 @@ public class MeleeEnemy : EnemyController
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
-            Die(); // Nếu hết máu thì chạy hàm Die ngay tại đây
-            return; // Kết thúc hàm TakeDamage ngay lập tức
+            healthBar.gameObject.SetActive(false);
+            Die();
         }
     }
     public override void Die()
@@ -93,18 +93,18 @@ public class MeleeEnemy : EnemyController
     }
     void MeleeAttack()
     {
-        TakeDamegeFromPlayer();
+        TakeDamageFromPlayer();
         animator.SetTrigger(Const.meleeAttack);
     }
     #endregion
 
-    void TakeDamegeFromPlayer() // khi chay ham nay thi Player se mat mau
+    void TakeDamageFromPlayer() // khi chay ham nay thi Player se mat mau
     {
         player.TakeDamageFromEnemy(enemyData.attack);
     }
     public void MoveToPlayer()
     {
-        Vector2 direction = playerTransform.position - transform.position;
+        //Vector2 direction = playerTransform.position - transform.position;
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
         MeleeMoving();
     }
@@ -124,8 +124,12 @@ public class MeleeEnemy : EnemyController
     void Damaged()
     {
         TakeDamage(10);
-        MeleeDamaged();
-        Move();
+        if (currentHealth > 0 )
+        {
+            MeleeDamaged();
+            Move();
+
+        }
     }
     public override void Move()
     {
