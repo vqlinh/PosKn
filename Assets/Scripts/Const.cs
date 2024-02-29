@@ -13,6 +13,7 @@ public class Const : MonoBehaviour
     public const string animIdle = "isIdle";
     public const string animNormalAttack = "isNormalAttack";
     public const string animSkillAttack = "isSkillAttack";
+    public const string animDestroyShield = "ShieldDestroy";
     //Melee
     public const string meleeMove = "isMove";
     public const string meleeAttack = "isAttack";

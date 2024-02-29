@@ -1,23 +1,20 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangedEnemy : EnemyController
+public class RangedEnemy : Enemy
 {
     public HealthBar healthBar;
 
-    private Transform playerTransform;
-    private Player player;
-    private Animator animator;
-    public float rangedAttackDistance = 5f;
-    private int currentHealth;
-    public EnemyData enemyData;
+    private int attack;
+    bool canDamaged=false;
     public GameObject bullet;
     public float bulletForce;
-    private int attack;
+    private Animator animator;
+    public EnemyData enemyData;
+    public float rangedAttackDistance = 5f;
     float rangedAttackTimer = 0f;
     public float rangedAttackInterval = 3f;
-    bool canDamaged=false;
 
     public RangedState rangedState;
     public enum RangedState
@@ -31,7 +28,7 @@ public class RangedEnemy : EnemyController
         currentHealth = enemyData.health;
         attack = enemyData.attack;
         healthBar.SetMaxHealth(currentHealth);
-        rangedState = RangedState.Idle; // de day ti lam tiep
+        rangedState = RangedState.Idle;
         animator = GetComponent<Animator>();
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
         player = GameObject.FindObjectOfType<Player>();
@@ -79,14 +76,14 @@ public class RangedEnemy : EnemyController
         }
     }
 
-    public void TakeDamage(int amount)
+    public override void TakeDamage(int amount)
     {
-        currentHealth -= amount;
+        base.TakeDamage(amount);
         if (currentHealth <= 0)
         {
             healthBar.gameObject.SetActive(false);
             Die();
-        } 
+        }
     }
     public override void Die()
     {
@@ -127,7 +124,6 @@ public class RangedEnemy : EnemyController
         {
             RangedDamaged();
             Move();
-
         }
     }
 

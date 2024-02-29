@@ -1,18 +1,17 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemy : EnemyController
+public class MeleeEnemy : Enemy
 {
     public HealthBar healthBar;
 
-    private Transform playerTransform;
-    private Player player;
+    //private Transform playerTransform;
+    //private Player player;
     public float moveSpeed = 1f;
     public float meleeAttackDistance = 1f;
     private Animator animator;
     private bool canAttack = false;
-    private int currentHealth; 
     private int attack;
     public EnemyData enemyData;
 
@@ -37,7 +36,6 @@ public class MeleeEnemy : EnemyController
         player = GameObject.FindObjectOfType<Player>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         healthBar.SetHealth(currentHealth);
@@ -63,10 +61,10 @@ public class MeleeEnemy : EnemyController
                 break;
         }
     }
-    public void TakeDamage(int amount)
+    public override void TakeDamage(int amount)
     {
-        currentHealth -= amount;
-        if (currentHealth <= 0)
+        base.TakeDamage(amount);
+        if (currentHealth<=0)
         {
             healthBar.gameObject.SetActive(false);
             Die();
@@ -104,14 +102,12 @@ public class MeleeEnemy : EnemyController
     }
     public void MoveToPlayer()
     {
-        //Vector2 direction = playerTransform.position - transform.position;
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
         MeleeMoving();
     }
     public void CheckDistanceToPlayer()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-        //if (distanceToPlayer <= 1.2f) Damaged();
         if (distanceToPlayer <= 5f) MoveToPlayer();
         if (distanceToPlayer <= meleeAttackDistance && !canAttack)
         {

@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float disBack = 1f;
     [SerializeField] private float distanceMoveBack = 2f;
     [SerializeField] private float distanceAttack;
+    //[SerializeField] private GameObject skillShield;
+   
     private bool canTriggerDamagedState = true;
     Animator animator;
     private bool canMove = true;
@@ -47,9 +49,12 @@ public class Player : MonoBehaviour
     private bool hasAttacked = false;
     private bool isMoveBack = false;
     private bool hasMoveBack = false;
+    private bool Shielding=false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
     public GameObject skillAttack;
+    private ButtonManager buttonManager;
+    public SkillShield _skillShield;
     #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
@@ -66,7 +71,7 @@ public class Player : MonoBehaviour
         imgCoolDown1.fillAmount = 0;
         imgCoolDown2.fillAmount = 0;
         imgCoolDown3.fillAmount = 0;
-
+        buttonManager = FindObjectOfType<ButtonManager>();
         skillAttack.SetActive(false);
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
@@ -74,7 +79,7 @@ public class Player : MonoBehaviour
         playerState = PlayerState.Idle;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-
+        _skillShield.gameObject.SetActive(false);
         gameManager.txtMaxHeal.text = maxHealth.ToString();
     }
 
@@ -191,11 +196,10 @@ public class Player : MonoBehaviour
         isClick2 = true;
         if (!isShield)
         {
+            Shielding = true;
             Shield();
             StartCoroutine(ShieldCoolDown());
         }
-
-
     }
     private IEnumerator ShieldCoolDown()
     {
@@ -208,6 +212,23 @@ public class Player : MonoBehaviour
     {
         // hàm khiên ở đây
         Debug.Log("bat Shield");
+        _skillShield.gameObject.SetActive(true);
+
+        StartCoroutine(DestroyShield());
+    }
+    private IEnumerator DestroyShield()
+    {
+        yield return new WaitForSeconds(1f);
+        _skillShield.ShieldDestroy();
+        //yield return new WaitForSeconds(0.5f);
+        //_skillShield.gameObject.SetActive(false);
+        Shielding = false;
+
+    }
+    public void Hide()
+    {
+        _skillShield.gameObject.SetActive(false);
+
     }
     #endregion
     // -------------------------------------- máu hồi mà lớn hơn max thì k chạy hàm cooldown,(fix sau)-----------------------------------------------
@@ -306,7 +327,11 @@ public class Player : MonoBehaviour
 
     public void DamagedState()
     {
-        if (canTriggerDamagedState && canMoveBack && !isMoveBack) MoveBack();
+        if (canTriggerDamagedState && canMoveBack && !isMoveBack && !Shielding)
+        {
+            buttonManager.DisableButtons();
+            MoveBack();
+        }
     }
     #endregion
     private void MoveBack()
@@ -319,6 +344,7 @@ public class Player : MonoBehaviour
         {
             canMove = true;
             isMoveBack = false;
+            buttonManager.EnableButtons();
         });
     }
 
