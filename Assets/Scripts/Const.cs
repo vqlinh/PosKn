@@ -24,4 +24,6 @@ public class Const : MonoBehaviour
     public const string rangedIdle = "isIdle";
     public const string rangedDamaged = "isDamaged";
 
+    public const string villageOld = "VillageOld";
+
 }

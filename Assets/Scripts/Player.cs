@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float distanceMoveBack = 2f;
     [SerializeField] private float distanceAttack;
     //[SerializeField] private GameObject skillShield;
-   
+
     private bool canTriggerDamagedState = true;
     Animator animator;
     private bool canMove = true;
@@ -49,12 +49,13 @@ public class Player : MonoBehaviour
     private bool hasAttacked = false;
     private bool isMoveBack = false;
     private bool hasMoveBack = false;
-    private bool Shielding=false;
+    private bool Shielding = false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
     public GameObject skillAttack;
     private ButtonManager buttonManager;
     public SkillShield _skillShield;
+    public DialogueTrigger dialogueTrigger;
     #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
@@ -76,7 +77,7 @@ public class Player : MonoBehaviour
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
 
-        playerState = PlayerState.Idle;
+        playerState = PlayerState.Moving;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
         _skillShield.gameObject.SetActive(false);
@@ -169,7 +170,7 @@ public class Player : MonoBehaviour
             Attack();
             StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
             playerState = PlayerState.Moving;
-            
+
         }
     }
 
@@ -309,7 +310,8 @@ public class Player : MonoBehaviour
     void IdleState()
     {
         animator.SetTrigger(Const.animIdle);
-        playerState = PlayerState.Moving;
+        Debug.Log("IdleState");
+        //playerState = PlayerState.Moving;
     }
 
     void MovingState()
@@ -350,13 +352,38 @@ public class Player : MonoBehaviour
 
     public void Move()
     {
-        transform.Translate(Vector3.right * speed * Time.deltaTime);
+            transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
     public void TakeDamageFromEnemy(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(Const.villageOld))
+        {
+            canMove = false;
+            if(canMove == true)
+            {
+                Debug.Log("abc");
+            } else
+            {
+                Debug.Log("FALSE");
+                IdleState();
+            }
+            Debug.Log("canMove " + canMove);
+            Invoke("Talk",1f);
+
+
+            //TalkToPlayer();
+        }
+    }
+    void Talk()
+    {
+        dialogueTrigger.TriggerDialouge();
+
     }
 }
 

@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
 
     public void MoveToNewPosition(Vector2 newPosition)
     {
-        transform.DOMove(newPosition, 0.5f).SetEase(Ease.Linear);
+        transform.DOMove(newPosition, 0.3f).SetEase(Ease.Linear);
     }
 
     public virtual void Move()
@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
     {
         float duration = 0.8f;
         Vector2 targetPosition = new Vector2(transform.position.x + 20f, transform.position.y + 10f); 
-        transform.DOMove(targetPosition, duration).SetEase(Ease.Linear);
+        transform.DOMove(targetPosition, duration).SetEase(Ease.Linear).OnComplete(() => Destroy(gameObject));
         transform.DORotate(new Vector3(0, 0, 360), 0.1f, RotateMode.FastBeyond360).SetEase(Ease.Linear);
     }
 

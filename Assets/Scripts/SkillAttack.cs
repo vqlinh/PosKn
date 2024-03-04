@@ -10,7 +10,7 @@ public class SkillAttack : MonoBehaviour
         {
             Enemy enemy = collision.GetComponent<Enemy>();
             Vector2 playerPosition = transform.position;
-            Vector2 newEnemyPosition = new Vector2(playerPosition.x + 4f, enemy.transform.position.y);
+            Vector2 newEnemyPosition = new Vector2(playerPosition.x + 5f, enemy.transform.position.y);
             enemy.MoveToNewPosition(newEnemyPosition);
             enemy.TakeDamage(16);
         }
