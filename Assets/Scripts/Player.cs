@@ -7,39 +7,56 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class Player : MonoBehaviour
 {
+    #region COOLDOWN
     [Header("CoolDown")]
+    private bool isAttack = false;
+    private bool isClick1 = false;
     public Image imgCoolDown1;
     public float coolDown1 = 2f;
     private bool isCoolDown1;
     [SerializeField] private float timeCoolDownAttack = 2f;
+    private bool isShield = false;
+    private bool isClick2 = false;
+    public Image imgCoolDown2;
+    public float coolDown2 = 3f;
+    private bool isCoolDown2;
+    [SerializeField] private float timeCoolDownShield = 3f;
+    private bool isHealing = false;
+    private bool isClick3 = false;
     public Image imgCoolDown3;
     public float coolDown3 = 8f;
     private bool isCoolDown3;
     [SerializeField] private float timeCoolDownHealing = 8f;
     //public Button btnSkill3;
-
+    #endregion
+    #region HEALTH
     [Header("HEALTH")]
     public HealthBar healthBar;
-    [SerializeField] private int currentHealth;
+    private int currentHealth;
     [SerializeField] private int maxHealth = 100;
-
-    [Header("/")]
+    #endregion
+    [Header("MOVEMENT")]
     [SerializeField] private float speed = 1f;
     [SerializeField] private float disBack = 1f;
-    [SerializeField] private bool isAttack = false;
-    [SerializeField] private bool isHealing = false;
     [SerializeField] private float distanceMoveBack = 2f;
     [SerializeField] private float distanceAttack;
+    //[SerializeField] private GameObject skillShield;
+
+    private bool canTriggerDamagedState = true;
     Animator animator;
     private bool canMove = true;
     private bool canMoveBack = true;
     private bool hasAttacked = false;
-    private bool isClick1 = false;
-    private bool isClick3 = false;
+    private bool isMoveBack = false;
+    private bool hasMoveBack = false;
+    private bool Shielding = false;
     private GameManager gameManager;
     public EnemySpawn enemySpawn;
-    public EnemyController enemyController;
-
+    public GameObject skillAttack;
+    private ButtonManager buttonManager;
+    public SkillShield _skillShield;
+    public DialogueTrigger dialogueTrigger;
+    #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
     {
@@ -49,30 +66,32 @@ public class Player : MonoBehaviour
         Damaged,
         NormalAttack
     }
-
+    #endregion
     private void Start()
     {
-        imgCoolDown3.fillAmount = 0;
         imgCoolDown1.fillAmount = 0;
-
+        imgCoolDown2.fillAmount = 0;
+        imgCoolDown3.fillAmount = 0;
+        buttonManager = FindObjectOfType<ButtonManager>();
+        skillAttack.SetActive(false);
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
 
-        playerState = PlayerState.Idle;
+        playerState = PlayerState.Moving;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
-
+        _skillShield.gameObject.SetActive(false);
         gameManager.txtMaxHeal.text = maxHealth.ToString();
     }
 
     private void Update()
     {
-        //healthBar.slider.value = currentHealth;
         healthBar.SetHealth(currentHealth);
         gameManager.txtCurrentHeal.text = currentHealth.ToString();
         CheckDistanceForNormalAttack();
         CheckState();
         CoolDownSkill1();
+        CoolDownSkill2();
         CoolDownSkill3();
     }
     #region CoolDown_1
@@ -96,29 +115,45 @@ public class Player : MonoBehaviour
             }
         }
     }
+    #endregion    
+    #region CoolDown_2
+    public void CoolDownSkill2()
+    {
+
+        if (isClick2 && isCoolDown2 == false)
+        {
+            isCoolDown2 = true;
+            imgCoolDown2.fillAmount = 1;
+        }
+
+        if (isCoolDown2)
+        {
+            imgCoolDown2.fillAmount -= 1 / coolDown2 * Time.deltaTime;
+            if (imgCoolDown2.fillAmount <= 0)
+            {
+                imgCoolDown2.fillAmount = 0;
+                isCoolDown2 = false;
+                isClick2 = false;
+            }
+        }
+    }
     #endregion
     #region CoolDown_3
     public void CoolDownSkill3()
     {
-        if (currentHealth >= maxHealth)
+        if (isClick3 && isCoolDown3 == false)
         {
+            isCoolDown3 = true;
+            imgCoolDown3.fillAmount = 1;
         }
-        else
+        if (isCoolDown3)
         {
-            if (isClick3 && isCoolDown3 == false)
+            imgCoolDown3.fillAmount -= 1 / coolDown3 * Time.deltaTime;
+            if (imgCoolDown3.fillAmount <= 0)
             {
-                isCoolDown3 = true;
-                imgCoolDown3.fillAmount = 1;
-            }
-            if (isCoolDown3)
-            {
-                imgCoolDown3.fillAmount -= 1 / coolDown3 * Time.deltaTime;
-                if (imgCoolDown3.fillAmount <= 0)
-                {
-                    imgCoolDown3.fillAmount = 0;
-                    isCoolDown3 = false;
-                    isClick3 = false;
-                }
+                imgCoolDown3.fillAmount = 0;
+                isCoolDown3 = false;
+                isClick3 = false;
             }
         }
     }
@@ -126,12 +161,16 @@ public class Player : MonoBehaviour
     #region skill_1
     public void SkillAttackState()
     {
+        canTriggerDamagedState = false;
         isClick1 = true;
         if (!isAttack)
         {
+            skillAttack.SetActive(true);
+
             Attack();
             StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
             playerState = PlayerState.Moving;
+
         }
     }
 
@@ -142,61 +181,80 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(timeCoolDownAttack);
         isAttack = false;
     }
+
     public void Attack()
     {
-        //StartCoroutine(PerformAttack());
-        PerformAttack();
+        transform.DOMove(transform.position + transform.right * 3f, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            skillAttack.SetActive(false);
+            canTriggerDamagedState = true;
+        });
     }
-    void PerformAttack()
-    {
-        float attackDurration = 0.4f;
-        Vector2 attackEndPos = transform.position + transform.right * 3f;
-        transform.DOMove(attackEndPos, attackDurration).SetEase(Ease.Linear);
-
-    }
-
-    //private IEnumerator PerformAttack()
-    //{
-    //    float attackDuration = 0.4f;
-    //    float elapsedTime = 0f;
-    //    Vector2 attackStartPos = transform.position;
-    //    Vector2 attackEndPos = transform.position + transform.right * 3f;
-    //    while (elapsedTime < attackDuration)
-    //    {
-    //        transform.position = Vector2.Lerp(attackStartPos, attackEndPos, elapsedTime / attackDuration);
-    //        elapsedTime += Time.deltaTime;
-    //        yield return null;
-    //    }
-    //    transform.position = attackEndPos;
-    //}
     #endregion
+    #region Skill_2
+    public void SkillShield()
+    {
+        isClick2 = true;
+        if (!isShield)
+        {
+            Shielding = true;
+            Shield();
+            StartCoroutine(ShieldCoolDown());
+        }
+    }
+    private IEnumerator ShieldCoolDown()
+    {
+        isShield = true;
+        //animator.SetTrigger(Const.animSkillAttack);
+        yield return new WaitForSeconds(timeCoolDownShield);
+        isShield = false;
+    }
+    void Shield()
+    {
+        // hàm khiên ở đây
+        Debug.Log("bat Shield");
+        _skillShield.gameObject.SetActive(true);
+
+        StartCoroutine(DestroyShield());
+    }
+    private IEnumerator DestroyShield()
+    {
+        yield return new WaitForSeconds(1f);
+        _skillShield.ShieldDestroy();
+        //yield return new WaitForSeconds(0.5f);
+        //_skillShield.gameObject.SetActive(false);
+        Shielding = false;
+
+    }
+    public void Hide()
+    {
+        _skillShield.gameObject.SetActive(false);
+
+    }
+    #endregion
+    // -------------------------------------- máu hồi mà lớn hơn max thì k chạy hàm cooldown,(fix sau)-----------------------------------------------
     #region Skill_3
     public void Skillhealing() // click button
     {
-        isClick3 = true;
-        if (!isHealing)
+        if (currentHealth < maxHealth)  // Kiểm tra điều kiện khi có thể click button
         {
-            Healing();
-            StartCoroutine(HealingCoolDown());
+            isClick3 = true;
+            if (!isHealing)
+            {
+                Healing();
+                StartCoroutine(HealingCoolDown());
+            }
         }
 
     }
     public void Healing()
     {
-        bool isHealPlus = true;
-        if (currentHealth < maxHealth)
+        currentHealth += 10;
+        if (currentHealth >= maxHealth)
         {
-            if (isHealPlus)
-            {
-                currentHealth += 30;
-                if (currentHealth >= maxHealth)
-                {
-                    currentHealth = maxHealth;
-                    isClick3 = false; // mai lam not khi mau day se k chay hoi chieu mau nua
-                }
-            }
+            currentHealth = maxHealth;
+            isClick3 = false;
         }
-        else isHealPlus = false;
     }
     private IEnumerator HealingCoolDown()
     {
@@ -240,28 +298,20 @@ public class Player : MonoBehaviour
             hasAttacked = true;
             NormalAttackState();
         }
-        if (minDistance <= distanceMoveBack) // danh tay xong roi moi lui lai
-        {
-            playerState = PlayerState.Moving;
-            if (playerState == PlayerState.Moving)
-            {
-                DamagedState();
-                TakeDamage(10);
-                enemyController.TakeDamage(8);
-            }
-            if (playerState == PlayerState.SkillAttack)
-            {
-                SkillAttackState();
-                playerState = PlayerState.Moving;
-            }
-        }
         else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
+        if (minDistance <= distanceMoveBack && !hasMoveBack) // danh tay xong roi moi lui lai
+        {
+            hasMoveBack = true;
+            DamagedState();
+        }
+        else if (minDistance > distanceMoveBack) hasMoveBack = false;
     }
-
+    #region FUNC-STATE
     void IdleState()
     {
         animator.SetTrigger(Const.animIdle);
-        playerState = PlayerState.Moving;
+        Debug.Log("IdleState");
+        //playerState = PlayerState.Moving;
     }
 
     void MovingState()
@@ -277,39 +327,63 @@ public class Player : MonoBehaviour
         playerState = PlayerState.Moving;
     }
 
-    void DamagedState()
+    public void DamagedState()
+    {
+        if (canTriggerDamagedState && canMoveBack && !isMoveBack && !Shielding)
+        {
+            buttonManager.DisableButtons();
+            MoveBack();
+        }
+    }
+    #endregion
+    private void MoveBack()
     {
         animator.SetTrigger(Const.animDamaged);
-        Vector2 reverseDirection = -transform.right;
-        Vector2 newPosition = (Vector2)transform.position + reverseDirection * disBack; // di chuyen ve sau voi khoang cach disBack
-        if (canMoveBack) StartCoroutine(MoveBack(newPosition));
-    }
-
-    private IEnumerator MoveBack(Vector2 targetPosition)
-    {
+        Vector2 newPosition = (Vector2)transform.position - (Vector2)transform.right * disBack;
+        isMoveBack = true;
         canMove = false;
-        float elapsedTime = 0f;
-        float duration = 0.5f; // thoi gian di chuyen nguoc lai
-        Vector2 initialPosition = transform.position;
-        while (elapsedTime < duration)
+        transform.DOMove(newPosition, 0.5f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            transform.position = Vector2.Lerp(initialPosition, targetPosition, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = targetPosition;
-        canMove = true;
+            canMove = true;
+            isMoveBack = false;
+            buttonManager.EnableButtons();
+        });
     }
 
     public void Move()
     {
-        transform.Translate(Vector3.right * speed * Time.deltaTime);
+            transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamageFromEnemy(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(Const.villageOld))
+        {
+            canMove = false;
+            if(canMove == true)
+            {
+                Debug.Log("abc");
+            } else
+            {
+                Debug.Log("FALSE");
+                IdleState();
+            }
+            Debug.Log("canMove " + canMove);
+            Invoke("Talk",1f);
+
+
+            //TalkToPlayer();
+        }
+    }
+    void Talk()
+    {
+        dialogueTrigger.TriggerDialouge();
+
     }
 }
 

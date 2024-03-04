@@ -9,6 +9,8 @@ public class EnemySpawn : MonoBehaviour
     public GameObject melee;
     public GameObject ranged;
     public Transform player;
+    public GameObject villageOld;
+    bool isSpawn = false;
     void Start()
     {
         GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x+10f,player.transform.position.y), Quaternion.identity);
@@ -20,5 +22,17 @@ public class EnemySpawn : MonoBehaviour
     void Update()
     {
         listEnemySpawn.RemoveAll(enemy => enemy == null || !enemy.activeSelf);
+        if (listEnemySpawn.Count==0)
+        {
+            SpawnVillageOld();
+        }
+    }
+    void SpawnVillageOld()
+    {
+        if (!isSpawn)
+        {
+            isSpawn = true;
+            Instantiate(villageOld, new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
+        }
     }
 }

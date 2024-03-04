@@ -190,8 +190,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -794.6, y: 335.5}
-  m_SizeDelta: {x: 62.8, y: 11.8}
+  m_AnchoredPosition: {x: -755, y: 365}
+  m_SizeDelta: {x: 93.1, y: 14.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1235455387
 MonoBehaviour:
@@ -294,7 +294,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 23.91, y: -4.05}
+  m_AnchoredPosition: {x: 23.3, y: 0.96}
   m_SizeDelta: {x: 349.4769, y: 37.1071}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1357916792
@@ -444,10 +444,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3558162912056048867}
   - component: {fileID: 6938246119093238734}
-  - component: {fileID: 325162610983974715}
   - component: {fileID: 3262185178543949007}
-  - component: {fileID: 5412031406267353684}
   - component: {fileID: -817849967266670583}
+  - component: {fileID: 4181139142821017753}
+  - component: {fileID: 3936011999362495541}
   m_Layer: 0
   m_Name: Ranged
   m_TagString: Enemy
@@ -512,7 +512,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: fead9f5b3c50655429d34bde4549186e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6f28498a3db32364db612d4703dcd62a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -523,32 +523,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &325162610983974715
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 62309191026090210}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1.6647922, y: -0.24315977}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 12, y: 12}
-    newSize: {x: 12, y: 12}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 8.670416, y: 9.929437}
-  m_EdgeRadius: 0
 --- !u!50 &3262185178543949007
 Rigidbody2D:
   serializedVersion: 4
@@ -570,26 +544,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &5412031406267353684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 62309191026090210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 476a3d11869513448beca7e12d882dd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 1235455386}
-  enemyType: 1
-  meleeState: 0
-  rangedState: 0
-  moveSpeed: 1
-  meleeAttackDistance: 1.2
-  rangedAttackDistance: 5
-  startHealth: 50
 --- !u!95 &-817849967266670583
 Animator:
   serializedVersion: 4
@@ -598,9 +552,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62309191026090210}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 07734278d4c21b54db4df253fd242a49, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -610,3 +564,48 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4181139142821017753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62309191026090210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ffcc3271d109f488e0b0f81062c5df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 1235455386}
+  rangedAttackDistance: 15
+  enemyData: {fileID: 11400000, guid: 9ec53234b0918f54b8c5749656885364, type: 2}
+  bullet: {fileID: 2202982687252298903, guid: d679ff4c6079a5344861e0c22509bd00, type: 3}
+  bulletForce: 3
+  rangedAttackInterval: 10
+  rangedState: 0
+--- !u!61 &3936011999362495541
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62309191026090210}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5038705, y: -0.49359035}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 20, y: 20}
+    newSize: {x: 12, y: 12}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 13.61132, y: 17.882795}
+  m_EdgeRadius: 0
