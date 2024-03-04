@@ -365,18 +365,8 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag(Const.villageOld))
         {
             canMove = false;
-            if(canMove == true)
-            {
-                Debug.Log("abc");
-            } else
-            {
-                Debug.Log("FALSE");
-                IdleState();
-            }
-            Debug.Log("canMove " + canMove);
+            playerState = PlayerState.Idle;
             Invoke("Talk",1f);
-
-
             //TalkToPlayer();
         }
     }
