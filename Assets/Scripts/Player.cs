@@ -364,10 +364,10 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(Const.villageOld))
         {
+            Loading.Instance.LoadingOpen();
             canMove = false;
             playerState = PlayerState.Idle;
             Invoke("Talk",1f);
-            //TalkToPlayer();
         }
     }
     void Talk()

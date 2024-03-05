@@ -13,6 +13,7 @@ public class MeleeEnemy : Enemy
     private Animator animator;
     private bool canAttack = false;
     private int attack;
+    private int exp;
     public EnemyData enemyData;
 
 
@@ -29,6 +30,7 @@ public class MeleeEnemy : Enemy
     {
         currentHealth = enemyData.health;
         attack = enemyData.attack;
+        exp = enemyData.exp;
         healthBar.SetMaxHealth(currentHealth);
         meleeState = MeleeState.Idle;
         animator = GetComponent<Animator>();
@@ -73,6 +75,7 @@ public class MeleeEnemy : Enemy
     public override void Die()
     {
        base.Die();
+        ExpManager.Instance.AddExp(exp);
     }
     #region MeleeState
     void MeleeIdle()
@@ -98,7 +101,7 @@ public class MeleeEnemy : Enemy
 
     void TakeDamageFromPlayer() // khi chay ham nay thi Player se mat mau
     {
-        player.TakeDamageFromEnemy(enemyData.attack);
+        player.TakeDamageFromEnemy(attack);
     }
     public void MoveToPlayer()
     {

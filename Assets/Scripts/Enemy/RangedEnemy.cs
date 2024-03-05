@@ -15,7 +15,7 @@ public class RangedEnemy : Enemy
     public float rangedAttackDistance = 5f;
     float rangedAttackTimer = 0f;
     public float rangedAttackInterval = 3f;
-
+    private int exp;
     public RangedState rangedState;
     public enum RangedState
     {
@@ -27,6 +27,7 @@ public class RangedEnemy : Enemy
     {
         currentHealth = enemyData.health;
         attack = enemyData.attack;
+        exp = enemyData.exp;
         healthBar.SetMaxHealth(currentHealth);
         rangedState = RangedState.Idle;
         animator = GetComponent<Animator>();
@@ -88,6 +89,8 @@ public class RangedEnemy : Enemy
     public override void Die()
     {
         base.Die();
+        ExpManager.Instance.AddExp(exp);
+
     }
     #region RangedState
     void RangedIdle()
