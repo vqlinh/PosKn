@@ -397,7 +397,7 @@ public class Player : MonoBehaviour
     void LevelUp()
     {
         maxHealth += 10;
-        currentHealth = maxHealth;
+        //currentHealth = maxHealth;
         currentLevel++;
         currentExp = currentExp - maxExp;
         maxExp += 100;
