@@ -382,20 +382,17 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        ExpManager.instance.OnExpChange += HandlerExpChange;
+        ExpManager.Instance.OnExpChange += HandlerExpChange;
     }
     private void OnDisable()
     {
-        ExpManager.instance.OnExpChange -= HandlerExpChange;
+        ExpManager.Instance.OnExpChange -= HandlerExpChange;
     }
 
     private void HandlerExpChange(int newExp)
     {
         currentExp += newExp;
-        if (currentExp > maxExp)
-        {
-            LevelUp();
-        }
+        if (currentExp > maxExp) LevelUp();
     }
     void LevelUp()
     {
@@ -405,5 +402,6 @@ public class Player : MonoBehaviour
         currentExp = currentExp - maxExp;
         maxExp += 100;
     }
+
 }
 

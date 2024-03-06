@@ -2494,8 +2494,8 @@ MonoBehaviour:
   coolDown2: 3
   timeCoolDownShield: 3
   imgCoolDown3: {fileID: 399512317}
-  coolDown3: 2
-  timeCoolDownHealing: 2
+  coolDown3: 8
+  timeCoolDownHealing: 8
   healthBar: {fileID: 640624712}
   maxHealth: 100
   currentExp: 0

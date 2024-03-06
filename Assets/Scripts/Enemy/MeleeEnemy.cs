@@ -75,7 +75,7 @@ public class MeleeEnemy : Enemy
     public override void Die()
     {
        base.Die();
-        ExpManager.instance.AddExp(expAmount);
+        ExpManager.Instance.AddExp(expAmount);
     }
     #region MeleeState
     void MeleeIdle()

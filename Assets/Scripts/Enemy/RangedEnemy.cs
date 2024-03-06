@@ -89,7 +89,7 @@ public class RangedEnemy : Enemy
     public override void Die()
     {
         base.Die();
-        ExpManager.instance.AddExp(expAmount);
+        ExpManager.Instance.AddExp(expAmount);
     }
     #region RangedState
     void RangedIdle()
