@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Loading : MonoBehaviour
 {
-    public Animator animator;
+    private Animator animator;
     public static Loading Instance;
     private void Awake()
     {

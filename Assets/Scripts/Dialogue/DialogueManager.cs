@@ -51,6 +51,7 @@ public class DialogueManager : MonoBehaviour
     }
     public void EndDialogue()
     {
+        Chief.Instance.isMove = true;
         animator.SetBool("isOpen", false);
         Loading.Instance.LoadingClose();
     }

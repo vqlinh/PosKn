@@ -34,6 +34,9 @@ public class Player : MonoBehaviour
     public HealthBar healthBar;
     private int currentHealth;
     [SerializeField] private int maxHealth = 100;
+    public int currentExp;
+    public int maxExp;
+    public int currentLevel;
     #endregion
     [Header("MOVEMENT")]
     [SerializeField] private float speed = 1f;
@@ -69,18 +72,18 @@ public class Player : MonoBehaviour
     #endregion
     private void Start()
     {
+        currentHealth = maxHealth;
         imgCoolDown1.fillAmount = 0;
         imgCoolDown2.fillAmount = 0;
         imgCoolDown3.fillAmount = 0;
-        buttonManager = FindObjectOfType<ButtonManager>();
         skillAttack.SetActive(false);
-        gameManager = GameManager.instance;
-        animator = GetComponent<Animator>();
 
         playerState = PlayerState.Moving;
-        currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
+        gameManager = GameManager.instance;
+        animator = GetComponent<Animator>();
         _skillShield.gameObject.SetActive(false);
+        buttonManager = FindObjectOfType<ButtonManager>();
         gameManager.txtMaxHeal.text = maxHealth.ToString();
     }
 
@@ -232,7 +235,6 @@ public class Player : MonoBehaviour
 
     }
     #endregion
-    // -------------------------------------- máu hồi mà lớn hơn max thì k chạy hàm cooldown,(fix sau)-----------------------------------------------
     #region Skill_3
     public void Skillhealing() // click button
     {
@@ -357,23 +359,51 @@ public class Player : MonoBehaviour
 
     public void TakeDamageFromEnemy(int damage)
     {
+        Debug.Log("TakeDamageFromEnemy");
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Const.villageOld))
+        if (collision.gameObject.CompareTag(Const.chief))
         {
-            Loading.Instance.LoadingOpen();
+            //Loading.Instance.LoadingOpen();
             canMove = false;
             playerState = PlayerState.Idle;
             Invoke("Talk",1f);
         }
     }
+
     void Talk()
     {
         dialogueTrigger.TriggerDialouge();
+    }
 
+    private void OnEnable()
+    {
+        ExpManager.instance.OnExpChange += HandlerExpChange;
+    }
+    private void OnDisable()
+    {
+        ExpManager.instance.OnExpChange -= HandlerExpChange;
+    }
+
+    private void HandlerExpChange(int newExp)
+    {
+        currentExp += newExp;
+        if (currentExp > maxExp)
+        {
+            LevelUp();
+        }
+    }
+    void LevelUp()
+    {
+        maxHealth += 10;
+        currentHealth = maxHealth;
+        currentLevel++;
+        currentExp = currentExp - maxExp;
+        maxExp += 100;
     }
 }
 

@@ -13,8 +13,8 @@ public class MeleeEnemy : Enemy
     private Animator animator;
     private bool canAttack = false;
     private int attack;
-    private int exp;
     public EnemyData enemyData;
+    int expAmount;
 
 
     public MeleeState meleeState;
@@ -28,9 +28,9 @@ public class MeleeEnemy : Enemy
 
     private void Awake()
     {
+        expAmount = enemyData.exp;
         currentHealth = enemyData.health;
         attack = enemyData.attack;
-        exp = enemyData.exp;
         healthBar.SetMaxHealth(currentHealth);
         meleeState = MeleeState.Idle;
         animator = GetComponent<Animator>();
@@ -75,7 +75,7 @@ public class MeleeEnemy : Enemy
     public override void Die()
     {
        base.Die();
-        ExpManager.Instance.AddExp(exp);
+        ExpManager.instance.AddExp(expAmount);
     }
     #region MeleeState
     void MeleeIdle()

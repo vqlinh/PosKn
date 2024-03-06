@@ -13,8 +13,8 @@ public class EnemySpawn : MonoBehaviour
     bool isSpawn = false;
     void Start()
     {
-        GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x+10f,player.transform.position.y), Quaternion.identity);
-        GameObject ranged1 = Instantiate(ranged,new Vector2(player.transform.position.x + 20f, player.transform.position.y), Quaternion.identity);
+        GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
+        GameObject ranged1 = Instantiate(ranged, new Vector2(player.transform.position.x + 20f, player.transform.position.y), Quaternion.identity);
         listEnemySpawn.Add(melee1);
         listEnemySpawn.Add(ranged1);
     }
@@ -22,17 +22,21 @@ public class EnemySpawn : MonoBehaviour
     void Update()
     {
         listEnemySpawn.RemoveAll(enemy => enemy == null || !enemy.activeSelf);
-        if (listEnemySpawn.Count==0)
-        {
-            SpawnVillageOld();
-        }
+        if (listEnemySpawn.Count == 0) SpawnVillageOld();
     }
+
     void SpawnVillageOld()
     {
         if (!isSpawn)
         {
+            Invoke("Load", 1f);
             isSpawn = true;
             Instantiate(villageOld, new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
         }
+    }
+
+    void Load()
+    {
+        Loading.Instance.LoadingOpen();
     }
 }

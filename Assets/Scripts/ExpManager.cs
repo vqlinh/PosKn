@@ -5,16 +5,21 @@ using UnityEngine;
 public class ExpManager : MonoBehaviour
 {
     public delegate void ExpChangeHandler(int amount);
-    public event ExpChangeHandler onExpChange;
-
-    public static ExpManager Instance;
+    public event ExpChangeHandler OnExpChange;
+    public static ExpManager instance;
     private void Awake()
     {
-        Instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
     }
-
     public void AddExp(int amount)
     {
-        onExpChange?.Invoke(amount);
+        OnExpChange?.Invoke(amount);
     }
 }

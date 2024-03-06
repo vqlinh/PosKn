@@ -15,7 +15,7 @@ public class RangedEnemy : Enemy
     public float rangedAttackDistance = 5f;
     float rangedAttackTimer = 0f;
     public float rangedAttackInterval = 3f;
-    private int exp;
+    int expAmount;
     public RangedState rangedState;
     public enum RangedState
     {
@@ -25,9 +25,9 @@ public class RangedEnemy : Enemy
     }
     private void Awake()
     {
+        expAmount = enemyData.exp;
         currentHealth = enemyData.health;
         attack = enemyData.attack;
-        exp = enemyData.exp;
         healthBar.SetMaxHealth(currentHealth);
         rangedState = RangedState.Idle;
         animator = GetComponent<Animator>();
@@ -89,8 +89,7 @@ public class RangedEnemy : Enemy
     public override void Die()
     {
         base.Die();
-        ExpManager.Instance.AddExp(exp);
-
+        ExpManager.instance.AddExp(expAmount);
     }
     #region RangedState
     void RangedIdle()
@@ -110,14 +109,20 @@ public class RangedEnemy : Enemy
     void Shoot()
     {
         GameObject fireBullet = Instantiate(bullet, new Vector2(transform.position.x - 0.5f, transform.position.y), transform.rotation);
+        Bullet bulletScript = fireBullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            bulletScript.SetRangedEnemy(this);
+        }
         Rigidbody2D rb = fireBullet.GetComponent<Rigidbody2D>();
         rb.AddForce(Vector2.left * bulletForce, ForceMode2D.Impulse);
     }
     #endregion
 
-    void TakeDamageFromPlayer() // khi chay ham nay thi Player se mat mau
+    public void TakeDamageFromPlayer() // khi chay ham nay thi Player se mat mau
     {
-        player.TakeDamageFromEnemy(enemyData.attack);
+        Debug.Log("TakeDamageFromPlayer");
+        player.TakeDamageFromEnemy(attack);
     }
 
     void Damaged()
