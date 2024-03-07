@@ -43,11 +43,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float disBack = 1f;
     [SerializeField] private float distanceMoveBack = 2f;
     [SerializeField] private float distanceAttack;
+    public TextMeshProUGUI level;
     //[SerializeField] private GameObject skillShield;
 
     private bool canTriggerDamagedState = true;
     Animator animator;
-    private bool canMove = true;
+    public bool canMove = true;
     private bool canMoveBack = true;
     private bool hasAttacked = false;
     private bool isMoveBack = false;
@@ -89,6 +90,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        level.text = currentLevel.ToString();
         healthBar.SetHealth(currentHealth);
         gameManager.txtCurrentHeal.text = currentHealth.ToString();
         CheckDistanceForNormalAttack();

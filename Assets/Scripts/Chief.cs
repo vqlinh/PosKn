@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Chief : Singleton<Chief>
 {
+    public UiManager uiManager;
     public bool isMove = false;
     private void Update()
     {
@@ -17,11 +18,13 @@ public class Chief : Singleton<Chief>
     {
         Debug.Log("Move");
         transform.Translate(Vector3.right * 3f * Time.deltaTime);
-        Invoke("Destroy", 5f);
+        Invoke("hide", 1f);
+
+        uiManager.PanelFadeIn();
     }
 
-    void Destroy()
+    void hide()
     {
-        Destroy(this.gameObject, 1f);
+        gameObject.SetActive(false);
     }
 }
