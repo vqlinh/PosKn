@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Chief : Singleton<Chief>
 {
-    public UiManager uiManager;
     public bool isMove = false;
     private void Update()
     {
@@ -20,7 +19,7 @@ public class Chief : Singleton<Chief>
         transform.Translate(Vector3.right * 3f * Time.deltaTime);
         Invoke("hide", 1f);
 
-        uiManager.PanelFadeIn();
+        UiManager.Instance.PanelFadeIn();
     }
 
     void hide()

@@ -26,4 +26,5 @@ public class Const : MonoBehaviour
 
     public const string chief = "Chief";
     public const string isLoading = "isLoading";
+    public const string isOpen = "isOpen";
 }
