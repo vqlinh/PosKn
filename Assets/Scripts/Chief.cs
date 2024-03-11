@@ -15,11 +15,11 @@ public class Chief : Singleton<Chief>
     }
     public void Move()
     {
+        //UiManager.Instance.PanelFadeIn();
         Debug.Log("Move");
         transform.Translate(Vector3.right * 3f * Time.deltaTime);
         Invoke("hide", 1f);
 
-        UiManager.Instance.PanelFadeIn();
     }
 
     void hide()

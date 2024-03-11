@@ -54,5 +54,12 @@ public class DialogueManager : MonoBehaviour
         Chief.Instance.isMove = true;
         animator.SetBool("isOpen", false);
         Loading.Instance.LoadingClose();
+        Invoke("PanelUi",1f);
     }
+    public void PanelUi()
+    {
+
+        UiManager.Instance.PanelFadeIn();
+    }
+
 }

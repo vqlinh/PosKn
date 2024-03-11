@@ -8,6 +8,9 @@ public class Enemy : MonoBehaviour
     public int currentHealth;
     public static Enemy Instance;
     public Transform playerTransform;
+    public GameObject prefabCoins;
+    int minCoins = 0;
+    int maxCoins = 3;
 
     private void Awake()
     {
@@ -43,6 +46,11 @@ public class Enemy : MonoBehaviour
 
     public virtual void Die()
     {
+        int numCoins=Random.Range(minCoins, maxCoins);
+        for (int i=0;i<=numCoins;i++)
+        {
+            Instantiate(prefabCoins,transform.position,Quaternion.identity);
+        }
         float duration = 0.8f;
         Vector2 targetPosition = new Vector2(transform.position.x + 20f, transform.position.y + 10f); 
         transform.DOMove(targetPosition, duration).SetEase(Ease.Linear).OnComplete(() => Destroy(gameObject));

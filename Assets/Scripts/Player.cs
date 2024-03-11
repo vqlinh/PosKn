@@ -9,56 +9,58 @@ public class Player : MonoBehaviour
 {
     #region COOLDOWN
     [Header("CoolDown")]
-    private bool isAttack = false;
-    private bool isClick1 = false;
+    private bool isCoolDown1;
     public Image imgCoolDown1;
     public float coolDown1 = 2f;
-    private bool isCoolDown1;
+    private bool isAttack = false;
+    private bool isClick1 = false;
     [SerializeField] private float timeCoolDownAttack = 2f;
-    private bool isShield = false;
-    private bool isClick2 = false;
+
+    private bool isCoolDown2;
     public Image imgCoolDown2;
     public float coolDown2 = 3f;
-    private bool isCoolDown2;
+    private bool isShield = false;
+    private bool isClick2 = false;
     [SerializeField] private float timeCoolDownShield = 3f;
-    private bool isHealing = false;
-    private bool isClick3 = false;
+
+    private bool isCoolDown3;
     public Image imgCoolDown3;
     public float coolDown3 = 8f;
-    private bool isCoolDown3;
+    private bool isClick3 = false;
+    private bool isHealing = false;
     [SerializeField] private float timeCoolDownHealing = 8f;
-    //public Button btnSkill3;
     #endregion
     #region HEALTH
-    [Header("HEALTH")]
-    public HealthBar healthBar;
-    private int currentHealth;
-    [SerializeField] private int maxHealth = 100;
-    public int currentExp;
+    [Header("HEALTH & Exp")]
     public int maxExp;
+    public int currentExp;
     public int currentLevel;
+    private int currentHealth;
+    public HealthBar expBar;
+    public HealthBar healthBar;
+    public TextMeshProUGUI level;
+    [SerializeField] private int maxHealth = 100;
     #endregion
     [Header("MOVEMENT")]
     [SerializeField] private float speed = 1f;
     [SerializeField] private float disBack = 1f;
-    [SerializeField] private float distanceMoveBack = 2f;
     [SerializeField] private float distanceAttack;
-    public TextMeshProUGUI level;
-    //[SerializeField] private GameObject skillShield;
+    [SerializeField] private float distanceMoveBack = 2f;
 
-    private bool canTriggerDamagedState = true;
     Animator animator;
     public bool canMove = true;
-    private bool canMoveBack = true;
-    private bool hasAttacked = false;
-    private bool isMoveBack = false;
-    private bool hasMoveBack = false;
     private bool Shielding = false;
-    private GameManager gameManager;
+    private bool canMoveBack = true;
+    private bool isMoveBack = false;
+    private bool hasAttacked = false;
+    private bool hasMoveBack = false;
+    private bool canTriggerDamagedState = true;
+
     public EnemySpawn enemySpawn;
     public GameObject skillAttack;
-    private ButtonManager buttonManager;
+    private GameManager gameManager;
     public SkillShield _skillShield;
+    private ButtonManager buttonManager;
     public DialogueTrigger dialogueTrigger;
     #region ENUM-STATE
     private PlayerState playerState;
@@ -80,6 +82,7 @@ public class Player : MonoBehaviour
         skillAttack.SetActive(false);
 
         playerState = PlayerState.Moving;
+        expBar.SetMaxHealth(maxExp);
         healthBar.SetMaxHealth(maxHealth);
         gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
@@ -90,14 +93,15 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        level.text = currentLevel.ToString();
-        healthBar.SetHealth(currentHealth);
-        gameManager.txtCurrentHeal.text = currentHealth.ToString();
-        CheckDistanceForNormalAttack();
         CheckState();
         CoolDownSkill1();
         CoolDownSkill2();
         CoolDownSkill3();
+        expBar.SetHealth(currentExp);
+        CheckDistanceForNormalAttack();
+        healthBar.SetHealth(currentHealth);
+        level.text = currentLevel.ToString();
+        gameManager.txtCurrentHeal.text = currentHealth.ToString();
     }
     #region CoolDown_1
     public void CoolDownSkill1()
@@ -327,6 +331,7 @@ public class Player : MonoBehaviour
 
     void NormalAttackState()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxNormalAttack);
         animator.SetTrigger(Const.animNormalAttack);
         playerState = PlayerState.Moving;
     }
