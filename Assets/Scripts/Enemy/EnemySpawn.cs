@@ -8,9 +8,13 @@ public class EnemySpawn : MonoBehaviour
     public List<GameObject> listEnemySpawn = new List<GameObject>();
     public GameObject melee;
     public GameObject ranged;
-    public Transform player;
+    private Transform player;
     public GameObject villageOld;
     bool isSpawn = false;
+    private void Awake()
+    {
+        player= GameObject.FindGameObjectWithTag(Const.player).transform;
+    }
     void Start()
     {
         GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);

@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     #region COOLDOWN
     [Header("CoolDown")]
     private bool isCoolDown1;
-    public Image imgCoolDown1;
+    private Image imgCoolDown1;
     public float coolDown1 = 2f;
     private bool isAttack = false;
     private bool isClick1 = false;
@@ -72,6 +72,10 @@ public class Player : MonoBehaviour
         NormalAttack
     }
     #endregion
+    private void Awake()
+    {
+        imgCoolDown1 = GameObject.Find("Image1").GetComponent<Image>();
+    }
     private void Start()
     {
         currentHealth = maxHealth;

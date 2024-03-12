@@ -5,9 +5,10 @@ using DG.Tweening;
 public class Enemy : MonoBehaviour
 {
     public Player player;
+    public Transform playerTransform;
+
     public int currentHealth;
     public static Enemy Instance;
-    public Transform playerTransform;
     public GameObject prefabCoins;
     int minCoins = 1;
     int maxCoins = 3;
