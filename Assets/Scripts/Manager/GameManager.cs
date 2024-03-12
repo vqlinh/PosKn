@@ -1,33 +1,41 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-
     public TextMeshProUGUI txtMaxHeal;
     public TextMeshProUGUI txtCurrentHeal;
+    public TextMeshProUGUI coins;
+    public int coin;
 
-    public static GameManager instance;
-    private void Awake()
+    private const string CoinKey = "PlayerCoin";
+
+    private void Start()
     {
-        if (instance != null && instance != this) Destroy(this.gameObject);
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+        LoadCoin();
     }
+
     private void Update()
     {
-    }
-    public void LoadSceneWait()
-    {
-        SceneManager.LoadScene("SceneWait");
+        coins.text = coin.ToString();
     }
 
+    private void OnDestroy()
+    {
+        SaveCoin();
+    }
+
+    public void SaveCoin()
+    {
+        PlayerPrefs.SetInt(CoinKey, coin);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadCoin()
+    {
+        if (PlayerPrefs.HasKey(CoinKey)) coin = PlayerPrefs.GetInt(CoinKey);
+    }
 }

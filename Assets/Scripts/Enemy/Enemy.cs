@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public static Enemy Instance;
     public Transform playerTransform;
     public GameObject prefabCoins;
-    int minCoins = 0;
+    int minCoins = 1;
     int maxCoins = 3;
 
     private void Awake()
@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(MoveBack());
     }
 
-    private IEnumerator MoveBack( )
+    private IEnumerator MoveBack()
     {
         float elapsedTime = 0f;
         float duration = 0.5f;
@@ -46,15 +46,29 @@ public class Enemy : MonoBehaviour
 
     public virtual void Die()
     {
-        int numCoins=Random.Range(minCoins, maxCoins);
-        for (int i=0;i<=numCoins;i++)
-        {
-            Instantiate(prefabCoins,transform.position,Quaternion.identity);
-        }
-        float duration = 0.8f;
-        Vector2 targetPosition = new Vector2(transform.position.x + 20f, transform.position.y + 10f); 
+        float duration = 1f;
+        Vector2 targetPosition = new Vector2(transform.position.x + 20f, transform.position.y + 10f);
         transform.DOMove(targetPosition, duration).SetEase(Ease.Linear).OnComplete(() => Destroy(gameObject));
-        transform.DORotate(new Vector3(0, 0, 360), 0.1f, RotateMode.FastBeyond360).SetEase(Ease.Linear);
+        transform.DORotate(new Vector3(0, 0, 360), 0.3f, RotateMode.FastBeyond360).SetEase(Ease.Linear);
+        SpawmCoins();
+    }
+
+    void SpawmCoins()
+    {
+        int numCoins = Random.Range(minCoins, maxCoins + 1);
+        for (int i = 0; i < numCoins; i++)
+        {
+            float randomX = transform.position.x + Random.Range(0f,3f) ;
+            float randomY = transform.position.y ;
+            Vector2 randomPosition = new Vector2(randomX, randomY);
+            GameObject coin = Instantiate(prefabCoins, randomPosition, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
+            coin.transform.DOMoveY(randomY + 1f, 0.3f).SetEase(Ease.OutQuad) 
+            .OnComplete(() =>
+            {
+                coin.transform.DOMoveY(randomY-0.5f, 0.3f).SetEase(Ease.InQuad);
+            });
+        }
+
     }
 
     public virtual void TakeDamage(int amount)

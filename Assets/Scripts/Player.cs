@@ -58,7 +58,6 @@ public class Player : MonoBehaviour
 
     public EnemySpawn enemySpawn;
     public GameObject skillAttack;
-    private GameManager gameManager;
     public SkillShield _skillShield;
     private ButtonManager buttonManager;
     public DialogueTrigger dialogueTrigger;
@@ -84,11 +83,10 @@ public class Player : MonoBehaviour
         playerState = PlayerState.Moving;
         expBar.SetMaxHealth(maxExp);
         healthBar.SetMaxHealth(maxHealth);
-        gameManager = GameManager.instance;
         animator = GetComponent<Animator>();
         _skillShield.gameObject.SetActive(false);
         buttonManager = FindObjectOfType<ButtonManager>();
-        gameManager.txtMaxHeal.text = maxHealth.ToString();
+        GameManager.Instance.txtMaxHeal.text = maxHealth.ToString();
     }
 
     private void Update()
@@ -101,7 +99,7 @@ public class Player : MonoBehaviour
         CheckDistanceForNormalAttack();
         healthBar.SetHealth(currentHealth);
         level.text = currentLevel.ToString();
-        gameManager.txtCurrentHeal.text = currentHealth.ToString();
+        GameManager.Instance.txtCurrentHeal.text = currentHealth.ToString();
     }
     #region CoolDown_1
     public void CoolDownSkill1()
@@ -380,6 +378,31 @@ public class Player : MonoBehaviour
             playerState = PlayerState.Idle;
             Invoke("Talk",1f);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag(Const.coin))
+        {
+            CollectCoin(collision.gameObject);
+        }
+    }
+
+    private void CollectCoin(GameObject coin)
+    {
+        // Add DOTween animations for the coin collection
+        coin.transform.DOMove(transform.position, 0.2f) // Move to the player
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                coin.transform.DOScale(Vector3.zero, 0.1f) // Scale down
+                    .SetEase(Ease.OutQuad)
+                    .OnComplete(() =>
+                    {
+                        GameManager.Instance.coin += 10;
+                        Destroy(coin);
+                    });
+            });
     }
 
     void Talk()
