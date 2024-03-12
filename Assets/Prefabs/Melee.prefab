@@ -602,6 +602,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e5cf66b38752b4c91baee4581d200f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  currentHealth: 0
+  playerTransform: {fileID: 0}
+  prefabCoins: {fileID: 7895382476794099328, guid: d285f42a352277f4bb7a88e90bc7723a, type: 3}
   healthBar: {fileID: 1064278818}
   moveSpeed: 1
   meleeAttackDistance: 1.2
