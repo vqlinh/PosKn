@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform player;
-    [SerializeField] private float smoothSpeed = 0.125f;
-    [SerializeField] private float offet = 2f;
+     private Transform player;
+     private float smoothSpeed = 0.125f;
+     private float offet = 2f;
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag(Const.player).transform;
+    }
 
     void LateUpdate()
     {

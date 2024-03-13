@@ -108,7 +108,7 @@ public class RangedEnemy : Enemy
 
     void Shoot()
     {
-        GameObject fireBullet = Instantiate(bullet, new Vector2(transform.position.x - 0.5f, transform.position.y), transform.rotation);
+        GameObject fireBullet = Instantiate(bullet, new Vector2(transform.position.x - 0.5f, 0f), transform.rotation);
         Bullet bulletScript = fireBullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {

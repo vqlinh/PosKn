@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class UiManager : Singleton<UiManager>
+public class UiManager : MonoBehaviour
 {
     public float fadeTime = 0.5f;
     public CanvasGroup canvasGroup;

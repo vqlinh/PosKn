@@ -5,18 +5,16 @@ using static EnemySpawn;
 
 public class EnemySpawn : MonoBehaviour
 {
-    public List<GameObject> listEnemySpawn = new List<GameObject>();
+    bool isSpawn = false;
     public GameObject melee;
     public GameObject ranged;
     private Transform player;
     public GameObject villageOld;
-    bool isSpawn = false;
-    private void Awake()
-    {
-        player= GameObject.FindGameObjectWithTag(Const.player).transform;
-    }
+    public List<GameObject> listEnemySpawn = new List<GameObject>();
+
     void Start()
     {
+        player= GameObject.FindGameObjectWithTag(Const.player).transform;
         GameObject melee1 = Instantiate(melee, new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
         GameObject ranged1 = Instantiate(ranged, new Vector2(player.transform.position.x + 20f, player.transform.position.y), Quaternion.identity);
         listEnemySpawn.Add(melee1);

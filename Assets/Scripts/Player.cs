@@ -17,14 +17,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float timeCoolDownAttack = 2f;
 
     private bool isCoolDown2;
-    public Image imgCoolDown2;
+    private Image imgCoolDown2;
     public float coolDown2 = 3f;
     private bool isShield = false;
     private bool isClick2 = false;
     [SerializeField] private float timeCoolDownShield = 3f;
 
     private bool isCoolDown3;
-    public Image imgCoolDown3;
+    private Image imgCoolDown3;
     public float coolDown3 = 8f;
     private bool isClick3 = false;
     private bool isHealing = false;
@@ -36,9 +36,9 @@ public class Player : MonoBehaviour
     public int currentExp;
     public int currentLevel;
     private int currentHealth;
-    public HealthBar expBar;
-    public HealthBar healthBar;
-    public TextMeshProUGUI level;
+    private HealthBar expBar;
+    private HealthBar healthBar;
+    private TextMeshProUGUI level;
     [SerializeField] private int maxHealth = 100;
     #endregion
     [Header("MOVEMENT")]
@@ -56,11 +56,11 @@ public class Player : MonoBehaviour
     private bool hasMoveBack = false;
     private bool canTriggerDamagedState = true;
 
-    public EnemySpawn enemySpawn;
-    public GameObject skillAttack;
-    public SkillShield _skillShield;
+    private EnemySpawn enemySpawn;
+    private GameObject skillAttack;
+    private SkillShield _skillShield;
     private ButtonManager buttonManager;
-    public DialogueTrigger dialogueTrigger;
+    private DialogueTrigger dialogueTrigger;
     #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
@@ -74,7 +74,17 @@ public class Player : MonoBehaviour
     #endregion
     private void Awake()
     {
+        LoadData();
+        skillAttack = GameObject.Find("attack");
+        expBar = GameObject.Find("ExpBar").GetComponent<HealthBar>();
         imgCoolDown1 = GameObject.Find("Image1").GetComponent<Image>();
+        imgCoolDown2 = GameObject.Find("Image2").GetComponent<Image>();
+        imgCoolDown3 = GameObject.Find("Image3").GetComponent<Image>();
+        level = GameObject.Find("TxtLevel").GetComponent<TextMeshProUGUI>();
+        _skillShield = GameObject.Find("Shield").GetComponent<SkillShield>();
+        enemySpawn = GameObject.Find("SpawnEnemy").GetComponent<EnemySpawn>();
+        healthBar = GameObject.Find("HealthBarPlayer").GetComponent<HealthBar>();
+        dialogueTrigger = GameObject.Find("DialogueBox").GetComponent<DialogueTrigger>();
     }
     private void Start()
     {
@@ -300,16 +310,19 @@ public class Player : MonoBehaviour
         float minDistance = float.MaxValue;
         for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
         {
-            float distance = Vector2.Distance(transform.position, enemySpawn.listEnemySpawn[i].transform.position);
-            if (distance < minDistance) minDistance = distance;
+            if (enemySpawn.listEnemySpawn[i] != null)
+            {
+                float distance = Vector2.Distance(transform.position, enemySpawn.listEnemySpawn[i].transform.position);
+                if (distance < minDistance) minDistance = distance;
+            }
         }
-        if (minDistance <= distanceAttack && !hasAttacked) // danh tay truoc
+        if (minDistance <= distanceAttack && !hasAttacked)
         {
             hasAttacked = true;
             NormalAttackState();
         }
-        else if (minDistance > distanceAttack) hasAttacked = false; // Đặt lại biến khi khoảng cách lớn hơn 2f
-        if (minDistance <= distanceMoveBack && !hasMoveBack) // danh tay xong roi moi lui lai
+        else if (minDistance > distanceAttack) hasAttacked = false;
+        if (minDistance <= distanceMoveBack && !hasMoveBack)
         {
             hasMoveBack = true;
             DamagedState();
@@ -363,7 +376,7 @@ public class Player : MonoBehaviour
 
     public void Move()
     {
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
+        transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
     public void TakeDamageFromEnemy(int damage)
@@ -377,29 +390,24 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(Const.chief))
         {
-            //Loading.Instance.LoadingOpen();
             canMove = false;
             playerState = PlayerState.Idle;
-            Invoke("Talk",1f);
+            Invoke("Talk", 1f);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag(Const.coin))
-        {
-            CollectCoin(collision.gameObject);
-        }
+        if (collision.gameObject.CompareTag(Const.coin)) CollectCoin(collision.gameObject);
     }
 
     private void CollectCoin(GameObject coin)
     {
-        // Add DOTween animations for the coin collection
-        coin.transform.DOMove(transform.position, 0.2f) // Move to the player
+        coin.transform.DOMove(transform.position, 0.2f)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                coin.transform.DOScale(Vector3.zero, 0.1f) // Scale down
+                coin.transform.DOScale(Vector3.zero, 0.1f)
                     .SetEase(Ease.OutQuad)
                     .OnComplete(() =>
                     {
@@ -427,15 +435,34 @@ public class Player : MonoBehaviour
     {
         currentExp += newExp;
         if (currentExp > maxExp) LevelUp();
+        SaveData();
     }
     void LevelUp()
     {
         maxHealth += 10;
-        //currentHealth = maxHealth;
         currentLevel++;
         currentExp = currentExp - maxExp;
         maxExp += 100;
+        SaveData();
     }
+
+    public void SaveData()
+    {
+        PlayerPrefs.SetInt("MaxExp", maxExp);
+        PlayerPrefs.SetInt("Exp", currentExp);
+        PlayerPrefs.SetInt("Level", currentLevel);
+        PlayerPrefs.SetInt("MaxHealth", maxHealth);
+        PlayerPrefs.Save();
+    }
+    public void LoadData()
+    {
+        maxExp = PlayerPrefs.GetInt("MaxExp", maxExp);
+        currentExp = PlayerPrefs.GetInt("Exp", currentExp);
+        currentLevel = PlayerPrefs.GetInt("Level", currentLevel);
+        maxHealth = PlayerPrefs.GetInt("MaxHealth", maxHealth);
+    }
+
+
 
 }
 

@@ -9,10 +9,12 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
     public Animator animator;
+    public UiManager uiManager;
     // Start is called before the first frame update
     private void Awake()
     {
         sentences = new Queue<string>();
+        uiManager=GameObject.Find("PanelStageComplete").GetComponent<UiManager>();
     }
 
     // Update is called once per frame
@@ -59,7 +61,7 @@ public class DialogueManager : MonoBehaviour
     public void PanelUi()
     {
 
-        UiManager.Instance.PanelFadeIn();
+        uiManager.PanelFadeIn();
     }
 
 }

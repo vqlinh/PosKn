@@ -16,8 +16,12 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+    private void Start()
+    {
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
         player = GameObject.FindObjectOfType<Player>();
+        
     }
 
     public void MoveToNewPosition(Vector2 newPosition)
@@ -47,7 +51,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void Die()
     {
-        float duration = 1f;
+        float duration = 0.5f;
         Vector2 targetPosition = new Vector2(transform.position.x + 20f, transform.position.y + 10f);
         transform.DOMove(targetPosition, duration).SetEase(Ease.Linear).OnComplete(() => Destroy(gameObject));
         transform.DORotate(new Vector3(0, 0, 360), 0.3f, RotateMode.FastBeyond360).SetEase(Ease.Linear);
