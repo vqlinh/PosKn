@@ -2623,7 +2623,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 9999
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -3312,8 +3312,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   txtMaxHeal: {fileID: 422674733}
   txtCurrentHeal: {fileID: 447196035}
-  coins: {fileID: 657677481}
+  txtCoins: {fileID: 657677481}
   coin: 0
+  coinData: {fileID: 11400000, guid: fe8c72885ba3f824ba1de19494e48ab6, type: 2}
 --- !u!4 &792591949
 Transform:
   m_ObjectHideFlags: 0

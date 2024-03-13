@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,10 +8,13 @@ public class GameManager : Singleton<GameManager>
 {
     public TextMeshProUGUI txtMaxHeal;
     public TextMeshProUGUI txtCurrentHeal;
-    public TextMeshProUGUI coins;
+    public TextMeshProUGUI txtCoins;
     public int coin;
-
-    private const string CoinKey = "PlayerCoin";
+    public CoinData coinData;
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start()
     {
@@ -20,22 +23,23 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
-        coins.text = coin.ToString();
-    }
+        txtCoins.text = coinData.coin.ToString();
 
-    private void OnDestroy()
-    {
-        SaveCoin();
     }
 
     public void SaveCoin()
     {
-        PlayerPrefs.SetInt(CoinKey, coin);
-        PlayerPrefs.Save();
+        coinData.coin = Instance.coin;
     }
 
     public void LoadCoin()
     {
-        if (PlayerPrefs.HasKey(CoinKey)) coin = PlayerPrefs.GetInt(CoinKey);
+        if (coinData == null)
+            coinData = ScriptableObject.CreateInstance<CoinData>();
+
+        if (coinData != null)
+            Instance.coin = coinData.coin;
+
     }
 }
+

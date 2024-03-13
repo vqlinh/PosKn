@@ -412,6 +412,7 @@ public class Player : MonoBehaviour
                     .OnComplete(() =>
                     {
                         GameManager.Instance.coin += 10;
+                        GameManager.Instance.SaveCoin();
                         Destroy(coin);
                     });
             });
