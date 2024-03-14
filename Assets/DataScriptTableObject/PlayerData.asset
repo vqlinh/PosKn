@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f69f6bcc8e3fe46b0548b88ffa1954, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: 
+  maxExp: 400
+  currentExp: 140
+  currentLevel: 4
+  maxHealth: 130
