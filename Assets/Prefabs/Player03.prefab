@@ -150,7 +150,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 95adfab658c511040b5908cfff1fd617, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d1aeee2a855fc344a84e8b8777b902db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -173,31 +173,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dec885b132b248408101486a1ecb10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgCoolDown1: {fileID: 0}
   coolDown1: 2
   timeCoolDownAttack: 2
-  imgCoolDown2: {fileID: 0}
   coolDown2: 3
   timeCoolDownShield: 3
-  imgCoolDown3: {fileID: 0}
   coolDown3: 8
   timeCoolDownHealing: 8
-  maxExp: 100
+  maxExp: 0
   currentExp: 0
-  currentLevel: 1
-  expBar: {fileID: 0}
-  healthBar: {fileID: 0}
-  level: {fileID: 0}
-  maxHealth: 100
+  currentLevel: 0
+  maxHealth: 0
   speed: 2
   disBack: 2
   distanceAttack: 1.4
   distanceMoveBack: 1.2
   canMove: 1
-  enemySpawn: {fileID: 0}
-  skillAttack: {fileID: 5303707137539685954}
-  _skillShield: {fileID: 838655223897523879}
-  dialogueTrigger: {fileID: 0}
+  playerData: {fileID: 11400000, guid: f28deaa48a4ee61449544ab4342f5cb5, type: 2}
 --- !u!61 &5390855495179338509
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -215,7 +206,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 13.71, y: 18.48}
+    oldSize: {x: 7.86, y: 9.21}
     newSize: {x: 7.041805, y: 8.34}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

@@ -1924,7 +1924,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2192,7 +2192,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3310,8 +3310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac5b18a980efb30498dc2e2a93d9da9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  txtMaxHeal: {fileID: 422674733}
-  txtCurrentHeal: {fileID: 447196035}
   txtCoins: {fileID: 657677481}
   coin: 0
   coinData: {fileID: 11400000, guid: fe8c72885ba3f824ba1de19494e48ab6, type: 2}
