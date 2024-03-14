@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     private HealthBar expBar;
     private HealthBar healthBar;
     private TextMeshProUGUI level;
-    [SerializeField] private int maxHealth = 100;
+    [SerializeField] private int maxHealth;
     #endregion
     [Header("MOVEMENT")]
     [SerializeField] private float speed = 1f;
@@ -56,11 +56,14 @@ public class Player : MonoBehaviour
     private bool hasMoveBack = false;
     private bool canTriggerDamagedState = true;
 
+    public PlayerData playerData;
     private EnemySpawn enemySpawn;
     private GameObject skillAttack;
     private SkillShield _skillShield;
     private ButtonManager buttonManager;
     private DialogueTrigger dialogueTrigger;
+    private TextMeshProUGUI txtMaxHeal;
+    private TextMeshProUGUI txtCurrentHeal;
     #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
@@ -75,6 +78,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         LoadData();
+        txtMaxHeal = GameObject.Find("txtMaxheal").GetComponent<TextMeshProUGUI>();
+        txtCurrentHeal = GameObject.Find("txtCurrentHeal").GetComponent<TextMeshProUGUI>();
         skillAttack = GameObject.Find("attack");
         expBar = GameObject.Find("ExpBar").GetComponent<HealthBar>();
         imgCoolDown1 = GameObject.Find("Image1").GetComponent<Image>();
@@ -88,7 +93,8 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        currentHealth = maxHealth;
+        txtMaxHeal.text = maxHealth.ToString();
+        txtCurrentHeal.text = currentHealth.ToString();
         imgCoolDown1.fillAmount = 0;
         imgCoolDown2.fillAmount = 0;
         imgCoolDown3.fillAmount = 0;
@@ -100,7 +106,7 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         _skillShield.gameObject.SetActive(false);
         buttonManager = FindObjectOfType<ButtonManager>();
-        GameManager.Instance.txtMaxHeal.text = maxHealth.ToString();
+        //GameManager.Instance.txtMaxHeal.text = maxHealth.ToString();
     }
 
     private void Update()
@@ -113,7 +119,7 @@ public class Player : MonoBehaviour
         CheckDistanceForNormalAttack();
         healthBar.SetHealth(currentHealth);
         level.text = currentLevel.ToString();
-        GameManager.Instance.txtCurrentHeal.text = currentHealth.ToString();
+        txtCurrentHeal.text = currentHealth.ToString();
     }
     #region CoolDown_1
     public void CoolDownSkill1()
@@ -381,7 +387,6 @@ public class Player : MonoBehaviour
 
     public void TakeDamageFromEnemy(int damage)
     {
-        Debug.Log("TakeDamageFromEnemy");
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
     }
@@ -435,7 +440,7 @@ public class Player : MonoBehaviour
     private void HandlerExpChange(int newExp)
     {
         currentExp += newExp;
-        if (currentExp > maxExp) LevelUp();
+        if (currentExp >= maxExp) LevelUp();
         SaveData();
     }
     void LevelUp()
@@ -449,18 +454,26 @@ public class Player : MonoBehaviour
 
     public void SaveData()
     {
-        PlayerPrefs.SetInt("MaxExp", maxExp);
-        PlayerPrefs.SetInt("Exp", currentExp);
-        PlayerPrefs.SetInt("Level", currentLevel);
-        PlayerPrefs.SetInt("MaxHealth", maxHealth);
-        PlayerPrefs.Save();
+        playerData.maxExp = maxExp;
+        playerData.currentExp = currentExp;
+        playerData.currentLevel = currentLevel;
+        playerData.maxHealth = maxHealth;
     }
     public void LoadData()
     {
-        maxExp = PlayerPrefs.GetInt("MaxExp", maxExp);
-        currentExp = PlayerPrefs.GetInt("Exp", currentExp);
-        currentLevel = PlayerPrefs.GetInt("Level", currentLevel);
-        maxHealth = PlayerPrefs.GetInt("MaxHealth", maxHealth);
+        if (playerData == null)
+            playerData = ScriptableObject.CreateInstance<PlayerData>();
+
+        if (playerData != null)
+        {
+            maxExp=playerData.maxExp;
+            currentExp = playerData.currentExp;
+            currentLevel = playerData.currentLevel;
+            maxHealth = playerData.maxHealth;
+            currentHealth = maxHealth;
+
+                
+        }
     }
 
 

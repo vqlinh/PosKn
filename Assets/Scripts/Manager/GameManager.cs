@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-    public TextMeshProUGUI txtMaxHeal;
-    public TextMeshProUGUI txtCurrentHeal;
+
     public TextMeshProUGUI txtCoins;
     public int coin;
     public CoinData coinData;

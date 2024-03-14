@@ -10,18 +10,6 @@ public class PlayerManager : MonoBehaviour
     {
         characterIndex= PlayerPrefs.GetInt("SelectedCharacter",0);
         Instantiate(playerPrefabs[characterIndex],new Vector2(-3,0),Quaternion.identity);
-
-
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
