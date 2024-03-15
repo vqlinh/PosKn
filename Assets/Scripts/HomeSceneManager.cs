@@ -26,7 +26,7 @@ public class HomeSceneManager : MonoBehaviour
         isBought = true;
         characterSelect = FindObjectOfType<CharacterSelect>();
         expBar.SetMaxHealth(playerData.maxExp);
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
     }
 
     private void Update()

@@ -259,7 +259,6 @@ MonoBehaviour:
   - {fileID: 161949548}
   - {fileID: 2037634902}
   selectedCharacter: 0
-  hSManager: {fileID: 1384989769}
 --- !u!1 &36128348
 GameObject:
   m_ObjectHideFlags: 0
@@ -9237,8 +9236,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1384989769}
         m_TargetAssemblyTypeName: HomeSceneManager, Assembly-CSharp
-        m_MethodName: BuyCharacter1
-        m_Mode: 1
+        m_MethodName: BuyCharacter
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -9755,7 +9754,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2094804849}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1384989769}
+        m_TargetAssemblyTypeName: HomeSceneManager, Assembly-CSharp
+        m_MethodName: BuyCharacter
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2094804849
 MonoBehaviour:
   m_ObjectHideFlags: 0
