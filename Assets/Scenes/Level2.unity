@@ -3945,7 +3945,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   melee: {fileID: 3356303922655332560, guid: 364b20d101c0daa44b85c2b81fdb36d5, type: 3}
   ranged: {fileID: 62309191026090210, guid: 45ece5a4499dbe24aad88c2512cde717, type: 3}
-  villageOld: {fileID: 2341914191973374403, guid: 8a0abb4a27eae9841ac70e350e16e1b7, type: 3}
+  chief: {fileID: 2341914191973374403, guid: 8a0abb4a27eae9841ac70e350e16e1b7, type: 3}
   listEnemySpawn: []
 --- !u!4 &1065299359
 Transform:
