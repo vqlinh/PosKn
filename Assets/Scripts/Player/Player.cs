@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
         CoolDownSkill2();
         CoolDownSkill3();
         expBar.SetHealth(currentExp);
-        CheckDistanceForNormalAttack();
+        CheckDistanceNormalAttack();
         healthBar.SetHealth(currentHealth);
         level.text = currentLevel.ToString();
         txtCurrentHeal.text = currentHealth.ToString();
@@ -311,7 +311,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void CheckDistanceForNormalAttack()
+    private void CheckDistanceNormalAttack()
     {
         float minDistance = float.MaxValue;
         for (int i = 0; i < enemySpawn.listEnemySpawn.Count; i++)
@@ -385,7 +385,7 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
-    public void TakeDamageFromEnemy(int damage)
+    public void TakeDamageEnemy(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
@@ -403,10 +403,10 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag(Const.coin)) CollectCoin(collision.gameObject);
+        if (collision.gameObject.CompareTag(Const.coin)) PickUpCoin(collision.gameObject);
     }
 
-    private void CollectCoin(GameObject coin)
+    private void PickUpCoin(GameObject coin)
     {
         coin.transform.DOMove(transform.position, 0.2f)
             .SetEase(Ease.Linear)

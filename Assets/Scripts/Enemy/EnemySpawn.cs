@@ -9,7 +9,7 @@ public class EnemySpawn : MonoBehaviour
     public GameObject melee;
     public GameObject ranged;
     private Transform player;
-    public GameObject villageOld;
+    public GameObject chief;
     public List<GameObject> listEnemySpawn = new List<GameObject>();
 
     void Start()
@@ -24,16 +24,16 @@ public class EnemySpawn : MonoBehaviour
     void Update()
     {
         listEnemySpawn.RemoveAll(enemy => enemy == null || !enemy.activeSelf);
-        if (listEnemySpawn.Count == 0) SpawnVillageOld();
+        if (listEnemySpawn.Count == 0) SpawnChief();
     }
 
-    void SpawnVillageOld()
+    void SpawnChief()
     {
         if (!isSpawn)
         {
             Invoke("Load", 1f);
             isSpawn = true;
-            Instantiate(villageOld, new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
+            Instantiate(chief, new Vector2(player.transform.position.x + 10f, player.transform.position.y), Quaternion.identity);
         }
     }
 

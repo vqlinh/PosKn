@@ -42,7 +42,7 @@ public class MeleeEnemy : Enemy
     {
         healthBar.SetHealth(currentHealth);
         CheckMeleeState();
-        CheckDistanceToPlayer();
+        CheckDistancePlayer();
     }
     public void CheckMeleeState()
     {
@@ -94,21 +94,21 @@ public class MeleeEnemy : Enemy
     }
     void MeleeAttack()
     {
-        TakeDamageFromPlayer();
+        TakeDamagePlayer();
         animator.SetTrigger(Const.meleeAttack);
     }
     #endregion
 
-    void TakeDamageFromPlayer() // khi chay ham nay thi Player se mat mau
+    void TakeDamagePlayer() // khi chay ham nay thi Player se mat mau
     {
-        player.TakeDamageFromEnemy(attack);
+        player.TakeDamageEnemy(attack);
     }
     public void MoveToPlayer()
     {
         transform.position = Vector2.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
         MeleeMoving();
     }
-    public void CheckDistanceToPlayer()
+    public void CheckDistancePlayer()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         if (distanceToPlayer <= 5f) MoveToPlayer();

@@ -39,10 +39,10 @@ public class RangedEnemy : Enemy
         healthBar.SetHealth(currentHealth);
 
         CheckRangedState();
-        CheckDistanceToPlayer();
+        CheckDistancePlayer();
 
     }
-    public void CheckDistanceToPlayer()
+    public void CheckDistancePlayer()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         if (distanceToPlayer <= 1.2f && !canDamaged)
@@ -119,10 +119,10 @@ public class RangedEnemy : Enemy
     }
     #endregion
 
-    public void TakeDamageFromPlayer() // khi chay ham nay thi Player se mat mau
+    public void TakeDamagePlayer() // khi chay ham nay thi Player se mat mau
     {
         Debug.Log("TakeDamageFromPlayer");
-        player.TakeDamageFromEnemy(attack);
+        player.TakeDamageEnemy(attack);
     }
 
     void Damaged()

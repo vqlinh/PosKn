@@ -1,35 +1,52 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterSelect : MonoBehaviour
 {
     public GameObject[] skins;
-    public int selectedCharacter;
+    public int characterSelect;
     private void Awake()
     {
-        selectedCharacter = PlayerPrefs.GetInt("SelectedCharacter", 0);
+        characterSelect = PlayerPrefs.GetInt("SelectedCharacter", 0);
         foreach (GameObject player in skins)
             player.SetActive(false);
 
-        skins[selectedCharacter].SetActive(true);
-    }
-    public void ChangedNext()
-    {
-        skins[selectedCharacter].SetActive(false);
-        selectedCharacter++;
-        if (selectedCharacter == skins.Length) selectedCharacter = 0;
+        skins[characterSelect].SetActive(true);
 
-        skins[selectedCharacter].SetActive(true);
-        PlayerPrefs.SetInt("SelectedCharacter",selectedCharacter);
     }
-    public void ChangedPrevious()
-    {
-        skins[selectedCharacter].SetActive(false);
-        selectedCharacter--;
-        if (selectedCharacter == -1) selectedCharacter = skins.Length-1;
 
-        skins[selectedCharacter].SetActive(true);
-        PlayerPrefs.SetInt("SelectedCharacter", selectedCharacter);
+    public void Next()
+    {
+        skins[characterSelect].SetActive(false);
+        characterSelect++;
+        if (characterSelect == skins.Length) characterSelect = 0;
+
+        skins[characterSelect].SetActive(true);
+        PlayerPrefs.SetInt("SelectedCharacter", 0);
+
+
+        if (PlayerPrefs.GetInt("Character_" + (characterSelect ) + "_Bought", 0) == 1)
+        {
+            PlayerPrefs.SetInt("SelectedCharacter", characterSelect);
+        }
+    }
+    public void Back()
+    {
+        skins[characterSelect].SetActive(false);
+        characterSelect--;
+        if (characterSelect == -1) characterSelect = skins.Length-1;
+
+        skins[characterSelect].SetActive(true);
+        PlayerPrefs.SetInt("SelectedCharacter", 0);
+
+        if (PlayerPrefs.GetInt("Character_" + (characterSelect) + "_Bought", 0) == 1)
+        {
+            PlayerPrefs.SetInt("SelectedCharacter", characterSelect);
+        }
+    }
+    private void Update()
+    {
+        Debug.Log("characterSelect : "+characterSelect);
     }
 }

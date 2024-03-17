@@ -9,9 +9,9 @@ public class SkillAttack : MonoBehaviour
         if (collision.gameObject.CompareTag(Const.enemy))
         {
             Enemy enemy = collision.GetComponent<Enemy>();
-            Vector2 playerPosition = transform.position;
-            Vector2 newEnemyPosition = new Vector2(playerPosition.x + 5f, enemy.transform.position.y);
-            enemy.MoveToNewPosition(newEnemyPosition);
+            Vector2 playerPos = transform.position;
+            Vector2 newPow = new Vector2(playerPos.x + 5f, enemy.transform.position.y);
+            enemy.NewPos(newPow);
             enemy.TakeDamage(16);
         }
     }

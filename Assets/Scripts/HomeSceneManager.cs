@@ -34,31 +34,30 @@ public class HomeSceneManager : MonoBehaviour
         txtCoins.text = coinData.coin.ToString();
         txtLevel.text = playerData.currentLevel.ToString();
         expBar.SetHealth(playerData.currentExp);
-        if (characterSelect != null && characterSelect.selectedCharacter >= 0 && characterSelect.selectedCharacter < avataCharacterSprites.Length)
+        if (characterSelect != null && characterSelect.characterSelect >= 0 && characterSelect.characterSelect < avataCharacterSprites.Length)
         {
-            avtCharacter.GetComponent<Image>().sprite = avataCharacterSprites[characterSelect.selectedCharacter];
-            player.GetComponent<Image>().sprite = playerCharacterSprites[characterSelect.selectedCharacter];
-            txtName.GetComponent<TextMeshProUGUI>().text = stringName[characterSelect.selectedCharacter];
+            avtCharacter.GetComponent<Image>().sprite = avataCharacterSprites[characterSelect.characterSelect];
+            player.GetComponent<Image>().sprite = playerCharacterSprites[characterSelect.characterSelect];
+            txtName.GetComponent<TextMeshProUGUI>().text = stringName[characterSelect.characterSelect];
         }
         for (int i = 0; i < buttons.Length; i++)
         {
-            buttons[i].SetActive(i == characterSelect.selectedCharacter - 1);
+            buttons[i].SetActive(i == characterSelect.characterSelect - 1);
             if (PlayerPrefs.GetInt("Character_" + (i + 1) + "_Bought", 0) == 1)
             {
-                buttons[i].SetActive(false); // Ẩn nút mua khi nhân vật đã được mua
+                buttons[i].SetActive(false);
             }
+            Debug.Log(" buttons[i] : "+buttons[i]);
         }
     }
     public void BuyCharacter(int characterIndex)
     {
-        int characterCost = 2000; // Giá của mỗi nhân vật
-
-        // Kiểm tra số tiền đủ để mua nhân vật hay không
+        int characterCost = 2000; 
         if (coinData.coin >= characterCost)
         {
-            coinData.coin -= characterCost; // Trừ tiền khi mua nhân vật
-            PlayerPrefs.SetInt("Character_" + (characterIndex + 1) + "_Bought", 1); // Lưu trạng thái đã mua của nhân vật
-            buttons[characterIndex].SetActive(false); // Ẩn nút mua của nhân vật đã mua
+            coinData.coin -= characterCost; 
+            PlayerPrefs.SetInt("Character_" + (characterIndex) + "_Bought", 1);
+            buttons[characterIndex].SetActive(false); 
         }
     }
 

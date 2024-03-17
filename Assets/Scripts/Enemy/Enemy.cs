@@ -24,9 +24,9 @@ public class Enemy : MonoBehaviour
         
     }
 
-    public void MoveToNewPosition(Vector2 newPosition)
+    public void NewPos(Vector2 newPos)
     {
-        transform.DOMove(newPosition, 0.3f).SetEase(Ease.Linear);
+        transform.DOMove(newPos, 0.3f).SetEase(Ease.Linear);
     }
 
     public virtual void Move()

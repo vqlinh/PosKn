@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
             collision.gameObject.GetComponent<Player>().DamagedState();
             if (rangedEnemy != null)
             {
-                rangedEnemy.TakeDamageFromPlayer();
+                rangedEnemy.TakeDamagePlayer();
             }
             Destroy(this.gameObject);
         }
