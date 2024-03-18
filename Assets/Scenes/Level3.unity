@@ -3565,7 +3565,7 @@ PrefabInstance:
       objectReference: {fileID: 1195736049}
     - target: {fileID: 86321232342331948, guid: 6cceb3b8b1178b54890ee21e2707ae9e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LoadSceneLevel3
+      value: LoadSceneLevel4
       objectReference: {fileID: 0}
     - target: {fileID: 86321233103890086, guid: 6cceb3b8b1178b54890ee21e2707ae9e, type: 3}
       propertyPath: m_AnchorMax.x

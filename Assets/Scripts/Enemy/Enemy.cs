@@ -2,26 +2,19 @@
 using System.Collections;
 using DG.Tweening;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Singleton<Enemy>
 {
-    public Player player;
-    public Transform playerTransform;
-
-    public int currentHealth;
-    public static Enemy Instance;
-    public GameObject prefabCoins;
     int minCoins = 1;
     int maxCoins = 3;
+    public Player player;
+    public int currentHealth;
+    public GameObject prefabCoins;
+    public Transform playerTransform;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
     private void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag(Const.player).transform;
         player = GameObject.FindObjectOfType<Player>();
-        
     }
 
     public void NewPos(Vector2 newPos)
@@ -67,13 +60,12 @@ public class Enemy : MonoBehaviour
             float randomY = transform.position.y ;
             Vector2 randomPosition = new Vector2(randomX, randomY);
             GameObject coin = Instantiate(prefabCoins, randomPosition, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
-            coin.transform.DOMoveY(randomY + 1f, 0.3f).SetEase(Ease.OutQuad) 
-            .OnComplete(() =>
+            coin.transform.DOMoveY(randomY + 1f, 0.4f).SetEase(Ease.OutQuad) 
+            .OnComplete(() =>   
             {
-                coin.transform.DOMoveY(randomY-0.5f, 0.3f).SetEase(Ease.InQuad);
+                coin.transform.DOMoveY(randomY-0.5f, 0.4f).SetEase(Ease.InQuad);
             });
         }
-
     }
 
     public virtual void TakeDamage(int amount)

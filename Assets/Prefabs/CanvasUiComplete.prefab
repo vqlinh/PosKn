@@ -112,6 +112,11 @@ MonoBehaviour:
   fadeTime: 0.5
   canvasGroup: {fileID: 86321232155460515}
   rectTransform: {fileID: 86321232155460512}
+  avataCharacterSprites:
+  - {fileID: 21300000, guid: 55b3cd2dbcd2d6f4ba7374d6f338c211, type: 3}
+  - {fileID: 21300000, guid: 4ce4f817a1b07a144abe468b434811b1, type: 3}
+  - {fileID: 21300000, guid: d1aeee2a855fc344a84e8b8777b902db, type: 3}
+  avtCharacter: {fileID: 86321232441491322}
   items:
   - {fileID: 86321232257673467}
   - {fileID: 86321233960425630}

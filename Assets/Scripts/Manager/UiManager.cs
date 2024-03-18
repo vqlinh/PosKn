@@ -2,15 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Xml.Linq;
+using TMPro;
+using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
     public float fadeTime = 0.5f;
     public CanvasGroup canvasGroup;
     public RectTransform rectTransform;
+
+    public Sprite[] avataCharacterSprites;
+    public GameObject avtCharacter;
+    int characterIndex;
     public List<GameObject> items=new List<GameObject>();
 
+    private void Start()
+    {
+            characterIndex = PlayerPrefs.GetInt("SelectedCharacter", 0);
 
+    }
+    private void Update()
+    {
+            avtCharacter.GetComponent<Image>().sprite = avataCharacterSprites[characterIndex];
+
+    }
     public void PanelFadeIn()
     {
         canvasGroup.alpha = 0;

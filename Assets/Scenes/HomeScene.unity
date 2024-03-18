@@ -1429,9 +1429,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1384989769}
-        m_TargetAssemblyTypeName: HomeSceneManager, Assembly-CSharp
-        m_MethodName: BuyCoin3
+      - m_Target: {fileID: 860735464}
+        m_TargetAssemblyTypeName: IapManager, Assembly-CSharp
+        m_MethodName: Consumable_BtnCoin9500_Pressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1770,9 +1770,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1384989769}
-        m_TargetAssemblyTypeName: HomeSceneManager, Assembly-CSharp
-        m_MethodName: BuyCoin1
+      - m_Target: {fileID: 860735464}
+        m_TargetAssemblyTypeName: IapManager, Assembly-CSharp
+        m_MethodName: Consumable_BtnCoin2000_Pressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2577,9 +2577,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1384989769}
-        m_TargetAssemblyTypeName: HomeSceneManager, Assembly-CSharp
-        m_MethodName: BuyCoin2
+      - m_Target: {fileID: 860735464}
+        m_TargetAssemblyTypeName: IapManager, Assembly-CSharp
+        m_MethodName: Consumable_BtnCoin6000_Pressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3856,6 +3856,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 859545509}
   m_CullTransparentMesh: 1
+--- !u!1 &860735463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 860735465}
+  - component: {fileID: 860735464}
+  m_Layer: 0
+  m_Name: IapManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &860735464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860735463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d454467bfb9b38244925bfef0d07a490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinTxt: {fileID: 882171416}
+  listItems:
+  - Name: 2000 Coins
+    Id: coin_2000
+    desc: Buy 2000 coins
+    price: 20
+  - Name: 6000 Coins
+    Id: coin_6000
+    desc: Buy 6000 coins
+    price: 50
+  - Name: 9500 Coins
+    Id: coin_9500
+    desc: Buy 9500 coins
+    price: 80
+  coinData: {fileID: 11400000, guid: fe8c72885ba3f824ba1de19494e48ab6, type: 2}
+--- !u!4 &860735465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860735463}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5981891, y: -10.690601, z: 465.71878}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &882171414
 GameObject:
   m_ObjectHideFlags: 0
@@ -5032,7 +5091,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1288746657}
         m_TargetAssemblyTypeName: LoadScene, Assembly-CSharp
-        m_MethodName: LoadSceneLevel2
+        m_MethodName: LoadSceneLevel1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6327,7 +6386,6 @@ MonoBehaviour:
   expBar: {fileID: 1884544223}
   coinData: {fileID: 11400000, guid: fe8c72885ba3f824ba1de19494e48ab6, type: 2}
   playerData: {fileID: 11400000, guid: f28deaa48a4ee61449544ab4342f5cb5, type: 2}
-  txtCoins: {fileID: 882171416}
   txtLevel: {fileID: 1027309326}
   txtName: {fileID: 2078631358}
   player: {fileID: 659356382}
@@ -7591,7 +7649,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1139}
+  m_AnchoredPosition: {x: 0, y: -1152}
   m_SizeDelta: {x: 40, y: 36.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1642104958
@@ -7609,6 +7667,8 @@ MonoBehaviour:
   fadeTime: 0.35
   canvasGroup: {fileID: 1642104959}
   rectTransform: {fileID: 1642104957}
+  avataCharacterSprites: []
+  avtCharacter: {fileID: 0}
   items: []
 --- !u!225 &1642104959
 CanvasGroup:
@@ -8298,7 +8358,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.5700073, y: 233.8}
+  m_AnchoredPosition: {x: -0.5700073, y: 233.79999}
   m_SizeDelta: {x: 12.56, y: 476.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1838025226
@@ -10046,7 +10106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1127}
+  m_AnchoredPosition: {x: 0, y: -1146}
   m_SizeDelta: {x: 40, y: 36.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &86321233231931746
@@ -10084,6 +10144,8 @@ MonoBehaviour:
   fadeTime: 0.35
   canvasGroup: {fileID: 86321233231931746}
   rectTransform: {fileID: 86321233231931745}
+  avataCharacterSprites: []
+  avtCharacter: {fileID: 0}
   items:
   - {fileID: 86321233328947770}
   - {fileID: 1710680472}

@@ -8,6 +8,9 @@ public class CharacterSelect : MonoBehaviour
     public int characterSelect;
     private void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
+
+
         characterSelect = PlayerPrefs.GetInt("SelectedCharacter", 0);
         foreach (GameObject player in skins)
             player.SetActive(false);
@@ -44,9 +47,5 @@ public class CharacterSelect : MonoBehaviour
         {
             PlayerPrefs.SetInt("SelectedCharacter", characterSelect);
         }
-    }
-    private void Update()
-    {
-        Debug.Log("characterSelect : "+characterSelect);
     }
 }

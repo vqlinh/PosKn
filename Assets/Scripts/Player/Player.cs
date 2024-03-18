@@ -425,7 +425,7 @@ public class Player : MonoBehaviour
 
     void Talk()
     {
-        dialogueTrigger.TriggerDialouge();
+        dialogueTrigger.BoxDialogue();
     }
 
     private void OnEnable()

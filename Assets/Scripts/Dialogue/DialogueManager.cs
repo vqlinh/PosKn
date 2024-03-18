@@ -18,31 +18,31 @@ public class DialogueManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void StartDialogue(Dialogue dialogue)
+    public void StartDial(Dialogue dial)
     {
         animator.SetBool("isOpen",true);
-        nameText.text = dialogue.name;
-        Debug.Log("Starting Conversation with : " + dialogue.name);
+        nameText.text = dial.nameTalk;
+        Debug.Log("Starting Conversation with : " + dial.nameTalk);
         sentences.Clear();
-        foreach (string sentence in dialogue.sentences)
+        foreach (string sentence in dial.sentences)
         {
             sentences.Enqueue(sentence);
         }
-        DisplayNextSentences();
+        Next();
 
     }
-    public void DisplayNextSentences()
+    public void Next()
     {
         if (sentences.Count == 0)
         {
-            EndDialogue();
+            End();
             return;
         }
         string sentence=sentences.Dequeue();
         StopAllCoroutines();
-        StartCoroutine(TypeSentence(sentence));
+        StartCoroutine(SmoothText(sentence));
     }
-    IEnumerator TypeSentence(string  sentence)
+    IEnumerator SmoothText(string  sentence)
     {
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
@@ -51,7 +51,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(0.02f);
         }
     }
-    public void EndDialogue()
+    public void End()
     {
         Chief.Instance.isMove = true;
         animator.SetBool("isOpen", false);

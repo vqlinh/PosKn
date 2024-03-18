@@ -9,7 +9,6 @@ public class HomeSceneManager : MonoBehaviour
     public HealthBar expBar;
     public CoinData coinData;
     public PlayerData playerData;
-    public TextMeshProUGUI txtCoins;
     public TextMeshProUGUI txtLevel;
     public TextMeshProUGUI txtName;
 
@@ -31,7 +30,7 @@ public class HomeSceneManager : MonoBehaviour
 
     private void Update()
     {
-        txtCoins.text = coinData.coin.ToString();
+        //txtCoins.text = coinData.coin.ToString();
         txtLevel.text = playerData.currentLevel.ToString();
         expBar.SetHealth(playerData.currentExp);
         if (characterSelect != null && characterSelect.characterSelect >= 0 && characterSelect.characterSelect < avataCharacterSprites.Length)
@@ -47,7 +46,6 @@ public class HomeSceneManager : MonoBehaviour
             {
                 buttons[i].SetActive(false);
             }
-            Debug.Log(" buttons[i] : "+buttons[i]);
         }
     }
     public void BuyCharacter(int characterIndex)
@@ -61,20 +59,6 @@ public class HomeSceneManager : MonoBehaviour
         }
     }
 
-    public void BuyCoin1()
-    {
-        coinData.coin += 2000;
-    }
-
-    public void BuyCoin2()
-    {
-        coinData.coin += 6000;
-    }
-
-    public void BuyCoin3()
-    {
-        coinData.coin += 9500;
-    }
 
 
 }
