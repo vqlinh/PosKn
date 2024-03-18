@@ -9,7 +9,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
     public Animator animator;
-    public UiManager uiManager;
+    private UiManager uiManager;
     // Start is called before the first frame update
     private void Awake()
     {

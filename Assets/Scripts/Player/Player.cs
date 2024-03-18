@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -64,6 +62,7 @@ public class Player : MonoBehaviour
     private DialogueTrigger dialogueTrigger;
     private TextMeshProUGUI txtMaxHeal;
     private TextMeshProUGUI txtCurrentHeal;
+    private UiManager uiManager;
     #region ENUM-STATE
     private PlayerState playerState;
     public enum PlayerState
@@ -72,14 +71,13 @@ public class Player : MonoBehaviour
         Moving,
         SkillAttack,
         Damaged,
-        NormalAttack
+        NormalAttack,
+        Die
     }
     #endregion
     private void Awake()
     {
         LoadData();
-        txtMaxHeal = GameObject.Find("txtMaxheal").GetComponent<TextMeshProUGUI>();
-        txtCurrentHeal = GameObject.Find("txtCurrentHeal").GetComponent<TextMeshProUGUI>();
         skillAttack = GameObject.Find("attack");
         expBar = GameObject.Find("ExpBar").GetComponent<HealthBar>();
         imgCoolDown1 = GameObject.Find("Image1").GetComponent<Image>();
@@ -89,10 +87,14 @@ public class Player : MonoBehaviour
         _skillShield = GameObject.Find("Shield").GetComponent<SkillShield>();
         enemySpawn = GameObject.Find("SpawnEnemy").GetComponent<EnemySpawn>();
         healthBar = GameObject.Find("HealthBarPlayer").GetComponent<HealthBar>();
+        txtMaxHeal = GameObject.Find("txtMaxheal").GetComponent<TextMeshProUGUI>();
+        uiManager = GameObject.Find("PanelStageComplete").GetComponent<UiManager>();
+        txtCurrentHeal = GameObject.Find("txtCurrentHeal").GetComponent<TextMeshProUGUI>();
         dialogueTrigger = GameObject.Find("DialogueBox").GetComponent<DialogueTrigger>();
     }
     private void Start()
     {
+
         txtMaxHeal.text = maxHealth.ToString();
         txtCurrentHeal.text = currentHealth.ToString();
         imgCoolDown1.fillAmount = 0;
@@ -308,6 +310,9 @@ public class Player : MonoBehaviour
             case PlayerState.NormalAttack:
                 NormalAttackState();
                 break;
+            case PlayerState.Die:
+                Die();
+                break;
         }
     }
 
@@ -388,7 +393,21 @@ public class Player : MonoBehaviour
     public void TakeDamageEnemy(int damage)
     {
         currentHealth -= damage;
+        if (currentHealth <= 0) Die();
+
         healthBar.SetHealth(currentHealth);
+    }
+    void Die()
+    {
+        animator.SetTrigger(Const.animDie);
+        playerState = PlayerState.Die;
+        canMove = false;
+        Invoke("PanelDie", 1f);
+    }
+    void PanelDie()
+    {
+        uiManager.PanelFadeIn();
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
