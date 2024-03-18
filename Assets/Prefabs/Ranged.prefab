@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: -817849967266670583}
   - component: {fileID: 4181139142821017753}
   - component: {fileID: 3936011999362495541}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ranged
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -578,8 +578,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   currentHealth: 0
-  playerTransform: {fileID: 0}
   prefabCoins: {fileID: 7895382476794099328, guid: d285f42a352277f4bb7a88e90bc7723a, type: 3}
+  playerTransform: {fileID: 0}
   healthBar: {fileID: 1235455386}
   bullet: {fileID: 2202982687252298903, guid: d679ff4c6079a5344861e0c22509bd00, type: 3}
   bulletForce: 3
