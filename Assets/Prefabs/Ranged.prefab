@@ -585,7 +585,7 @@ MonoBehaviour:
   bulletForce: 3
   enemyData: {fileID: 11400000, guid: 9ec53234b0918f54b8c5749656885364, type: 2}
   rangedAttackDistance: 15
-  rangedAttackInterval: 3
+  rangedAttackInterval: 5
   rangedState: 0
 --- !u!61 &3936011999362495541
 BoxCollider2D:

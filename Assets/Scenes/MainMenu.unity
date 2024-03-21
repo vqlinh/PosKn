@@ -344,9 +344,21 @@ MonoBehaviour:
   musicSounds:
   - name: 0
     clip: {fileID: 8300000, guid: 06f8a41a3be9798489d0d86d02ad28e8, type: 3}
+  sfxSounds:
   - name: 4
     clip: {fileID: 8300000, guid: 00f9c6fae4c5e7946a23285b1bc6dd86, type: 3}
-  sfxSounds: []
+  - name: 5
+    clip: {fileID: 8300000, guid: d63e038c850d7b2418f1d53b190b4e1a, type: 3}
+  - name: 6
+    clip: {fileID: 8300000, guid: 65c797094f374814b88549b797bc96bf, type: 3}
+  - name: 7
+    clip: {fileID: 8300000, guid: 275e01e41d6535f47984f5542ce640a8, type: 3}
+  - name: 8
+    clip: {fileID: 8300000, guid: 28380f5c55ee80d4dab8b07ca1df9135, type: 3}
+  - name: 9
+    clip: {fileID: 8300000, guid: 7b836d90c9c318f41b54f0065cc9b20f, type: 3}
+  - name: 10
+    clip: {fileID: 8300000, guid: ca002ed2b06b2174bbb2c0878e90005e, type: 3}
   musicSource: {fileID: 933446496}
   sfxSource: {fileID: 2000948446}
 --- !u!4 &200492879
@@ -1292,7 +1304,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.482
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1517,9 +1529,9 @@ RectTransform:
   m_Father: {fileID: 2012223656}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 585, y: -74}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -57, y: -59}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1007940291
