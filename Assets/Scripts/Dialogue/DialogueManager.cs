@@ -60,7 +60,7 @@ public class DialogueManager : MonoBehaviour
     }
     public void PanelUi()
     {
-
+        AudioManager.Instance.PlaySfx(SoundName.SfxCompleteLevel);
         uiManager.PanelFadeIn();
     }
 

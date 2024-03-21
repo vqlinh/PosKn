@@ -9,7 +9,13 @@ public enum SoundName
     SfxShoot,
     SfxClickButton,
     SfxMenuTutorial,
-    SfxNormalAttack
+    SfxNormalAttack,
+    SfxSkillAttack,
+    Sfxhealing,
+    SfxShield,
+    SfxDamaged,
+    SfxCompleteLevel,
+    SfxLose,
 
 }
 

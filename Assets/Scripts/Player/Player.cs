@@ -213,6 +213,7 @@ public class Player : MonoBehaviour
 
     public void Attack()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxSkillAttack);
         transform.DOMove(transform.position + transform.right * 3f, 0.4f).SetEase(Ease.Linear).OnComplete(() =>
         {
             skillAttack.SetActive(false);
@@ -226,6 +227,7 @@ public class Player : MonoBehaviour
         isClick2 = true;
         if (!isShield)
         {
+            AudioManager.Instance.PlaySfx(SoundName.SfxShield);
             Shielding = true;
             Shield();
             StartCoroutine(ShieldCoolDown());
@@ -240,18 +242,13 @@ public class Player : MonoBehaviour
     }
     void Shield()
     {
-        // hàm khiên ở đây
-        Debug.Log("bat Shield");
         _skillShield.gameObject.SetActive(true);
-
         StartCoroutine(DestroyShield());
     }
     private IEnumerator DestroyShield()
     {
         yield return new WaitForSeconds(1f);
         _skillShield.ShieldDestroy();
-        //yield return new WaitForSeconds(0.5f);
-        //_skillShield.gameObject.SetActive(false);
         Shielding = false;
 
     }
@@ -269,6 +266,7 @@ public class Player : MonoBehaviour
             isClick3 = true;
             if (!isHealing)
             {
+                AudioManager.Instance.PlaySfx(SoundName.Sfxhealing);
                 Healing();
                 StartCoroutine(HealingCoolDown());
             }
@@ -366,6 +364,8 @@ public class Player : MonoBehaviour
     {
         if (canTriggerDamagedState && canMoveBack && !isMoveBack && !Shielding)
         {
+            AudioManager.Instance.PlaySfx(SoundName.SfxDamaged);
+
             buttonManager.DisableButtons();
             MoveBack();
         }
@@ -399,6 +399,8 @@ public class Player : MonoBehaviour
     }
     void Die()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxLose);
+
         animator.SetTrigger(Const.animDie);
         playerState = PlayerState.Die;
         canMove = false;
