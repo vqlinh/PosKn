@@ -121,7 +121,6 @@ public class RangedEnemy : Enemy
 
     public void TakeDamagePlayer() // khi chay ham nay thi Player se mat mau
     {
-        Debug.Log("TakeDamageFromPlayer");
         player.TakeDamageEnemy(attack);
     }
 
