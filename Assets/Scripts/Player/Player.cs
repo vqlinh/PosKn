@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float distanceMoveBack = 2f;
 
     Animator animator;
+    private bool isFinish=false;
     public bool canMove = true;
     private bool Shielding = false;
     private bool canMoveBack = true;
@@ -108,7 +109,6 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
         _skillShield.gameObject.SetActive(false);
         buttonManager = FindObjectOfType<ButtonManager>();
-        //GameManager.Instance.txtMaxHeal.text = maxHealth.ToString();
     }
 
     private void Update()
@@ -197,7 +197,7 @@ public class Player : MonoBehaviour
             skillAttack.SetActive(true);
 
             Attack();
-            StartCoroutine(AttackCoolDown()); // doi 2 giay roi danh tiep
+            StartCoroutine(AttackCoolDown()); 
             playerState = PlayerState.Moving;
 
         }
@@ -236,7 +236,6 @@ public class Player : MonoBehaviour
     private IEnumerator ShieldCoolDown()
     {
         isShield = true;
-        //animator.SetTrigger(Const.animSkillAttack);
         yield return new WaitForSeconds(timeCoolDownShield);
         isShield = false;
     }
@@ -259,9 +258,9 @@ public class Player : MonoBehaviour
     }
     #endregion
     #region Skill_3
-    public void Skillhealing() // click button
+    public void Skillhealing()
     {
-        if (currentHealth < maxHealth)  // Kiểm tra điều kiện khi có thể click button
+        if (currentHealth < maxHealth) 
         {
             isClick3 = true;
             if (!isHealing)
@@ -343,7 +342,6 @@ public class Player : MonoBehaviour
     {
         animator.SetTrigger(Const.animIdle);
         Debug.Log("IdleState");
-        //playerState = PlayerState.Moving;
     }
 
     void MovingState()
@@ -393,7 +391,12 @@ public class Player : MonoBehaviour
     public void TakeDamageEnemy(int damage)
     {
         currentHealth -= damage;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0)
+        {
+            canTriggerDamagedState=false;
+            if(!isFinish) Invoke("PanelDie", 1f);
+            Die();  
+        }
 
         healthBar.SetHealth(currentHealth);
     }
@@ -404,10 +407,11 @@ public class Player : MonoBehaviour
         animator.SetTrigger(Const.animDie);
         playerState = PlayerState.Die;
         canMove = false;
-        Invoke("PanelDie", 1f);
+  
     }
     void PanelDie()
     {
+        isFinish = true;
         uiManager.PanelFadeIn();
 
     }
@@ -492,12 +496,7 @@ public class Player : MonoBehaviour
             currentLevel = playerData.currentLevel;
             maxHealth = playerData.maxHealth;
             currentHealth = maxHealth;
-
-                
         }
     }
-
-
-
 }
 

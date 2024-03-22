@@ -56,7 +56,7 @@ public class RangedEnemy : Enemy
             rangedAttackTimer += Time.deltaTime;
             if (rangedAttackTimer >= rangedAttackInterval)
             {
-                RangedAttack(); // 3s run func once
+                RangedAttack(); 
                 rangedAttackTimer = 0f;
             }
         }
@@ -119,7 +119,7 @@ public class RangedEnemy : Enemy
     }
     #endregion
 
-    public void TakeDamagePlayer() // khi chay ham nay thi Player se mat mau
+    public void TakeDamagePlayer()
     {
         player.TakeDamageEnemy(attack);
     }

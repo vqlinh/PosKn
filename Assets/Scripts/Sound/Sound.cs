@@ -16,6 +16,7 @@ public enum SoundName
     SfxDamaged,
     SfxCompleteLevel,
     SfxLose,
+    SfxButton,
 
 }
 

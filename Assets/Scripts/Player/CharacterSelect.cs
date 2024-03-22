@@ -21,6 +21,7 @@ public class CharacterSelect : MonoBehaviour
 
     public void Next()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxButton);
         skins[characterSelect].SetActive(false);
         characterSelect++;
         if (characterSelect == skins.Length) characterSelect = 0;
@@ -36,6 +37,7 @@ public class CharacterSelect : MonoBehaviour
     }
     public void Back()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxButton);
         skins[characterSelect].SetActive(false);
         characterSelect--;
         if (characterSelect == -1) characterSelect = skins.Length-1;

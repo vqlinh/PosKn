@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using System.Xml.Linq;
-using TMPro;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
@@ -29,6 +27,7 @@ public class UiManager : MonoBehaviour
     }
     public void PanelFadeIn()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxButton);
         canvasGroup.alpha = 0;
         rectTransform.transform.localPosition = new Vector3(0, -1000f, 0);
         rectTransform.DOAnchorPos(new Vector2(0, 0), fadeTime, false).SetEase(Ease.OutElastic);
@@ -38,6 +37,7 @@ public class UiManager : MonoBehaviour
 
     public void PanelFadeOut()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxButton);
         canvasGroup.alpha = 1;
         rectTransform.transform.localPosition = new Vector3(0, 0, 0);
         rectTransform.DOAnchorPos(new Vector2(0, -2000f), fadeTime, false).SetEase(Ease.InOutBack);

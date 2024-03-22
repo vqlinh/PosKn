@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f69f6bcc8e3fe46b0548b88ffa1954, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  maxExp: 400
-  currentExp: 140
-  currentLevel: 4
-  maxHealth: 130
+  maxExp: 100
+  currentExp: 0
+  currentLevel: 1
+  maxHealth: 100

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Ranged
   m_EditorClassIdentifier: 
   health: 40
-  attack: 10
+  attack: 15
   exp: 80

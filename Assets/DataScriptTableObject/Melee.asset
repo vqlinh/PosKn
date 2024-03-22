@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Melee
   m_EditorClassIdentifier: 
   health: 50
-  attack: 8
+  attack: 12
   exp: 70

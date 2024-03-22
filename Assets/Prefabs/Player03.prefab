@@ -173,12 +173,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dec885b132b248408101486a1ecb10e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDown1: 2
-  timeCoolDownAttack: 2
+  coolDown1: 3
+  timeCoolDownAttack: 3
   coolDown2: 3
   timeCoolDownShield: 3
-  coolDown3: 8
-  timeCoolDownHealing: 8
+  coolDown3: 9
+  timeCoolDownHealing: 9
   maxExp: 0
   currentExp: 0
   currentLevel: 0

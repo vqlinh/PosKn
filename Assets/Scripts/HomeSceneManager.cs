@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,12 +23,11 @@ public class HomeSceneManager : MonoBehaviour
         isBought = true;
         characterSelect = FindObjectOfType<CharacterSelect>();
         expBar.SetMaxHealth(playerData.maxExp);
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
     }
 
     private void Update()
     {
-        //txtCoins.text = coinData.coin.ToString();
         txtLevel.text = playerData.currentLevel.ToString();
         expBar.SetHealth(playerData.currentExp);
         if (characterSelect != null && characterSelect.characterSelect >= 0 && characterSelect.characterSelect < avataCharacterSprites.Length)
@@ -50,6 +47,7 @@ public class HomeSceneManager : MonoBehaviour
     }
     public void BuyCharacter(int characterIndex)
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxButton);
         int characterCost = 2000; 
         if (coinData.coin >= characterCost)
         {

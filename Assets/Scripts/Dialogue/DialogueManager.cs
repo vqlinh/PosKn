@@ -10,19 +10,16 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     public Animator animator;
     private UiManager uiManager;
-    // Start is called before the first frame update
     private void Awake()
     {
         sentences = new Queue<string>();
         uiManager=GameObject.Find("PanelStageComplete").GetComponent<UiManager>();
     }
 
-    // Update is called once per frame
     public void StartDial(Dialogue dial)
     {
         animator.SetBool("isOpen",true);
         nameText.text = dial.nameTalk;
-        Debug.Log("Starting Conversation with : " + dial.nameTalk);
         sentences.Clear();
         foreach (string sentence in dial.sentences)
         {
@@ -33,6 +30,7 @@ public class DialogueManager : MonoBehaviour
     }
     public void Next()
     {
+        AudioManager.Instance.PlaySfx(SoundName.SfxButton);
         if (sentences.Count == 0)
         {
             End();

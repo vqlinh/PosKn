@@ -14,12 +14,10 @@ public class Const : MonoBehaviour
     public const string animNormalAttack = "isNormalAttack";
     public const string animSkillAttack = "isSkillAttack";
     public const string animDestroyShield = "ShieldDestroy";
-    //Melee
     public const string meleeMove = "isMove";
     public const string meleeAttack = "isAttack";
     public const string meleeIdle = "isIdle";
     public const string meleeDamaged = "isDamaged";
-    //Ranged
     public const string rangedAttack = "isAttack";
     public const string rangedIdle = "isIdle";
     public const string rangedDamaged = "isDamaged";
@@ -37,7 +35,6 @@ public class Const : MonoBehaviour
 
     public const string coin = "Coin";
 
-    // code a huy
     public const string Scene_StartGame = "StartGame";
     public const string Tag_Player = "Player";
 

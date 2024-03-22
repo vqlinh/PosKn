@@ -3827,9 +3827,9 @@ MonoBehaviour:
   ranged: {fileID: 62309191026090210, guid: 45ece5a4499dbe24aad88c2512cde717, type: 3}
   chief: {fileID: 2341914191973374403, guid: 8a0abb4a27eae9841ac70e350e16e1b7, type: 3}
   listEnemySpawn: []
-  numberSpawn: 10
+  numberSpawn: 6
   min: 10
-  max: 45
+  max: 35
 --- !u!4 &1065299359
 Transform:
   m_ObjectHideFlags: 0

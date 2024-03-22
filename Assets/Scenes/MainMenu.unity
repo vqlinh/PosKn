@@ -359,6 +359,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 7b836d90c9c318f41b54f0065cc9b20f, type: 3}
   - name: 10
     clip: {fileID: 8300000, guid: ca002ed2b06b2174bbb2c0878e90005e, type: 3}
+  - name: 11
+    clip: {fileID: 8300000, guid: 827938b6d3fe8da46bfb0f3283ace509, type: 3}
   musicSource: {fileID: 933446496}
   sfxSource: {fileID: 2000948446}
 --- !u!4 &200492879
@@ -1958,6 +1960,54 @@ RectTransform:
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1514489213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1514489215}
+  - component: {fileID: 1514489214}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1514489214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514489213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa45e50f18edc3e478c4a7db4ece8a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorRGB: 
+  sizeText: 50
+  xShow: 0.5
+  yShow: 0.5
+--- !u!4 &1514489215
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514489213}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5125036, y: -3.6306183, z: 0.026257673}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1641035674
 GameObject:
   m_ObjectHideFlags: 0
