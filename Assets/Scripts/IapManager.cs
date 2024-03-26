@@ -22,11 +22,15 @@ public class IapManager : MonoBehaviour, IStoreListener
 
     IStoreController m_StoreController;
     int totalCoins = 0;
-    public CoinData coinData;
+    //public CoinData coinData;
     void Start()
     {
-        coinTxt.text = coinData.coin.ToString();
+        coinTxt.text = GameManager.Instance.coin.ToString();
         SetupBuilder();
+    }
+    private void Update()
+    {
+        coinTxt.text=GameManager.Instance.coin.ToString();
     }
 
     void SetupBuilder() 
@@ -67,18 +71,21 @@ public class IapManager : MonoBehaviour, IStoreListener
         if (product.definition.id == COIN_2000)
         {
             Debug.Log("Plus 2000 coins");
-            coinData.coin += 2000;
-            coinTxt.text = coinData.coin.ToString();
+            GameManager.Instance.coin += 2000;
+            coinTxt.text = GameManager.Instance.coin.ToString();
+            GameManager.Instance.SaveCoin();
         } else if (product.definition.id == COIN_6000)
         {
             Debug.Log("Plus 6000 coins");
-            coinData.coin += 6000;
-            coinTxt.text = coinData.coin.ToString();
+            GameManager.Instance.coin += 6000;
+            GameManager.Instance.SaveCoin();
+            coinTxt.text = GameManager.Instance.coin.ToString();
         } else if (product.definition.id == COIN_9500) 
         {
             Debug.Log("Plus 9500 coins");
-            coinData.coin += 9500;
-            coinTxt.text = coinData.coin.ToString();
+            GameManager.Instance.coin += 9500;
+            coinTxt.text = GameManager.Instance.coin.ToString();
+            GameManager.Instance.SaveCoin();
         }
         return PurchaseProcessingResult.Complete;
     }

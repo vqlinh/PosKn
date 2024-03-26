@@ -624,7 +624,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: b6e12899118bc2e469fea7b70b26b99a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2591,9 +2591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac5b18a980efb30498dc2e2a93d9da9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  txtCoins: {fileID: 657677481}
   coin: 0
-  coinData: {fileID: 11400000, guid: fe8c72885ba3f824ba1de19494e48ab6, type: 2}
 --- !u!4 &792591949
 Transform:
   m_ObjectHideFlags: 0
@@ -2808,6 +2806,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1195736049}
+    - target: {fileID: 86321232342331948, guid: 6cceb3b8b1178b54890ee21e2707ae9e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadSceneLevel4
+      objectReference: {fileID: 0}
     - target: {fileID: 86321233103890086, guid: 6cceb3b8b1178b54890ee21e2707ae9e, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3459,7 +3461,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: b6e12899118bc2e469fea7b70b26b99a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5871,7 +5873,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: b6e12899118bc2e469fea7b70b26b99a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

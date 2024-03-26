@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class HomeSceneManager : MonoBehaviour
 {
     public HealthBar expBar;
-    public CoinData coinData;
+    //public CoinData coinData;
     public PlayerData playerData;
     public TextMeshProUGUI txtLevel;
     public TextMeshProUGUI txtName;
@@ -23,7 +23,6 @@ public class HomeSceneManager : MonoBehaviour
         isBought = true;
         characterSelect = FindObjectOfType<CharacterSelect>();
         expBar.SetMaxHealth(playerData.maxExp);
-        PlayerPrefs.DeleteAll();
     }
 
     private void Update()
@@ -48,10 +47,11 @@ public class HomeSceneManager : MonoBehaviour
     public void BuyCharacter(int characterIndex)
     {
         AudioManager.Instance.PlaySfx(SoundName.SfxButton);
-        int characterCost = 2000; 
-        if (coinData.coin >= characterCost)
+        int priceCharacter = 2000; 
+        if (GameManager.Instance.coin >= priceCharacter)
         {
-            coinData.coin -= characterCost; 
+            GameManager.Instance.coin -= priceCharacter;
+            GameManager.Instance.SaveCoin();
             PlayerPrefs.SetInt("Character_" + (characterIndex) + "_Bought", 1);
             buttons[characterIndex].SetActive(false); 
         }

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,10 +10,18 @@ public class ButtonManager : MonoBehaviour
 
     private Color normalColor;
     public Color disabledColor;
+    private TextMeshProUGUI txtCoins;
+
 
     private void Start()
     {
         normalColor = skillButton1.colors.normalColor;
+        txtCoins = GameObject.Find("TxtCoin").GetComponent<TextMeshProUGUI>();
+    }
+    private void Update()
+    {
+        txtCoins.text = GameManager.Instance.coin.ToString();
+
     }
 
     public void DisableButtons()

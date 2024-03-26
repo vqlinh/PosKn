@@ -3,39 +3,33 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-
-    public TextMeshProUGUI txtCoins;
     public int coin;
-    public CoinData coinData;
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    //public CoinData coinData;
+
+    private const string Coin = "Coin";
+
 
     private void Start()
     {
         LoadCoin();
+        //coinData.coin = coin;
     }
 
     private void Update()
     {
-        txtCoins.text = coinData.coin.ToString();
-
     }
 
     public void SaveCoin()
     {
-        coinData.coin = Instance.coin;
+        PlayerPrefs.SetInt(Coin, coin);
+        PlayerPrefs.Save();
     }
 
     public void LoadCoin()
     {
-        if (coinData == null)
-            coinData = ScriptableObject.CreateInstance<CoinData>();
-
-        if (coinData != null)
-            Instance.coin = coinData.coin;
-
+        if (PlayerPrefs.HasKey(Coin))
+        {
+            coin = PlayerPrefs.GetInt(Coin);
+        }
     }
 }
-

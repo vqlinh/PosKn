@@ -6,5 +6,5 @@ using UnityEngine;
 
 public class CoinData : ScriptableObject
 {
-    public int coin;
+    [HideInInspector] public int coin;
 }
